@@ -29,7 +29,12 @@
 
           <div class="form-group col-md-2">
             <label for="name">Cidade</label>
-            <input type="text" name="city" v-model="city" class="form-control"/>
+            <input
+              type="text"
+              name="city"
+              v-model="city"
+              class="form-control"
+            />
           </div>
 
           <div class="form-group col-md-2">
@@ -39,7 +44,14 @@
 
           <div class="form-group col-md-1">
             <label for="name">Dia</label>
-            <input type="text" maxlength="2" name="uf" v-model="day" @keyup="filterNonNumeric" class="form-control" />
+            <input
+              type="text"
+              maxlength="2"
+              name="uf"
+              v-model="day"
+              @keyup="filterNonNumeric"
+              class="form-control"
+            />
           </div>
 
           <div class="form-group col-md-2">
@@ -49,9 +61,15 @@
 
           <div class="form-group col-md-2">
             <label for="name">Ano</label>
-            <input type="text" maxlength="4" name="uf" v-model="year" @keyup="filterNonNumeric" class="form-control" />
+            <input
+              type="text"
+              maxlength="4"
+              name="uf"
+              v-model="year"
+              @keyup="filterNonNumeric"
+              class="form-control"
+            />
           </div>
-
         </div>
       </form>
     </div>
@@ -62,7 +80,6 @@
       <div v-if="isObjectEmpty">
         <hr />
         <div class="pdfContent">
-          
           <div class="historyHeader">
             <p>NOME: {{ item.name }}</p>
             <p>MÃE: {{ item.name_mother }}</p>
@@ -135,7 +152,9 @@
             </p>
             <p>CARTA HORÁRIA TOTAL: {{ totalWorkload }} HORAS AULAS</p>
             <p>Observação: A média de aprovação por disciplina é 6,0 (sete)</p>
-            <p>{{ city }} - {{ uf }}, {{ day }} de {{ month }} de {{ year }}.</p>
+            <p>
+              {{ city }} - {{ uf }}, {{ day }} de {{ month }} de {{ year }}.
+            </p>
           </div>
         </div>
         <!-- ./ pdfContent -->
@@ -143,7 +162,14 @@
           <button @click="makePDF" class="btn btn-success">Gerar PDF</button>
         </div>
       </div>
+      <iframe v-else :src="blobPDF" 
+        width="100%" 
+        height="680" 
+        style="border: none;"
+      >
+      </iframe>
     </transition>
+
   </section>
 </template>
 
@@ -163,19 +189,21 @@ export default {
   data() {
     return {
       filterNonNumeric,
+      teamId: null,
+      blobPDF: null,
       item: null,
-      city: null,
-      day: null,
-      month: null,
-      year: '2023',
-      uf: 'PA',
+      city: "Belém",
+      day: new Date().getDate(),
+      month: "Janeiro",
+      year: new Date().getFullYear(),
+      uf: "PA",
       teams: [],
       gridTemplate: {},
       gridName: "",
       courseName: "",
       totalStage: 0,
       totalWorkload: 0,
-      author:'Paideia Educacional'
+      author: "Paideia Educacional",
     };
   },
   filters: {
@@ -197,15 +225,24 @@ export default {
     },
   },
   methods: {
-     makePDF() {
+    async storeHistoryPDF(blob) {
+      const formData = new FormData();
+      formData.append("pdf", blob);
+      try {
+        const data = await api.post(`/teams/${this.item.cpf}/store-history-pdf`, formData);
+        console.log(`> Created PDF: ${data.data.data}`);
+      } catch (error) {
+        console.log('> Error', error); 
+      }
+    },
+    makePDF() {
       if (!this.city || !this.uf || !this.day || !this.month || !this.year) {
-
         Toast.fire("Por favor, preencha todos os campos.", "", "error");
 
         return window.scroll({
           top: 0,
           left: 0,
-          behavior: "smooth", 
+          behavior: "smooth",
         });
       }
 
@@ -228,7 +265,12 @@ export default {
 
       doc.html(target, {
         callback: (pdf) => {
-          pdf.save(`${this.item.cpf}_historico_escolar.pdf`);
+          pdf.save(`${this.item.cpf}_historico.pdf`);
+
+          //Saved storage api
+          const blob = pdf.output("blob");
+          this.storeHistoryPDF(blob);
+
           table.classList.remove("pdfPrint");
           table.classList.add("table");
           target.classList.remove("active");
@@ -243,11 +285,32 @@ export default {
         this.teams = this.item.teams;
       });
     },
+    async hasHistory(filename){
+
+      this.blobPDF = null; 
+
+      var bool = true;
+      await api.get(`/storage/app/history/${filename}`, { responseType: 'blob' })
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        this.blobPDF = URL.createObjectURL(blob);
+      })
+      .catch(() => bool = false);
+      return bool;
+    },
     async listGrid(ev) {
-      await this.getGridTemplate(ev.currentTarget.value);
+
+      this.teamId = ev.currentTarget.value;
+      const isShowHistoryPDF = await this.hasHistory(`${this.item.cpf}_historico.pdf`);
+      
+      if(isShowHistoryPDF)
+       return;
+      else
+        await this.getGridTemplate(this.teamId);
     },
     async getGridTemplate(team) {
       await api.get(`/teams/${team}/list-grid`).then((res) => {
+
         if (res.data.hasOwnProperty("list")) {
 
           const { list, grid_name, course_name, total_stage, total_workload } = res.data;
