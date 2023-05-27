@@ -162,12 +162,20 @@
           <button @click="makePDF" class="btn btn-success">Gerar PDF</button>
         </div>
       </div>
-      <iframe v-else :src="blobPDF" 
+
+      <div v-else>
+
+        <button v-if="blobPDF" class="btn btn-sm btn-danger my-2" @click="removeHistoryFilePDF">Apagar Histórico</button>
+
+        <iframe :src="blobPDF" 
         width="100%" 
         height="680" 
         style="border: none;"
-      >
-      </iframe>
+        >
+        </iframe>
+        
+      </div>
+
     </transition>
 
   </section>
@@ -194,12 +202,11 @@ export default {
       item: null,
       city: "Belém",
       day: new Date().getDate(),
-      month: "Janeiro",
+      month: null,
       year: new Date().getFullYear(),
       uf: "PA",
       teams: [],
       gridTemplate: {},
-      gridName: "",
       courseName: "",
       totalStage: 0,
       totalWorkload: 0,
@@ -225,18 +232,30 @@ export default {
     },
   },
   methods: {
+    async removeHistoryFilePDF(){
+      const filename = `${this.item.cpf}_historico.pdf`;
+      api.get(`/historys/${filename}/remove`)
+      .then(response => {
+        this.blobPDF = null;
+        document.querySelector('select').value = "";
+        Toast.fire(response.data.message, "", "success");
+      })
+      .catch((error) => {
+        Toast.fire(error.message,"", "error");
+      });
+    },
     async storeHistoryPDF(blob) {
       const formData = new FormData();
       formData.append("pdf", blob);
       try {
         const data = await api.post(`/teams/${this.item.cpf}/store-history-pdf`, formData);
-        console.log(`> Created PDF: ${data.data.data}`);
       } catch (error) {
         console.log('> Error', error); 
       }
     },
     makePDF() {
       if (!this.city || !this.uf || !this.day || !this.month || !this.year) {
+
         Toast.fire("Por favor, preencha todos os campos.", "", "error");
 
         return window.scroll({
@@ -278,6 +297,8 @@ export default {
         x: 10,
         y: 10,
       });
+
+      this.$router.push({ name: "students" });
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
@@ -316,7 +337,6 @@ export default {
           const { list, grid_name, course_name, total_stage, total_workload } = res.data;
 
           this.gridTemplate = list;
-          this.gridName = grid_name;
           this.courseName = course_name;
           this.totalStage = total_stage;
           this.totalWorkload = total_workload;
