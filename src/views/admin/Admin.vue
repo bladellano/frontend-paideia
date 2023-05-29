@@ -164,6 +164,13 @@
                       >Registrar</router-link
                     >
                   </li>
+                  <li>
+                    <router-link
+                      class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/grades/registrar-template"
+                      >Registrar Template</router-link
+                    >
+                  </li>
                 </ul>
               </div>
             </li>

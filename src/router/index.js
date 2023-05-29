@@ -49,6 +49,7 @@ import TeamRegister from '../views/admin/teams/TeamRegister.vue'
 import GridList from '../views/admin/grids/GridList.vue'
 import GridEdit from '../views/admin/grids/GridEdit.vue'
 import GridRegister from '../views/admin/grids/GridRegister.vue'
+import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
@@ -234,6 +235,11 @@ const routes = [
                 path: "grades/registrar",
                 name: "grid-register",
                 component: GridRegister,
+            },
+            {
+                path: "grades/registrar-template",
+                name: "grid-template-register",
+                component: GridTemplateRegister,
             },
             //Historys
             //    {

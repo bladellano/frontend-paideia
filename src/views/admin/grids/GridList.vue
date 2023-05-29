@@ -51,7 +51,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
 import { serialize } from "@/helpers";
@@ -111,9 +111,11 @@ export default {
         if (isConfirm.value === true) {
           try {
             const { data } = await api.delete(`/grids/${id}`);
+            // eslint-disable-next-line no-undef
             Toast.fire(data.message, "", "success");
             this.getItens();
           } catch (error) {
+            // eslint-disable-next-line no-undef
             Toast.fire(error.message, "", "error");
           }
         }

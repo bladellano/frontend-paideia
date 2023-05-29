@@ -241,14 +241,14 @@ export default {
         Toast.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        Toast.fire(error.message,"", "error");
+        Toast.fire(error.response.data.message,"", "error");
       });
     },
     async storeHistoryPDF(blob) {
       const formData = new FormData();
       formData.append("pdf", blob);
       try {
-        const data = await api.post(`/teams/${this.item.cpf}/store-history-pdf`, formData);
+        await api.post(`/historys/${this.item.cpf}/store-history-pdf`, formData);
       } catch (error) {
         console.log('> Error', error); 
       }
@@ -310,8 +310,8 @@ export default {
 
       this.blobPDF = null; 
 
-      var bool = true;
-      await api.get(`/storage/app/history/${filename}`, { responseType: 'blob' })
+      let bool = true;
+      await api.get(`/historys/storage/${filename}`, { responseType: 'blob' })
       .then(response => {
         const blob = new Blob([response.data], { type: 'application/pdf' });
         this.blobPDF = URL.createObjectURL(blob);
@@ -330,11 +330,12 @@ export default {
         await this.getGridTemplate(this.teamId);
     },
     async getGridTemplate(team) {
-      await api.get(`/teams/${team}/list-grid`).then((res) => {
+      await api.get(`/grids/${team}/list-grid`).then((res) => {
 
+        // eslint-disable-next-line no-prototype-builtins
         if (res.data.hasOwnProperty("list")) {
 
-          const { list, grid_name, course_name, total_stage, total_workload } = res.data;
+          const { list, course_name, total_stage, total_workload } = res.data;
 
           this.gridTemplate = list;
           this.courseName = course_name;
