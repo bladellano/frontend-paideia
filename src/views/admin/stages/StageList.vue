@@ -18,7 +18,7 @@
               <th><a href="#" @click="sort($event, 'stage')">Etapa</a></th>
               <th>Descrição</th>
               <th>Criado</th>
-              <th width="150px"></th>
+              <th width="98px"></th>
             </tr>
           </thead>
           <tbody>
@@ -30,13 +30,13 @@
                 <router-link
                   :to="{ name: 'stage-edit', params: { id: item.id } }"
                   class="btn btn-sm btn-secondary mx-1"
-                  >Editar
+                  ><font-awesome-icon icon="edit" />
                 </router-link>
                 <a
                   href="#"
                   @click.prevent="handlerDelete(item.id)"
                   class="btn btn-sm btn-secondary mx-1"
-                  >Excluir</a
+                  ><font-awesome-icon icon="trash" /></a
                 >
               </td>
             </tr>

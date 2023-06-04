@@ -128,14 +128,14 @@
             <div class="col-md-1">
               <br/>
               <a class="btn btn-sm btn-danger" @click.prevent="removeField(index)">
-                Remover
+                <font-awesome-icon icon="trash" />
               </a>
             </div>
           </div>      
           
         </div>
 
-        <a class="btn btn-sm btn-primary mt-2" @click.prevent="addField">Adicionar</a>
+        <a class="btn btn-sm btn-success mt-2" @click.prevent="addField"><font-awesome-icon icon="add" /></a>
 
         <div class="form-group text-center my-2">
           <button type="submit" class="btn btn-success btn-sm mx-2">
@@ -187,7 +187,7 @@ export default {
          
       const formTemplate = Object.assign({}, this.gridTemplate);
 
-      await api.get(`/grids/${this.$route.params.id}/remove-template-from-grid/`);
+      await api.get(`/grids/remove-template-from-grid/${this.$route.params.id}`);
 
       try {
         const { data } = await api.post(`/grid-templates`, formTemplate);
@@ -214,8 +214,8 @@ export default {
       }
     },
     async getGridTemplate(){
-      await api.get(`/grids/${this.$route.params.id}/get-grid-template/`).then((res) => {
-        this.gridTemplate = res.data.data;
+      await api.get(`/grids/get-grid-template/${this.id}`).then((res) => {
+         this.gridTemplate = res.data.data;
       });
     },
     reset() {

@@ -2,7 +2,8 @@
 
 :root {
   --color-background: #f3f3f3;
-  --color-background-nav: #577b6d;
+  --color-background-nav: #043b5c;
+  --color-background-hover-nav: #43e6ae;
   --color-background-home: #344960;
   --color-text-light: #ededed;
   --color-text-title: #ff5555;

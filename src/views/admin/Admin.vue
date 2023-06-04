@@ -198,7 +198,8 @@ export default {
   width: 100%;
 }
 .btn-success:hover{
-  background-color: blueviolet;
+  background-color: var(--color-background-hover-nav);
+  color: var(--color-background-nav);
 }
 .content {
   display: grid;

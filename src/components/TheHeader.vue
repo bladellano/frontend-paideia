@@ -65,10 +65,11 @@
 
           <div class="dropdown" v-else>
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-              Adm
+              <font-awesome-icon icon="user" />
+              {{ userName }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-              <li><router-link class="dropdown-item" to="/admin">Configuração</router-link></li>
+              <li><router-link class="dropdown-item" to="/admin">Gestão</router-link></li>
               <li><a class="dropdown-item" href="#" @click.prevent="logout">Sair</a></li>
             </ul>
           </div>
@@ -89,6 +90,7 @@ export default {
   data() {
     return {
       isLogged: false,
+      userName: null
     };
   },
   methods: {
@@ -102,17 +104,19 @@ export default {
 
       if (token) {
         const axiosInstance = axios.create({
-          baseURL: "http://localhost:8080/api",
+          baseURL: `${process.env.VUE_APP_BASE_URL}/api`,
           headers: {
             Authorization: `${token}`,
           },
         });
 
         try {
-          await axiosInstance.post("/auth/me");
+          const me = await axiosInstance.post("/auth/me");
+          this.userName = me.data.name;
           this.isLogged = true;
         } catch (error) {
           this.isLogged = false;
+          window.localStorage.setItem("token", null);
         }
       }
     },

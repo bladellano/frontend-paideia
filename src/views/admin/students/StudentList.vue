@@ -22,7 +22,7 @@
             <th>Criado</th>
             <th>Turma</th>
             <th width="196px"></th>
-            <th width="150px"></th>
+            <th width="98px"></th>
           </tr>
         </thead>
         <tbody>
@@ -50,13 +50,13 @@
               <router-link
                 :to="{ name: 'student-edit', params: { id: item.id } }"
                 class="btn btn-sm btn-secondary mx-1"
-                >Editar
+                ><font-awesome-icon icon="edit" />
               </router-link>
               <a
                 href="#"
                 @click.prevent="handlerDelete(item.id)"
                 class="btn btn-sm btn-secondary mx-1"
-                >Excluir</a
+                ><font-awesome-icon icon="trash" /></a
               >
             </td>
           </tr>

@@ -98,14 +98,14 @@
           <div class="col-md-2">
             <br/>
             <a class="btn btn-sm btn-danger" @click.prevent="removeField(index)">
-              Remover
+              <font-awesome-icon icon="trash" />
             </a>
           </div>
         </div>
       </div>
 
       <a class="btn btn-sm btn-success mt-2" @click.prevent="addField"
-        >Adicionar</a
+        ><font-awesome-icon icon="add" /></a
       >
 
       <div class="form-group text-center my-2">
