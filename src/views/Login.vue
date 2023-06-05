@@ -26,6 +26,7 @@
   
 <script>
 import api from "@/services";
+import axios from "axios";
 
 import { EventBus } from "../main";
 
@@ -45,10 +46,20 @@ export default {
 
       try {
         const { data } = await api.post("/auth/login", request);
-        window.localStorage.token = `Bearer ${data.access_token}`;
-        
-        EventBus.$emit("update-logged-in-status", true);
 
+        window.localStorage.token = `Bearer ${data.access_token}`;
+
+        /** Pega o nome do usuário */
+        const axiosInstance = axios.create({
+          baseURL: `${process.env.VUE_APP_BASE_URL}/api`,
+          headers: {
+            Authorization: `Bearer ${data.access_token}`,
+          },
+        });
+        const me = await axiosInstance.post("/auth/me");
+        const name = me.data.name;
+        
+        EventBus.$emit("update-logged-in-status", true, name);
         this.$router.push({ name: "courses" });
 
       } catch (error) {

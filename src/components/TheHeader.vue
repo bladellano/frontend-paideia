@@ -24,7 +24,6 @@
               <router-link exact-active-class="active" class="nav-link" to="/"
                 >Home</router-link
               >
-
             </li>
 
             <li class="nav-item">
@@ -33,6 +32,15 @@
                 class="nav-link"
                 to="/sobre"
                 >Sobre</router-link
+              >
+            </li>
+
+            <li class="nav-item">
+              <router-link
+                exact-active-class="active"
+                class="nav-link"
+                to="/cursos"
+                >Cursos</router-link
               >
             </li>
 
@@ -49,31 +57,55 @@
               <router-link
                 exact-active-class="active"
                 class="nav-link"
+                to="/como-funciona"
+                >Como funciona?</router-link
+              >
+            </li>
+
+            <li class="nav-item">
+              <router-link
+                exact-active-class="active"
+                class="nav-link"
                 to="/contato"
                 >Contato</router-link
               >
             </li>
 
-          <!-- Admin -->
+            <!-- Admin -->
           </ul>
 
           <ul class="navbar-nav ml-auto" v-if="!isLogged">
             <li class="nav-item">
-              <router-link class="nav-link" to="/admin/login">Login</router-link>
+              <router-link class="nav-link" to="/admin/login"
+                >Login</router-link
+              >
             </li>
           </ul>
 
           <div class="dropdown" v-else>
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenu"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <font-awesome-icon icon="user" />
               {{ userName }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-              <li><router-link class="dropdown-item" to="/admin">Gestão</router-link></li>
-              <li><a class="dropdown-item" href="#" @click.prevent="logout">Sair</a></li>
+              <li>
+                <router-link class="dropdown-item" to="/admin"
+                  >Gestão</router-link
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click.prevent="logout"
+                  >Sair</a
+                >
+              </li>
             </ul>
           </div>
-
         </div>
       </div>
     </nav>
@@ -90,7 +122,7 @@ export default {
   data() {
     return {
       isLogged: false,
-      userName: null
+      userName: null,
     };
   },
   methods: {
@@ -111,8 +143,7 @@ export default {
         });
 
         try {
-          const me = await axiosInstance.post("/auth/me");
-          this.userName = me.data.name;
+          await axiosInstance.post("/auth/me");
           this.isLogged = true;
         } catch (error) {
           this.isLogged = false;
@@ -123,8 +154,9 @@ export default {
   },
   created() {
     this.me();
-    EventBus.$on("update-logged-in-status", (bool) => {
+    EventBus.$on("update-logged-in-status", (bool, name) => {
       this.isLogged = bool;
+      this.userName = name;
     });
   },
 };
