@@ -29,6 +29,20 @@ export default {
                 { name: "São Paulo", sigla: "SP" },
                 { name: "Sergipe", sigla: "SE" },
                 { name: "Tocantins", sigla: "TO" },
+            ],
+            months: [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
             ]
         }
     }

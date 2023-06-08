@@ -3,7 +3,7 @@
     <section id="hero">
       <div class="container content-hero">
         <div class="row text-light">
-          <div class="col-md-6">
+          <div class="col-md-5">
             <h2>
               Verifique a autenticidade de certificado ou histórico escolar
               emitidos pela Paideia Educacional
@@ -21,13 +21,11 @@
 
             <div class="ancora-arrow">
               <a href="#">
-                <img
-                  src="@/assets/arrow-down-roxo.svg"
-                />
+                <img src="@/assets/arrow-down-roxo.svg" />
               </a>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-7">
             <form>
               <fieldset>
                 <h2>Validador</h2>
@@ -47,22 +45,38 @@
                 <button type="submit" class="btn btn-primary">Verificar</button>
               </fieldset>
             </form>
+
             <br />
+
             <form>
               <fieldset>
                 <div class="mb-3">
                   <label for="disabledSelect" class="form-label"
                     >Histórico Escolar</label
                   >
+                  <!-- {{ historic }} -->
                   <input
                     type="text"
-                    name="historico"
+                    name="historic"
                     class="form-control"
+                    v-model="historic.code"
                     placeholder="Digite o código impresso no documento"
                   />
+                  <!-- Exibe detalhes do documento -->
+                  <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    Este documento <b>{{ historic.code }}</b> é valido e foi emitido em <b>{{ (historic.content) ? historic.content.created_at : '' }}</b> para <b>{{ (historic.content) ? historic.content.student.name : '' }}</b>.
+                    <button @click="historic.content = null" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
                 </div>
 
-                <button type="submit" class="btn btn-success">Verificar</button>
+                <button
+                  @click.prevent="hasHistoric"
+                  type="submit"
+                  class="btn btn-success"
+                >
+                  Verificar
+                </button>
               </fieldset>
             </form>
           </div>
@@ -71,63 +85,100 @@
     </section>
 
     <section class="container my-4">
-      <h4 class="my-4">Home</h4>
+      <div class="row">
+       
+        <div class="col-md-8">
+          <h2 class="title-product">Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h2>
+          <p class="text-product">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+          </p>
 
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam,
-        veritatis nihil. Quae libero voluptas ea. Voluptatem repudiandae autem
-        excepturi voluptatibus vero dolore aspernatur quis est quos itaque quae
-        eius aliquam ipsum fuga velit magnam pariatur, distinctio odio dolorum
-        corrupti perferendis! Voluptate et alias, fugiat quidem ad eligendi fuga
-        laborum voluptatem voluptatum provident rem consequuntur quis adipisci
-        quasi aut earum minus amet expedita maiores saepe labore necessitatibus
-        harum perspiciatis. Veniam adipisci necessitatibus, ratione vel est fuga
-        dolorum nam eligendi quas quod repudiandae, iste optio quis quasi
-        aperiam dolor unde similique perferendis tempora atque saepe impedit
-        itaque? Necessitatibus inventore tempore quam facere.
-      </p>
-
-      <h4 class="my-4">Home</h4>
-
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam,
-        veritatis nihil. Quae libero voluptas ea. Voluptatem repudiandae autem
-        excepturi voluptatibus vero dolore aspernatur quis est quos itaque quae
-        eius aliquam ipsum fuga velit magnam pariatur, distinctio odio dolorum
-        corrupti perferendis! Voluptate et alias, fugiat quidem ad eligendi fuga
-        laborum voluptatem voluptatum provident rem consequuntur quis adipisci
-        quasi aut earum minus amet expedita maiores saepe labore necessitatibus
-        harum perspiciatis. Veniam adipisci necessitatibus, ratione vel est fuga
-        dolorum nam eligendi quas quod repudiandae, iste optio quis quasi
-        aperiam dolor unde similique perferendis tempora atque saepe impedit
-        itaque? Necessitatibus inventore tempore quam facere.
-      </p>
-
-      <h4 class="my-4">Home</h4>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam,
-        veritatis nihil. Quae libero voluptas ea. Voluptatem repudiandae autem
-        excepturi voluptatibus vero dolore aspernatur quis est quos itaque quae
-        eius aliquam ipsum fuga velit magnam pariatur, distinctio odio dolorum
-        corrupti perferendis! Voluptate et alias, fugiat quidem ad eligendi fuga
-        laborum voluptatem voluptatum provident rem consequuntur quis adipisci
-        quasi aut earum minus amet expedita maiores saepe labore necessitatibus
-        harum perspiciatis. Veniam adipisci necessitatibus, ratione vel est fuga
-        dolorum nam eligendi quas quod repudiandae, iste optio quis quasi
-        aperiam dolor unde similique perferendis tempora atque saepe impedit
-        itaque? Necessitatibus inventore tempore quam facere.
-      </p>
+          <ul class="list-product">
+            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+          </ul>
+          <p class="text-product">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+          </p>
+          <p class="text-product">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+          </p>
+        </div>
+        <div class="col-md-4">
+          <img class="img-fluid" src="@/assets/details-3.png" alt="">
+        </div>
+      </div>
+    
     </section>
   </main>
 </template>
   
 <script>
+import api from "@/services";
+
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
+  data() {
+    return {
+      historic: {
+        code: "",
+        content: null,
+      },
+    };
+  },
+  methods: {
+    async hasHistoric() {
+
+      if(!this.historic.code.length)
+        // eslint-disable-next-line no-undef
+        return Toast.fire('Preencha corretamente o campo', "", "error");
+
+      await api
+        .get(`/historys/has-historic/${this.historic.code}`)
+        .then((res) => {
+          this.historic.content = res.data[0];
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-undef
+          Toast.fire(error.response.data.message, "", "error");
+          this.historic.content = null;
+        });
+    },
+  },
 };
 </script>
   
 <style scoped>
+
+.title-product{
+  color: var(--color-background-nav);
+}
+
+.text-product{
+  line-height: 35px;
+  margin: 20px 0;
+}
+
+.list-product{
+  list-style: none;
+}
+.list-product li {
+  line-height: 35px;
+}
+.list-product li::before {
+  border-left: 2px solid var(--color-background-hover-nav);
+  border-top: 2px solid var(--color-background-hover-nav);
+  width: 8px;
+  height: 8px;
+  content: "";
+  transform: rotate(135deg);
+  margin-top: 12.8px;
+  margin-right: 1.2%;
+  float: left;
+}
+
 .ancora-arrow a {
   animation: vertical-animate 1.5s infinite alternate;
 }
@@ -174,12 +225,16 @@ p {
 #hero {
   background-image: url("@/assets/hero-bg.jpg");
   position: relative;
-  height: 400px;
+  height: 410px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #hero::before {
   content: "";
-  background: rgba(4, 59, 92, 0.88);
+  background: rgba(4, 59, 92, 0.70);
   position: absolute;
   bottom: 0;
   top: 0;

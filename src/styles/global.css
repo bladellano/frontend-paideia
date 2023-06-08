@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;800&display=swap");
 
 :root {
-  --color-background: #f3f3f3;
+  --color-background: #fff;
   --color-background-nav: #043b5c;
   --color-background-hover-nav: #43e6ae;
   --color-background-home: #344960;

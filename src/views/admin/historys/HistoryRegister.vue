@@ -56,7 +56,14 @@
 
           <div class="form-group col-md-2">
             <label for="name">Mês</label>
-            <input type="text" name="uf" v-model="month" class="form-control" />
+
+            <select id="month" class="form-control" v-model="month">
+              <option disabled value="" selected>-- Selecione --</option>
+              <option v-for="(name, index) in months" :key="index">
+                {{ name }}
+              </option>
+            </select>
+
           </div>
 
           <div class="form-group col-md-2">
@@ -86,6 +93,7 @@
             <p>NATURALIDADE: {{ item.naturalness }}</p>
             <p>DATA DE NASCIMENTO: {{ item.birth_date }}</p>
             <p>CPF: {{ item.cpf }}</p>
+            <span class="code">{{ code }}</span>
           </div>
 
           <p class="text-center">
@@ -186,9 +194,11 @@ import api from "@/services";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { filterNonNumeric } from "@/helpers";
+import { filterNonNumeric, generateHash } from "@/helpers";
+import StatesMixin from "@/mixins/StatesMixin";
 
 export default {
+  mixins: [StatesMixin],
   name: "HistoryRegister",
   props: ["student"],
   components: {
@@ -197,6 +207,7 @@ export default {
   data() {
     return {
       filterNonNumeric,
+      generateHash,
       teamId: null,
       blobPDF: null,
       item: null,
@@ -211,6 +222,7 @@ export default {
       totalStage: 0,
       totalWorkload: 0,
       author: "Paideia Educacional",
+      code:'',
     };
   },
   filters: {
@@ -238,17 +250,20 @@ export default {
       .then(response => {
         this.blobPDF = null;
         document.querySelector('select').value = "";
+        // eslint-disable-next-line no-undef
         Toast.fire(response.data.message, "", "success");
       })
       .catch((error) => {
+        // eslint-disable-next-line no-undef
         Toast.fire(error.response.data.message,"", "error");
       });
     },
     async storeHistoryPDF(blob) {
       const formData = new FormData();
       formData.append("pdf", blob);
+      formData.append("code", this.code);
       try {
-        await api.post(`/historys/${this.item.cpf}/store-history-pdf`, formData);
+        await api.post(`/historys/${this.item.id}/store-history-pdf`, formData);
       } catch (error) {
         console.log('> Error', error); 
       }
@@ -360,6 +375,7 @@ export default {
   },
   mounted() {
     this.getItem();
+    this.code = this.generateHash();
   },
 };
 </script>
@@ -390,6 +406,15 @@ export default {
   max-width: 578px;
   font-family: Courier;
   font-size: 12px;
+}
+
+.code{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.historyHeader{
+  position: relative;
 }
 .pdfContent.active .historyHeader {
   border: 1px solid #000;
