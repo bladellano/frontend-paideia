@@ -143,16 +143,18 @@ export default {
         });
 
         try {
-          await axiosInstance.post("/auth/me");
+          const data = await axiosInstance.post("/auth/me");
+          this.userName = data.data.name;
           this.isLogged = true;
         } catch (error) {
           this.isLogged = false;
+          this.userName = null;
           window.localStorage.setItem("token", null);
         }
       }
     },
   },
-  created() {
+  mounted() {
     this.me();
     EventBus.$on("update-logged-in-status", (bool, name) => {
       this.isLogged = bool;

@@ -61,6 +61,7 @@
                     class="form-control"
                     v-model="historic.code"
                     placeholder="Digite o código impresso no documento"
+                    autocomplete="off"
                   />
                   <!-- Exibe detalhes do documento -->
                   <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
