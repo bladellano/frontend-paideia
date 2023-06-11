@@ -144,8 +144,16 @@ export default {
 
         try {
           const data = await axiosInstance.post("/auth/me");
-          this.userName = data.data.name;
-          this.isLogged = true;
+
+          if(!Object.keys(data.data).length) {
+            this.isLogged = false;
+            this.userName = null;
+            window.localStorage.setItem("token", null);
+          } else {
+            this.userName = data.data.name;
+            this.isLogged = true;
+          }
+
         } catch (error) {
           this.isLogged = false;
           this.userName = null;

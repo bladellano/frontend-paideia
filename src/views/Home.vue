@@ -89,21 +89,21 @@
       <div class="row">
        
         <div class="col-md-8">
-          <h2 class="title-product">Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h2>
+          <h2 class="title-product">A importância de ter um aplicativo que valide a autenticidade de documentos </h2>
           <p class="text-product">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+            Ter um aplicativo que valide a autenticidade de documentos é de extrema importância nos dias de hoje. Com o avanço da tecnologia e o aumento da facilidade de manipulação de documentos digitais, garantir a autenticidade e integridade desses documentos tornou-se fundamental em diversas áreas, como negócios, governo e até mesmo no cotidiano das pessoas.
           </p>
 
           <ul class="list-product">
-            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-            <li> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+            <li> Verificação de assinaturas digitais: Um aplicativo pode verificar se um documento foi assinado digitalmente usando criptografia assimétrica. Isso garante que o documento não tenha sido alterado desde a assinatura e que o signatário seja autêntico.</li>
+            <li> Comparação de dados biométricos: Em alguns casos, documentos podem conter dados biométricos, como impressões digitais ou fotografias. Um aplicativo pode comparar esses dados com registros confiáveis para confirmar a autenticidade do documento.</li>
+            <li> Análise de códigos de autenticação: Alguns documentos podem ter códigos de autenticação, como códigos QR ou códigos de barras. Um aplicativo pode ler e verificar esses códigos para garantir a autenticidade do documento.</li>
           </ul>
           <p class="text-product">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+            Um aplicativo de validação de documentos oferece uma camada adicional de segurança, permitindo que os usuários verifiquem se um documento é legítimo e não foi falsificado ou adulterado. Isso é especialmente relevante em transações comerciais, contratos legais, documentos de identificação e certificados.
           </p>
           <p class="text-product">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo non unde, iure velit distinctio sapiente libero corrupti impedit eos earum ex! Nisi nostrum velit eveniet consequuntur suscipit
+            Em resumo, ter um aplicativo que valide a autenticidade de documentos é essencial para garantir a confiança e a segurança nas transações e interações que envolvem documentos. Ele fornece uma camada adicional de proteção contra falsificações e adulterações, promovendo a confiabilidade dos processos e a proteção dos direitos e interesses das partes envolvidas.
           </p>
         </div>
         <div class="col-md-4">
@@ -166,16 +166,18 @@ export default {
   list-style: none;
 }
 .list-product li {
-  line-height: 35px;
+  line-height: 28px;
+  font-size: 0.86rem;
+  padding-left: 10px;
 }
 .list-product li::before {
-  border-left: 2px solid var(--color-background-hover-nav);
-  border-top: 2px solid var(--color-background-hover-nav);
-  width: 8px;
-  height: 8px;
+  border-left: 3px solid #2dc0d7;
+  border-top: 3px solid #2dc0d7;
+  width: 10px;
+  height: 10px;
   content: "";
   transform: rotate(135deg);
-  margin-top: 12.8px;
+  margin-top: 8.6px;
   margin-right: 1.2%;
   float: left;
 }

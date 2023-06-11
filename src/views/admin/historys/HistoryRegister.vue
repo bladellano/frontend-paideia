@@ -108,48 +108,54 @@
                 >
                   DISCIPLINA
                 </th>
-                <th :colspan="totalStage" style="text-align: center">
+                <th :colspan="(totalStage * 2)" style="text-align: center">
                   RESULTADO FINAL
                 </th>
               </tr>
               <tr>
-                <th
-                  style="text-align: center"
-                  v-for="(stage, index) in rangeStage"
-                  :key="index"
-                >
-                  C/H TOTAL | ETAPA {{ stage }}
-                </th>
+
+                <template v-for="(stage) in rangeStage" >
+
+                  <!-- eslint-disable-next-line vue/require-v-for-key -->
+                  <th style="text-align: center" > C/H TOTAL </th>
+
+                  <!-- eslint-disable-next-line vue/require-v-for-key -->
+                  <th style="text-align: center" > ETAPA {{ stage }} </th>
+
+                </template>
+              
               </tr>
             </thead>
             <tbody>
               <tr v-for="(discipline, index) in gridTemplate" :key="index">
                 <td>{{ index }}</td>
-                <td v-for="(stage, key) in discipline" :key="key">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        @input="filterNonNumeric"
-                        :value="stage.workload"
-                        :disabled="!stage.workload ? true : false"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <TheMask
-                        name="score[]"
-                        type="text"
-                        placeholder="0,0"
-                        value="0,0"
-                        class="form-control"
-                        :mask="['#,##', '##,##']"
-                        :disabled="!stage.workload ? true : false"
-                        :masked="true"
-                      />
-                    </div>
-                  </div>
-                </td>
+
+                <template v-for="(stage) in discipline" >
+
+                  <!-- eslint-disable-next-line vue/require-v-for-key -->
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      @input="filterNonNumeric"
+                      :value="stage.workload"
+                      :disabled="!stage.workload ? true : false"
+                    />
+                  </td>
+
+                  <!-- eslint-disable-next-line vue/require-v-for-key -->
+                  <td>
+                    <TheMask
+                      type="text"
+                      class="form-control"
+                      :mask="['#.##', '##.##']"
+                      :disabled="!stage.workload ? true : false"
+                      :masked="true"
+                    />
+                  </td>
+
+                </template>
+
               </tr>
             </tbody>
           </table>

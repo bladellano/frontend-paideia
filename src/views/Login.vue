@@ -63,6 +63,7 @@ export default {
         this.$router.push({ name: "courses" });
 
       } catch (error) {
+        // eslint-disable-next-line no-undef
         Toast.fire(error.response.data.error, "", "error");
       }
     },
