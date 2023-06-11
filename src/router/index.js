@@ -53,6 +53,8 @@ import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
+//Certificate
+import CertificateRegister from '../views/admin/certificate/CertificateRegister.vue'
 
 Vue.use(VueRouter)
 
@@ -257,6 +259,12 @@ const routes = [
                 path: "historico/:student/registrar",
                 name: "history-register",
                 component: HistoryRegister,
+                props: true,
+            },
+            {
+                path: "certificado/:student/registrar",
+                name: "certificate-register",
+                component: CertificateRegister,
                 props: true,
             },
         ]

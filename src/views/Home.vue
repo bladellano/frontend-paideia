@@ -237,7 +237,7 @@ p {
 
 #hero::before {
   content: "";
-  background: rgba(4, 59, 92, 0.70);
+  background: rgba(127, 156, 151, 0.70);
   position: absolute;
   bottom: 0;
   top: 0;

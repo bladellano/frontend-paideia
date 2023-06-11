@@ -2,13 +2,13 @@
 
 :root {
   --color-background: #fff;
-  --color-background-nav: #043b5c;
+  --color-background-nav: #7f9c97;
   --color-background-hover-nav: #43e6ae;
   --color-background-home: #344960;
   --color-text-light: #ededed;
   --color-text-title: #ff5555;
   --color-text-dark: #3d3d3d;
-  --color-primary: #22173c;
+  --color-primary: #7f9c97;
   --color-secondary: #9facb9;
 }
 

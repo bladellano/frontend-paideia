@@ -291,7 +291,7 @@ export default {
       const doc = new jsPDF("p", "pt", "a4");
 
       doc.setProperties({
-        title: `Histórico Escola de ${this.item.name}`,
+        title: `Histórico Escolar de ${this.item.name}`,
         author: this.author,
         creator: this.author,
       });
@@ -381,7 +381,7 @@ export default {
   },
   mounted() {
     this.getItem();
-    this.code = this.generateHash();
+    this.code = this.generateHash('HIST_');
   },
 };
 </script>

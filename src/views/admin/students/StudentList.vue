@@ -21,7 +21,7 @@
             <th>Nome da mãe</th>
             <th>Criado</th>
             <th>Turma</th>
-            <th width="196px"></th>
+            <th width="228px"></th>
             <th width="98px"></th>
           </tr>
         </thead>
@@ -36,12 +36,17 @@
             <td>{{ item.teams_name }}</td>
             <td>
               <template v-if="item.teams_name">
-                <button class="btn btn-sm btn-primary mx-2">Certificado</button>
                 
+                <router-link
+                :to="{ name: 'certificate-register', params: { student: item.id } }"
+                class="btn btn-sm btn-primary mx-1"
+                ><font-awesome-icon icon="cloud-arrow-down"/> Certificado
+                </router-link>
+
                 <router-link
                 :to="{ name: 'history-register', params: { student: item.id } }"
                 class="btn btn-sm btn-success"
-                >Histórico
+                ><font-awesome-icon icon="cloud-arrow-down"/> Histórico
               </router-link>
 
               </template>
@@ -135,9 +140,11 @@ export default {
         if (isConfirm.value === true) {
           try {
             const { data } = await api.delete(`/students/${id}`);
+            // eslint-disable-next-line no-undef
             Toast.fire(data.message, "", "success");
             this.getItens();
           } catch (error) {
+            // eslint-disable-next-line no-undef
             Toast.fire(error.message, "", "error");
           }
         }

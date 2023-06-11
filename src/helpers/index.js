@@ -24,7 +24,7 @@ export function convertDateToDB(date) {
     return `${year}-${month}-${day}`
 }
 
-export function generateHash() {
+export function generateHash(prefix = '') {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const length = 10;
     let result = '';
@@ -33,5 +33,5 @@ export function generateHash() {
       const randomIndex = Math.floor(Math.random() * characters.length);
       result += characters.charAt(randomIndex);
     }
-    return result;
+    return prefix + result;
 }
