@@ -19,7 +19,7 @@
         <div class="row">
           <div class="form-group col-md-3">
             <label for="name">Turma</label>
-            <select id="team" class="form-control" @change="listGrid">
+            <select id="team" class="form-control" @change="getFullGrid">
               <option disabled value="" selected>-- Selecione --</option>
               <option v-for="team in teams" :key="team.id" :value="team.id">
                 {{ team.name }}
@@ -340,7 +340,7 @@ export default {
       .catch(() => bool = false);
       return bool;
     },
-    async listGrid(ev) {
+    async getFullGrid(ev) {
 
       this.teamId = ev.currentTarget.value;
       const isShowHistoryPDF = await this.hasHistory(`${this.item.cpf}_historico.pdf`);
@@ -351,7 +351,7 @@ export default {
         await this.getGridTemplate(this.teamId);
     },
     async getGridTemplate(team) {
-      await api.get(`/grids/${team}/list-grid`).then((res) => {
+      await api.get(`/grids/${team}/get-full-grid`).then((res) => {
 
         // eslint-disable-next-line no-prototype-builtins
         if (res.data.hasOwnProperty("list")) {
