@@ -63,6 +63,7 @@ const routes = [
         path: "*",
         component: PageNotFound
     },
+    //Site
     {
         path: '/',
         name: 'home',
@@ -244,23 +245,13 @@ const routes = [
                 component: GridTemplateRegister,
             },
             //Historys
-            //    {
-            //     path: "alunos",
-            //     name: "students",
-            //     component: StudentList
-            // },
-            // {
-            //     path: "alunos/:id/editar",
-            //     name: "student-edit",
-            //     component: StudentEdit,
-            //     props: true,
-            // },
             {
                 path: "historico/:student/registrar",
                 name: "history-register",
                 component: HistoryRegister,
                 props: true,
             },
+            //Certificates
             {
                 path: "certificado/:student/registrar",
                 name: "certificate-register",

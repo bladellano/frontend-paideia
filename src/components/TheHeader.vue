@@ -132,34 +132,23 @@ export default {
       this.$router.push({ name: "login" });
     },
     async me() {
-      const token = window.localStorage.getItem("token");
 
-      if (token) {
         const axiosInstance = axios.create({
           baseURL: `${process.env.VUE_APP_BASE_URL}/api`,
           headers: {
-            Authorization: `${token}`,
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
           },
         });
 
-        try {
-          const data = await axiosInstance.post("/auth/me");
+        const api = await axiosInstance.post("/auth/me");
 
-          if(!Object.keys(data.data).length) {
-            this.isLogged = false;
-            this.userName = null;
-            window.localStorage.setItem("token", null);
-          } else {
-            this.userName = data.data.name;
-            this.isLogged = true;
-          }
-
-        } catch (error) {
-          this.isLogged = false;
-          this.userName = null;
-          window.localStorage.setItem("token", null);
+        if(!Object.keys(api.data).length) {
+          this.isLogged = this.userName = null;
+          window.localStorage.removeItem("token");
+        } else {
+          this.userName = api.data.name;
+          this.isLogged = true;
         }
-      }
     },
   },
   mounted() {

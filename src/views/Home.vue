@@ -119,7 +119,6 @@
 import api from "@/services";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
   data() {
     return {
@@ -133,7 +132,6 @@ export default {
     async hasHistoric() {
 
       if(!this.historic.code.length)
-        // eslint-disable-next-line no-undef
         return Toast.fire('Preencha corretamente o campo', "", "error");
 
       await api
@@ -142,7 +140,6 @@ export default {
           this.historic.content = res.data[0];
         })
         .catch((error) => {
-          // eslint-disable-next-line no-undef
           Toast.fire(error.response.data.message, "", "error");
           this.historic.content = null;
         });

@@ -56,6 +56,7 @@ export default {
             Authorization: `Bearer ${data.access_token}`,
           },
         });
+
         const me = await axiosInstance.post("/auth/me");
         const name = me.data.name;
         
@@ -63,7 +64,6 @@ export default {
         this.$router.push({ name: "courses" });
 
       } catch (error) {
-        // eslint-disable-next-line no-undef
         Toast.fire(error.response.data.error, "", "error");
       }
     },

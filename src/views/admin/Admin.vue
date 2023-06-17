@@ -110,7 +110,6 @@
                 </div>
               </div>
             </div>
-
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
@@ -136,7 +135,6 @@
                 </div>
               </div>
             </div>
-
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
@@ -162,7 +160,6 @@
                 </div>
               </div>
             </div>
-
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
@@ -188,7 +185,6 @@
                 </div>
               </div>
             </div>
-
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEigth" aria-expanded="false" aria-controls="collapseEigth">
@@ -221,7 +217,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         
         </div>
@@ -238,7 +233,6 @@
 <script>
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Admin",
 };
 </script>
