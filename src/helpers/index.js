@@ -30,8 +30,20 @@ export function generateHash(prefix = '') {
     let result = '';
 
     for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
     }
     return prefix + result;
+}
+
+export function displayDateInFull(date) {
+    const dataSplit = date.split('/');
+    const day = parseInt(dataSplit[0]);
+    const month = parseInt(dataSplit[1]);
+    const year = parseInt(dataSplit[2]);
+
+    const MonthsOfTheYear = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+    ];
+
+    return `${day} de ${MonthsOfTheYear[month - 1]} de ${year}`;
 }

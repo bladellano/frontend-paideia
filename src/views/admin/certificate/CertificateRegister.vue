@@ -11,9 +11,13 @@
 
         <h2>{{ item.name }}</h2>
 
-        <p>{{ conclusionText }}</p>
+        <p><strong>{{ showInfoStudent }}</strong></p>
+
+        <p>{{ textSelectedForConclusion }}</p>
 
         <p>{{ textWithCode }} {{ code }}</p>
+
+        <p>{{ createdAt }}</p>
 
       </div>
 
@@ -21,14 +25,53 @@
 
     <hr/>
 
-    <div class="row">
-      <div class="col-md-12">
-        <label for="">Linha 1:</label>
-        <input type="text" class="form-control" v-model="conclusionText">
-        <label for="">Linha 2:</label>
-        <input type="text" class="form-control mt-2" v-model="textWithCode">
+    <div class="accordion" id="accordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Frente
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+          <div class="accordion-body">
+            
+            <label for="">Texto de conclusão de ensino:</label>
+            <select name="" id="" class="form-control" @change="handlerSelectText">
+              <option value="" selected disabled>-- Selecione --</option>
+              <option value="FUND">Fundamental</option>
+              <option value="MED">Médio</option>
+            </select>
+            
+            <label for="">Linha 1:</label>
+            <textarea cols="30" rows="4" class="form-control mt-2" v-model="textSelectedForConclusion"></textarea>
+            <label for="">Linha 2:</label>
+            <input type="text" class="form-control mt-2" v-model="textWithCode">
+            <label for="">Linha 3:</label>
+            <input type="text" class="form-control mt-2" v-model="createdAtText">
+
+          </div>
+        </div>
       </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Verso
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
+          <div class="accordion-body">
+
+            <label for="">Linha 1:</label>
+            <textarea cols="30" rows="4" class="form-control mt-2" v-model="textBack"></textarea>
+            <label for="">Linha 2 (observação):</label>
+            <input type="text" class="form-control mt-2" v-model="obsBack">
+           
+          </div>
+        </div>
+      </div>
+  
     </div>
+
     <div class="row mt-2">
       <div class="col-md-6 text-center">
         <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
@@ -44,7 +87,6 @@
 
     <LoadingPage v-else />
    
-
   </section>
 </template>
 
@@ -52,9 +94,10 @@
 
 import api from "@/services";
 import jsPDF from "jspdf";
-import backgroundImg from '@/assets/bg-certificate.jpg';
+import backgroundImgFront from '@/assets/bg-certificate-front.jpg';
+import backgroundImgBack from '@/assets/bg-certificate-back.jpg';
 import LoadingPage from "@/components/LoadingPage.vue";
-import { generateHash } from "@/helpers";
+import { generateHash, displayDateInFull } from "@/helpers";
 
 export default {
   name: "CertificateRegister",
@@ -65,14 +108,37 @@ export default {
   data() {
     return {
       generateHash,
+      displayDateInFull,
       item: null,
       author: "Paideia Educacional",
       code:'',
-      conclusionText: 'Concluiu com êxito o curso de Elaboração de Currículo com carga horária de 50 hora(s) no período de 06/03/2023 até 08/03/2023',
+      textSelectedForConclusion:null,
+      conclusionTextFundamental: 'e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.',
+      conclusionTextMedio: 'e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Médio - Educação de Jovens e Adultos 1ª e 2ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.',
       textWithCode: 'Código do certificado: ',
+      textBack: 'Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023',
+      obsBack: '',
+      createdAtText: '',
     };
   },
+  computed:{
+    showInfoStudent(){
+      return `${this.item.nationality}, natural de ${this.item.naturalness}, Pará, nascido(a) em ${this.displayDateInFull(this.item.birth_date)}, CPF ${this.item.cpf}, RG ${this.item.rg}`; 
+    },
+    createdAt(){
+      const currentDate = new Date();
+      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`
+      return `Ananindeua - Pará, ${this.displayDateInFull(date)}`  
+    }
+  },
   methods:{
+    handlerSelectText(ev){
+      if(ev.target.value == 'FUND')
+        this.textSelectedForConclusion = this.conclusionTextFundamental
+
+      if(ev.target.value == 'MED')
+        this.textSelectedForConclusion = this.conclusionTextMedio
+    },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
         this.item = res.data[0];
@@ -82,35 +148,64 @@ export default {
      
       const doc = new jsPDF("l", "pt", "a4");
 
-      doc.addImage(backgroundImg, 'JPG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+      //Primeira página
+      doc.addImage(backgroundImgFront, 'JPG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
 
       doc.setFont('Times');
 
-      doc.setFontSize(32);
+      doc.setFontSize(42);
 
       doc.setTextColor(0, 0, 0); 
 
-      doc.text(this.item.name, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2, {align: 'center'});
+      doc.text(this.item.name, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + (-40), {align: 'center'});
+
+      doc.setFontSize(16);
+      
+      const splitTextShowInfo = doc.splitTextToSize(this.showInfoStudent, doc.internal.pageSize.getWidth() - 100);
+      doc.text(splitTextShowInfo, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + (-15), {  align: 'center'});
+      
+      doc.setFontSize(20);
+      
+      const splitText = doc.splitTextToSize(this.textSelectedForConclusion, doc.internal.pageSize.getWidth() - 100);
+      doc.text(splitText, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 20, {  align: 'center'});
+
+      doc.text(this.textWithCode + this.code, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 90, {  align: 'center'});
+
+      doc.text(this.createdAtText, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 120, {  align: 'center'});
+
+      //Segunda página
+      doc.addPage();
+
+      doc.addImage(backgroundImgBack, 'JPG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
 
       doc.setFontSize(20);
+      
+      doc.text(this.textBack, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + (-130), {  align: 'center'});
+      
+      doc.setFontSize(14);
 
-      const splitText = doc.splitTextToSize(this.conclusionText, doc.internal.pageSize.getWidth() - 100);
+      const splitObsBack = doc.splitTextToSize(this.obsBack, doc.internal.pageSize.getWidth() - 120);
 
-      doc.text(splitText, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 50, {  align: 'center'});
+      doc.text(splitObsBack, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 210, {  align: 'center'});
 
-      doc.text(this.textWithCode + this.code, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2 + 120, {  align: 'center'});
-
+      //Fim 
       doc.save('certificado.pdf');
     }
   },
   mounted() {
     this.getItem();
     this.code = this.generateHash('CERT_');
+    this.createdAtText = this.createdAt
   },
 };
 </script>
 
 <style scoped>
+
+.accordion-button {
+	background-color: var(--color-background-nav)!important;
+  color:#fff!important;
+}
 .pdfContent {
   margin: 0 auto;
   width: 100%;
@@ -118,7 +213,7 @@ export default {
   border: 1px solid #9996;
   display: flex;
   align-items: center;
-  background-image: url('@/assets/bg-certificate.jpg');
+  background-image: url('@/assets/bg-certificate-front.jpg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
