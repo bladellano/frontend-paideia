@@ -179,7 +179,7 @@
 
       <div v-else>
 
-        <button v-if="blobPDF" class="btn btn-sm btn-danger my-2" @click="removeHistoryFilePDF">Apagar Histórico</button>
+        <button v-if="blobPDF" class="btn btn-sm btn-danger my-2" @click="destroyPDF">Apagar Histórico</button>
 
         <iframe :src="blobPDF" 
         width="100%" 
@@ -214,6 +214,7 @@ export default {
     return {
       filterNonNumeric,
       generateHash,
+      folder:'history',
       teamId: null,
       blobPDF: null,
       item: null,
@@ -248,11 +249,13 @@ export default {
       }
       return ar;
     },
+    fileName(){
+      return `${this.item.cpf}_historico.pdf`;
+    }
   },
   methods: {
-    async removeHistoryFilePDF(){
-      const filename = `${this.item.cpf}_historico.pdf`;
-      api.get(`/historys/${filename}/remove`)
+    async destroyPDF(){
+      api.get(`/documents/${this.folder}/${this.fileName}/remove`)
       .then(response => {
         this.blobPDF = null;
         document.querySelector('select').value = "";
@@ -262,12 +265,18 @@ export default {
         Toast.fire(error.response.data.message,"", "error");
       });
     },
-    async storeHistoryPDF(blob) {
+    async storeDocumentPDF(blob) {
+
       const formData = new FormData();
+
       formData.append("pdf", blob);
       formData.append("code", this.code);
+      formData.append("type", "HISTORIC");
+      formData.append("folder", this.folder);
+      formData.append("document_name", "historico");
+
       try {
-        await api.post(`/historys/${this.item.id}/store-history-pdf`, formData);
+        await api.post(`/documents/${this.item.id}/store-document`, formData);
       } catch (error) {
         Toast.fire(error,"", "error");
       }
@@ -302,12 +311,12 @@ export default {
       table.classList.remove("table");
 
       doc.html(target, {
-        callback: (pdf) => {
-          pdf.save(`${this.item.cpf}_historico.pdf`);
+        callback: (pdf) => { 
+          pdf.save(this.fileName);
 
           //Saved storage api
           const blob = pdf.output("blob");
-          this.storeHistoryPDF(blob);
+          this.storeDocumentPDF(blob);
 
           table.classList.remove("pdfPrint");
           table.classList.add("table");
@@ -325,12 +334,12 @@ export default {
         this.teams = this.item.teams;
       });
     },
-    async hasHistory(filename){
+    async hasDocument(filename){
 
       this.blobPDF = null; 
 
       let bool = true;
-      await api.get(`/historys/storage/${filename}`, { responseType: 'blob' })
+      await api.get(`/documents/storage/${this.folder}/${filename}`, { responseType: 'blob' })
       .then(response => {
         const blob = new Blob([response.data], { type: 'application/pdf' });
         this.blobPDF = URL.createObjectURL(blob);
@@ -341,7 +350,7 @@ export default {
     async getFullGrid(ev) {
 
       this.teamId = ev.currentTarget.value;
-      const isShowHistoryPDF = await this.hasHistory(`${this.item.cpf}_historico.pdf`);
+      const isShowHistoryPDF = await this.hasDocument(this.fileName);
       
       if(isShowHistoryPDF)
        return;

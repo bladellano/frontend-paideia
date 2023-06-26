@@ -135,7 +135,7 @@ export default {
         return Toast.fire('Preencha corretamente o campo', "", "error");
 
       await api
-        .get(`/historys/has-historic/${this.historic.code}`)
+        .get(`/documents/has-document/${this.historic.code}`)
         .then((res) => {
           this.historic.content = res.data[0];
         })
