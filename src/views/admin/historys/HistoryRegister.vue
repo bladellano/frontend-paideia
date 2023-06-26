@@ -256,11 +256,9 @@ export default {
       .then(response => {
         this.blobPDF = null;
         document.querySelector('select').value = "";
-        // eslint-disable-next-line no-undef
         Toast.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        // eslint-disable-next-line no-undef
         Toast.fire(error.response.data.message,"", "error");
       });
     },
@@ -271,7 +269,7 @@ export default {
       try {
         await api.post(`/historys/${this.item.id}/store-history-pdf`, formData);
       } catch (error) {
-        console.log('> Error', error); 
+        Toast.fire(error,"", "error");
       }
     },
     makePDF() {
@@ -353,7 +351,6 @@ export default {
     async getGridTemplate(team) {
       await api.get(`/grids/${team}/get-full-grid`).then((res) => {
 
-        // eslint-disable-next-line no-prototype-builtins
         if (res.data.hasOwnProperty("list")) {
 
           const { list, course_name, total_stage, total_workload } = res.data;

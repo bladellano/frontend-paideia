@@ -54,7 +54,7 @@ import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
-import CertificateRegister from '../views/admin/certificate/CertificateRegister.vue'
+import CertificateRegister from '../views/admin/certificates/CertificateRegister.vue'
 
 Vue.use(VueRouter)
 
