@@ -322,12 +322,13 @@ export default {
       );
 
       //Fim
-      doc.save(this.fileName);
+      // doc.save(this.fileName);
 
       //Saved storage api
       const blob = doc.output("blob");
       this.storeDocumentPDF(blob);
-      location.reload();
+
+      this.hasDocument(this.fileName)
     },
     async storeDocumentPDF(blob) {
       const formData = new FormData();
@@ -338,7 +339,7 @@ export default {
       formData.append("folder", this.folder);
       formData.append("document_name", "certificado");
       try {
-        await api.post(`/documents/${this.$route.params.student}`, formData);
+        await api.post(`/documents/${this.$route.params.student}/store-document`, formData);
       } catch (error) {
         Toast.fire(error, "", "error");
       }
