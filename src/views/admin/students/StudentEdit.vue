@@ -127,13 +127,41 @@
         </div>
       </form>
 
+      <h4 class="my-4">Situação:
+       
+      </h4>
+    
+      <form action="" class="mb-4" @submit.prevent="handlerRegisterStudent" @reset="reset">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="name" class="mb-2">Turma   
+              <span class="badge" v-bind:class="!!team_id ? 'bg-success' : 'bg-danger'">
+                Matrículado
+              </span>
+            </label>
+            <select name="gender" v-model="team_id" class="form-control">
+              <option value="" selected>-- Selecione --</option>
+              <option v-for="(opt, index) in teams" :key="index" :value="opt.id">
+              {{ opt.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group text-center my-2">
+          <button type="submit" class="btn btn-success btn-sm mx-2">Matrícular</button>
+          <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
+        </div>
+
+      </form>
+
       <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
         Voltar
       </button>
     </div>
 
     <LoadingPage v-else />
-  </section>
+</section>
 </template>
   
   <script>
@@ -151,9 +179,21 @@ export default {
     return {
       convertDateToDB,
       item: {},
+      teams: {},
+      team_id:null,
     };
   },
+  watch:{
+    item(n, o){
+      this.team_id = n.teams.length ? n.teams[0].id : ''
+    }
+  },
   methods: {
+    async getTeams() {
+      await api.get(`/teams?page=0&perPage=99999`).then((res) => {
+        this.teams = res.data.data;
+      });
+    },
     async getItem() {
       await api.get(`/students/${this.id}`).then((res) => {
         const {
@@ -168,6 +208,7 @@ export default {
           name_mother,
           birth_date,
           gender,
+          teams
         } = res.data[0];
 
         this.item = {
@@ -182,6 +223,7 @@ export default {
           name_mother,
           birth_date:this.convertDateToDB(birth_date),
           gender,
+          teams
         };
       });
     },
@@ -195,12 +237,26 @@ export default {
         Toast.fire(errorsToString(error.response.data.errors), "", "error");
       }
     },
+    async handlerRegisterStudent(){
+      try {
+        const { data } = await api.post(`/teams/register-student`, {
+          'student_id':this.id,
+          'team_id':this.team_id
+        });
+
+        Toast.fire(data.message, "", "success");
+
+      } catch (error) {
+        Toast.fire(errorsToString(error.response.data.errors), "", "error");
+      }
+    },
     reset() {
       this.getItem();
     },
   },
   mounted() {
     this.getItem();
+    this.getTeams();
   },
 };
 </script>
