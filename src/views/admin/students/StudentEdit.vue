@@ -131,7 +131,7 @@
        
       </h4>
     
-      <form action="" class="mb-4" @submit.prevent="handlerRegisterStudent" @reset="reset">
+      <form action="" class="mb-4" @submit.prevent="handlerRegisterStudentInTeam" @reset="reset">
         <div class="row">
           <div class="form-group col-md-6">
             <label for="name" class="mb-2">Turma   
@@ -149,7 +149,7 @@
         </div>
 
         <div class="form-group text-center my-2">
-          <button type="submit" class="btn btn-success btn-sm mx-2">Matrícular</button>
+          <button type="submit" class="btn btn-success btn-sm mx-2">Salvar</button>
           <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
         </div>
 
@@ -237,12 +237,14 @@ export default {
         Toast.fire(errorsToString(error.response.data.errors), "", "error");
       }
     },
-    async handlerRegisterStudent(){
+    async handlerRegisterStudentInTeam(){
       try {
         const { data } = await api.post(`/teams/register-student`, {
           'student_id':this.id,
           'team_id':this.team_id
         });
+
+        this.$router.push({ name: "students" });
 
         Toast.fire(data.message, "", "success");
 

@@ -87,6 +87,31 @@
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                 Turmas
+                </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
+                <div class="accordion-body p-1">
+                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li>
+                      <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2" to="/admin/turmas"
+                        >Listar</router-link
+                      >
+                    </li>
+                    <li>
+                      <router-link
+                        class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                        to="/admin/turmas/registrar"
+                        >Registrar</router-link
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                  Disciplinas
                 </button>
@@ -160,31 +185,7 @@
                 </div>
               </div>
             </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                 Turmas
-                </button>
-              </h2>
-              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
-                <div class="accordion-body p-1">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li>
-                      <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2" to="/admin/turmas"
-                        >Listar</router-link
-                      >
-                    </li>
-                    <li>
-                      <router-link
-                        class="text-decoration-none btn btn-secondary btn-sm mt-2"
-                        to="/admin/turmas/registrar"
-                        >Registrar</router-link
-                      >
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+           
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEigth" aria-expanded="false" aria-controls="collapseEigth">
