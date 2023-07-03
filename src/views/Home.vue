@@ -25,34 +25,19 @@
               </a>
             </div>
           </div>
+
           <div class="col-md-7">
-            <form>
-              <fieldset>
-                <h2>Validador</h2>
-
-                <div class="mb-3">
-                  <label for="disabledTextInput" class="form-label"
-                    >Certificado</label
-                  >
-                  <input
-                    type="text"
-                    name="certificado"
-                    class="form-control"
-                    placeholder="Digite o código impresso no documento"
-                  />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Verificar</button>
-              </fieldset>
-            </form>
-
-            <br />
-
+            <h2>
+              Validar documento
+            </h2>
+            <p>
+             Esse campo tem o propósito de evitar fraudes e assegurar que apenas documentos escolares legítimos sejam aceitos e considerados válidos.
+            </p>
             <form>
               <fieldset>
                 <div class="mb-3">
                   <label for="disabledSelect" class="form-label"
-                    >Histórico Escolar</label
+                    >Histórico Escolar ou Certificado</label
                   >
                   <!-- {{ historic }} -->
                   <input
@@ -72,7 +57,7 @@
                 </div>
 
                 <button
-                  @click.prevent="hasHistoric"
+                  @click.prevent="hasDocument"
                   type="submit"
                   class="btn btn-success"
                 >
@@ -129,7 +114,7 @@ export default {
     };
   },
   methods: {
-    async hasHistoric() {
+    async hasDocument() {
 
       if(!this.historic.code.length)
         return Toast.fire('Preencha corretamente o campo', "", "error");
@@ -215,7 +200,9 @@ h2 {
   margin-top: 20px;
 }
 p {
-  line-height: 30px;
+  line-height: 35px;
+  margin-top: 8px;
+  margin-bottom: 6px;
 }
 .content-hero {
   z-index: 1;

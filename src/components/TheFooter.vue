@@ -61,7 +61,7 @@
     </div>
     <div class="container-fluid text-center pt-5">
       <p class="text-white-50">© Copyright Paideia Educacional. Todos os direitos reservados.</p>
-      <p class="text-white-50">Desenvolvido por <a href="#" target="_blank">CDNS Systems Ltda</a></p>
+      <p class="text-white-50">Desenvolvido por <a href="https://cdnssystems.com.br/" target="_blank">CDNS Systems Ltda</a></p>
     </div>
   </footer>
 </template>
