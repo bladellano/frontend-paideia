@@ -202,6 +202,8 @@ import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
 import { filterNonNumeric, generateHash } from "@/helpers";
 import StatesMixin from "@/mixins/StatesMixin";
+import backgroundImgBack from "@/assets/bg-history.jpg";
+import backgroundImgBackLastPage from "@/assets/bg-history-last-page.jpg";
 
 export default {
   mixins: [StatesMixin],
@@ -310,6 +312,15 @@ export default {
       table.classList.add("pdfPrint");
       table.classList.remove("table");
 
+      doc.addImage(
+        backgroundImgBack,
+        "JPG",
+        0,
+        0,
+        doc.internal.pageSize.getWidth(),
+        doc.internal.pageSize.getHeight()
+      );
+
       doc.html(target, {
         callback: (pdf) => { 
           pdf.save(this.fileName);
@@ -325,6 +336,18 @@ export default {
         x: 10,
         y: 10,
       });
+
+      //Segunda página
+      doc.addPage();
+
+      doc.addImage(
+        backgroundImgBackLastPage,
+        "JPG",
+        0,
+        0,
+        doc.internal.pageSize.getWidth(),
+        doc.internal.pageSize.getHeight()
+      );
 
       this.$router.push({ name: "students" });
     },
