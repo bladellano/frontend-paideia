@@ -51,6 +51,9 @@ import GridEdit from '../views/admin/grids/GridEdit.vue'
 import GridRegister from '../views/admin/grids/GridRegister.vue'
 import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 
+//Reports
+import GeneralReportOfStudents from '../views/admin/reports/GeneralReportOfStudents.vue'
+
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
@@ -257,6 +260,12 @@ const routes = [
                 name: "certificate-register",
                 component: CertificateRegister,
                 props: true,
+            },
+            //Reports
+            {
+                path: "reports/general-report-of-students",
+                name: "general-report-of-students",
+                component: GeneralReportOfStudents,
             },
         ]
     }

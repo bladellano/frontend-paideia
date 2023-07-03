@@ -185,7 +185,6 @@
                 </div>
               </div>
             </div>
-           
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEigth" aria-expanded="false" aria-controls="collapseEigth">
@@ -214,6 +213,25 @@
                         >Registrar Template</router-link
                       >
                     </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                 Relatório
+                </button>
+              </h2>
+              <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
+                <div class="accordion-body p-1">
+                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li>
+                      <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2" to="/admin/reports/general-report-of-students"
+                        >Geral</router-link>
+                    </li>
+                    
                   </ul>
                 </div>
               </div>
