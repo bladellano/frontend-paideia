@@ -67,5 +67,9 @@ export default {
 .page-item.active .page-link {
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary);
+  color:#fff;
+}
+.page-item .page-link {
+  color: var(--color-primary);
 }
 </style>

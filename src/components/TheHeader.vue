@@ -158,6 +158,12 @@ export default {
       this.userName = name;
     });
   },
+  deactivated(){
+    console.log('> Header deactivated')
+  },
+  activated(){
+    console.log('> Header activated')
+  }
 };
 </script>
 
