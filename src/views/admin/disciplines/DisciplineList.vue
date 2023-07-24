@@ -18,6 +18,8 @@
             <th><a href="#" @click="sort($event, 'id')">#</a></th>
             <th><a href="#" @click="sort($event, 'name')">Nome</a></th>
 
+            <th>Ensino</th>
+
             <th>Quantidade de avaliações</th>
             <th>Carga horária</th>
 
@@ -29,6 +31,8 @@
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
+
+            <td>{{ item.teaching.name }}</td>
 
             <td>{{ item.amount_of_reviews }}</td>
             <td>{{ item.workload }}</td>

@@ -38,7 +38,7 @@
         <div v-for="(template, index) in gridTemplate" :key="index">
 
           <div class="row my-2">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <!-- Grids -->
               <label for="">Grade</label>
               <select
@@ -57,6 +57,26 @@
                 </option>
               </select>
             </div>
+            <div class="col-md-2">
+              <!-- Course -->
+              <label for="">Curso</label>
+              <select
+                v-model="template.course_id"
+                name="course_id"
+                id="course_id"
+                class="form-control"
+                @change="filterDisciplines"
+              >
+                <option disabled value="" selected>-- Selecione --</option>
+                <option
+                  v-for="(opt, index) in courses"
+                  :key="index"
+                  :value="opt.id"
+                >
+                  {{ opt.name }}
+                </option>
+              </select>
+            </div>
             <div class="col-md-3">
               <!-- Disciplines -->
               <label for="">Disciplina</label>
@@ -65,6 +85,8 @@
                 name="discipline_id"
                 id="discipline_id"
                 class="form-control"
+                disabled
+                @change="setInheritedWorkload"
               >
                 <option disabled value="" selected>-- Selecione --</option>
                 <option
@@ -87,7 +109,7 @@
                 v-model="template.workload"
               />
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
               <!-- Stage -->
               <label for="">Etapa</label>
               <select
@@ -106,26 +128,7 @@
                 </option>
               </select>
             </div>
-            <div class="col-md-4">
-              <!-- Course -->
-              <label for="">Curso</label>
-              <select
-                v-model="template.course_id"
-                name="course_id"
-                id="course_id"
-                class="form-control"
-              >
-                <option disabled value="" selected>-- Selecione --</option>
-                <option
-                  v-for="(opt, index) in courses"
-                  :key="index"
-                  :value="opt.id"
-                >
-                  {{ opt.name }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-1">
+            <div class="col-md-1 text-center">
               <br/>
               <a class="btn btn-sm btn-danger" @click.prevent="removeField(index)">
                 <font-awesome-icon icon="trash" />
@@ -178,6 +181,35 @@ export default {
     };
   },
   methods: {
+     async setInheritedWorkload(el){
+
+      const { data } = await api.get(`/disciplines/${el.target.value}`);
+
+      const inputSiblingWorkload = el.target.parentElement.nextElementSibling.querySelector('input');
+
+      const position = this.gridTemplate.length;
+
+      this.gridTemplate[(position - 1)].workload = inputSiblingWorkload.value = data[0].workload;
+
+     },
+     async filterDisciplines(el){
+
+      this.getDisciplines();
+
+      const { data } = await api.get(`/courses/${el.target.value}`);
+
+      const filtered = this.disciplines.filter(discipline => discipline.teaching_id == data[0].teaching_id);
+
+      const disciplines = document.querySelectorAll('#discipline_id');
+      
+      if(filtered.length)
+        disciplines.forEach((e) => e.removeAttribute('disabled'));
+      else
+        disciplines.forEach((e) => e.setAttribute('disabled',true));
+      
+      this.disciplines = filtered;
+
+    },
     async getGrid() {
       await api.get(`/grids/${this.id}`).then((res) => {
         this.grid = res.data[0];
@@ -191,11 +223,9 @@ export default {
 
       try {
         const { data } = await api.post(`/grid-templates`, formTemplate);
-        // eslint-disable-next-line no-undef
         Toast.fire(data.message, "", "success");
         this.$router.push({ name: "grids" });
       } catch (error) {
-        // eslint-disable-next-line no-undef
         Toast.fire(errorsToString(error.response.data.errors), "", "error");
       }
     },
@@ -206,10 +236,8 @@ export default {
       try {
         const { data } = await api.put(`/grids/${this.$route.params.id}`, form);
         this.$router.push({ name: "grids" });
-        // eslint-disable-next-line no-undef
         Toast.fire(data.message, "", "success");
       } catch (error) {
-        // eslint-disable-next-line no-undef
         Toast.fire(errorsToString(error.response.data.errors), "", "error");
       }
     },
