@@ -5,8 +5,7 @@
     <div v-if="item">
       <form @submit.prevent="handlerSubmit" @reset="reset">
         <div class="row">
-
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label for="name">Nome</label>
             <input
               type="text"
@@ -16,8 +15,8 @@
             />
           </div>
 
-          <div class="form-group col-md-3">
-            <label for="amount_of_reviews">Quantidade de avaliações</label>
+          <div class="form-group col-md-2">
+            <label for="amount_of_reviews">Qtd. de avaliações</label>
             <input
               type="number"
               class="form-control"
@@ -26,16 +25,34 @@
             />
           </div>
 
+          <div class="form-group col-md-2">
+            <label for="teaching_id">Ensino</label>
+            <select
+              v-model="item.teaching_id"
+              name="teaching_id"
+              id="teaching_id"
+              class="form-control"
+            >
+              <option disabled value="" selected>-- Selecione --</option>
+              <option
+                v-for="(opt, index) in teachings"
+                :key="index"
+                :value="opt.id"
+              >
+                {{ opt.name }}
+              </option>
+            </select>
+          </div>
+
           <div class="form-group col-md-3">
             <label for="workload">Carga horária (padrão)</label>
-            <input 
+            <input
               type="text"
-              class="form-control" 
+              class="form-control"
               @keyup="filterNonNumeric"
               v-model="item.workload"
             />
           </div>
-
         </div>
 
         <div class="form-group text-center my-2">
@@ -70,6 +87,7 @@ export default {
     return {
       filterNonNumeric,
       item: null,
+      teachings: [],
     };
   },
   methods: {
@@ -85,6 +103,7 @@ export default {
         name: form.name,
         amount_of_reviews: form.amount_of_reviews,
         workload: form.workload,
+        teaching_id: form.teaching_id,
       };
 
       try {
@@ -98,9 +117,15 @@ export default {
     reset() {
       this.getItem();
     },
+    async getTeachings() {
+      await api.get(`/teachings?page=0&perPage=99999`).then((res) => {
+        this.teachings = res.data.data;
+      });
+    },
   },
-  mounted() {
+  created() {
     this.getItem();
+    this.getTeachings();
   },
 };
 </script>

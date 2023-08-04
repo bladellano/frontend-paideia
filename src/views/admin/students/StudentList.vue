@@ -21,7 +21,7 @@
             <th>Nome da mãe</th>
             <th>Criado</th>
             <th>Turma</th>
-            <th width="228px"></th>
+            <th width="228px">Documentos</th>
             <th width="98px"></th>
           </tr>
         </thead>

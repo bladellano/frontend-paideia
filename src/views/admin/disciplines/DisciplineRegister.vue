@@ -5,7 +5,7 @@
     <form @submit.prevent="handlerSubmit">
         <div class="row">
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label for="name">Nome</label>
             <input
               type="text"
@@ -15,14 +15,33 @@
             />
           </div>
 
-          <div class="form-group col-md-3">
-            <label for="amount_of_reviews">Quantidade de avaliações</label>
+          <div class="form-group col-md-2">
+            <label for="amount_of_reviews">Qtd. de avaliações</label>
             <input
               type="number"
               class="form-control"
               id="amount_of_reviews"
               v-model="item.amount_of_reviews"
             />
+          </div>
+
+          <div class="form-group col-md-2">
+            <label for="teaching_id">Ensino</label>
+            <select
+              v-model="item.teaching_id"
+              name="teaching_id"
+              id="teaching_id"
+              class="form-control"
+            >
+              <option disabled value="" selected>-- Selecione --</option>
+              <option
+                v-for="(opt, index) in teachings"
+                :key="index"
+                :value="opt.id"
+              >
+                {{ opt.name }}
+              </option>
+            </select>
           </div>
 
           <div class="form-group col-md-3">
@@ -60,8 +79,11 @@ export default {
   data() {
     return {
       filterNonNumeric,
-      item: {},
-        };
+      item: {
+        teaching_id:""
+      },
+      teachings:[]
+      };
   },
   methods: {
     async handlerSubmit() {
@@ -73,7 +95,15 @@ export default {
         Toast.fire(errorsToString(error.response.data.errors), "", "error");
       }
     },
+    async getTeachings() {
+      await api.get(`/teachings?page=0&perPage=99999`).then((res) => {
+        this.teachings = res.data.data;
+      });
+    },
   },
+  created(){
+    this.getTeachings();
+  }
 };
 </script>
   

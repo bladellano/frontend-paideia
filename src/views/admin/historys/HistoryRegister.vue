@@ -93,7 +93,7 @@
             <p>NATURALIDADE: {{ item.naturalness }}</p>
             <p>DATA DE NASCIMENTO: {{ item.birth_date }}</p>
             <p>CPF: {{ item.cpf }}</p>
-            <span class="code">{{ code }}</span>
+            <span class="code" title="Código de segurança para validação do documento. A cada atualização da página esse valor altera.">{{ code }}</span>
           </div>
 
           <p class="text-center">
@@ -151,6 +151,7 @@
                       :mask="['#.##', '##.##']"
                       :disabled="!stage.workload ? true : false"
                       :masked="true"
+                      placeholder="0.0"
                     />
                   </td>
 
@@ -165,7 +166,7 @@
               <b> {{ concatenateWithCommaAnd(rangeStage) }} Etapa(s)</b>
             </p>
             <p>CARTA HORÁRIA TOTAL: {{ totalWorkload }} HORAS AULAS</p>
-            <p>Observação: A média de aprovação por disciplina é 6,0 (sete)</p>
+            <p>Observação: A média de aprovação por disciplina é 7,0 (sete)</p>
             <p>
               {{ city }} - {{ uf }}, {{ day }} de {{ month }} de {{ year }}.
             </p>
