@@ -19,7 +19,7 @@
               <th><a href="#" @click="sort($event, 'name')">Nome</a></th>
               <th>Início</th>
               <th>Término</th>
-              <th>Pólo</th>
+              <th>Polo</th>
               <th>Grade</th>
               <th>Criado</th>
               <th width="98px"></th>

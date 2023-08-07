@@ -1,6 +1,6 @@
 <template>
   <section class="container my-4">
-    <h4 class="my-4">Cadastro de <strong>Pólo</strong></h4>
+    <h4 class="my-4">Cadastro de <strong>Polo</strong></h4>
 
     <form @submit.prevent="handlerSubmit">
       <div class="row">

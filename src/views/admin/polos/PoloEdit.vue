@@ -1,6 +1,6 @@
 <template>
   <section class="container my-4">
-    <h4 class="my-4">Editando <strong>Pólo</strong></h4>
+    <h4 class="my-4">Editando <strong>Polo</strong></h4>
 
     <div v-if="item">
       <form @submit.prevent="handlerSubmit" @reset="reset">

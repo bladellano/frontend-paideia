@@ -36,7 +36,7 @@
 
         <div class="row">
           <div class="form-group col-md-12">
-            <label for="polo_id">Pólo</label>
+            <label for="polo_id">Polo</label>
             <select
               v-model="item.polo_id"
               name="polo_id"

@@ -165,8 +165,8 @@
             <p>
               <b> {{ concatenateWithCommaAnd(rangeStage) }} Etapa(s)</b>
             </p>
-            <p>CARTA HORÁRIA TOTAL: {{ totalWorkload }} HORAS AULAS</p>
-            <p>Observação: A média de aprovação por disciplina é 7,0 (sete)</p>
+            <p>CARGA HORÁRIA TOTAL: {{ totalWorkload }} HORAS AULAS</p>
+            <p>Observação: A média de aprovação por disciplina é 6,0 (seis)</p>
             <p>
               {{ city }} - {{ uf }}, {{ day }} de {{ month }} de {{ year }}.
             </p>
@@ -231,6 +231,7 @@ export default {
       courseName: "",
       totalStage: 0,
       totalWorkload: 0,
+      stagesNumbers: 0,
       author: "Paideia Educacional",
       code:'',
     };
@@ -246,11 +247,7 @@ export default {
       return Object.keys(this.gridTemplate).length != 0;
     },
     rangeStage() {
-      let ar = [];
-      for (let i = 1; i <= this.totalStage; i++) {
-        ar.push(i);
-      }
-      return ar;
+      return this.stagesNumbers;
     },
     fileName(){
       return `${this.item.cpf}_historico.pdf`;
@@ -386,12 +383,13 @@ export default {
 
         if (res.data.hasOwnProperty("list")) {
 
-          const { list, course_name, total_stage, total_workload } = res.data;
+          const { list, course_name, total_stage, total_workload, stagesNumbers } = res.data;
 
           this.gridTemplate = list;
           this.courseName = course_name;
           this.totalStage = total_stage;
           this.totalWorkload = total_workload;
+          this.stagesNumbers = stagesNumbers;
         } else {
           this.gridTemplate = {};
         }

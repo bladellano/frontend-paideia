@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="container my-4">
-      <h4 class="my-4">Relação de todos os <strong>Pólos</strong></h4>
+      <h4 class="my-4">Relação de todos os <strong>Polos</strong></h4>
 
       <div class="well mb-4">
         <input
