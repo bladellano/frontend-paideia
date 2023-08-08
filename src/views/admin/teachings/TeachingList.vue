@@ -36,7 +36,7 @@
               </router-link>
               <a
                 href="#"
-                @click.prevent="handlerDelete(item.id)"
+                @click.prevent="handlerDelete(item.id, 'teachings')"
                 class="btn btn-sm btn-secondary mx-1"
                 ><font-awesome-icon icon="trash" /></a
               >
@@ -53,7 +53,7 @@
   <script>
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
-import { serialize } from "@/helpers";
+import { serialize, handlerDelete } from "@/helpers";
 
 export default {
   name: "TeachingList",
@@ -67,6 +67,7 @@ export default {
       search: "",
       pagination: {},
       items: [],
+      handlerDelete
     };
   },
   methods: {
@@ -93,29 +94,6 @@ export default {
       await api.get(uri).then((res) => {
         this.items = res.data.data;
         this.pagination = res.data;
-      });
-    },
-    handlerDelete(id) {
-      this.$swal({
-        title: "Deseja confirmar a ação?",
-        text: "Você não será capaz de reverter isso!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sim, apague!",
-        cancelButtonText: "Não, cancele!",
-        buttonsStyling: true,
-      }).then(async (isConfirm) => {
-        if (isConfirm.value === true) {
-          try {
-            const { data } = await api.delete(`/teachings/${id}`);
-            Toast.fire(data.message, "", "success");
-            this.getItens();
-          } catch (error) {
-            Toast.fire(error.message, "", "error");
-          }
-        }
       });
     },
   },

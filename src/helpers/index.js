@@ -1,3 +1,5 @@
+import api from "@/services";
+
 export function serialize(obj) {
     let queryString = "";
     for (let key in obj) {
@@ -46,4 +48,29 @@ export function displayDateInFull(date) {
     ];
 
     return `${day} de ${MonthsOfTheYear[month - 1]} de ${year}`;
+}
+
+export function handlerDelete(id, endpoint){
+
+    this.$swal({
+        title: "Deseja confirmar a ação?",
+        text: "Você não será capaz de reverter isso!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, apague!",
+        cancelButtonText: "Não, cancele!",
+        buttonsStyling: true,
+        }).then(async (isConfirm) => {
+            if (isConfirm.value === true) {
+                try {
+                const { data } = await api.delete(`/${endpoint}/${id}`);
+                    Toast.fire(data.message, "", "success");
+                this.getItens();
+                } catch (error) {
+                    Toast.fire(error.response.data.message , "", "error");
+                }
+            }
+        });
 }

@@ -22,11 +22,12 @@
 </template>
 
 <script>
-// import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import LoadingPage from "@/components/LoadingPage.vue";
+import api from "@/services";
+console.log('api', api); ;
 
 export default {
   components: {
@@ -38,6 +39,7 @@ export default {
     };
   },
   mounted() {
+    console.log('this', this); ;
     $("#datatable").DataTable({
       dom: 'Bfrtip',
         buttons: [
@@ -66,7 +68,10 @@ export default {
       },
       columns: [
         { data: "student_id" },
-        { data: "name" },
+        {
+        data: null,
+          render: (data) => (`<a href="/admin/alunos/${data.student_id}/editar">${data.name}</a>`)
+        },
         { data: "team" },
         { data: "polo" },
         { data: "responsible" },

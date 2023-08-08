@@ -59,7 +59,7 @@
               </router-link>
               <a
                 href="#"
-                @click.prevent="handlerDelete(item.id)"
+                @click.prevent="handlerDelete(item.id, 'students')"
                 class="btn btn-sm btn-secondary mx-1"
                 ><font-awesome-icon icon="trash" /></a
               >
@@ -72,11 +72,12 @@
     </section>
   </div>
 </template>
-  
-  <script>
+
+<script>
+
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
-import { serialize } from "@/helpers";
+import { serialize, handlerDelete } from "@/helpers";
 
 export default {
   name: "StudentList",
@@ -90,6 +91,7 @@ export default {
       search: "",
       pagination: {},
       items: [],
+      handlerDelete
     };
   },
   methods: {
@@ -123,31 +125,6 @@ export default {
 
         this.items = students;
         this.pagination = res.data;
-      });
-    },
-    handlerDelete(id) {
-      this.$swal({
-        title: "Deseja confirmar a ação?",
-        text: "Você não será capaz de reverter isso!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sim, apague!",
-        cancelButtonText: "Não, cancele!",
-        buttonsStyling: true,
-      }).then(async (isConfirm) => {
-        if (isConfirm.value === true) {
-          try {
-            const { data } = await api.delete(`/students/${id}`);
-            // eslint-disable-next-line no-undef
-            Toast.fire(data.message, "", "success");
-            this.getItens();
-          } catch (error) {
-            // eslint-disable-next-line no-undef
-            Toast.fire(error.message, "", "error");
-          }
-        }
       });
     },
   },

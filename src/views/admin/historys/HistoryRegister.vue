@@ -93,7 +93,7 @@
             <p>NATURALIDADE: {{ item.naturalness }}</p>
             <p>DATA DE NASCIMENTO: {{ item.birth_date }}</p>
             <p>CPF: {{ item.cpf }}</p>
-            <span class="code" title="Código de segurança para validação do documento. A cada atualização da página esse valor altera.">{{ code }}</span>
+            <span class="code" title="Código de segurança para validação do documento. A cada atualização da página esse valor altera.">Código de validação: {{ code }}</span>
           </div>
 
           <p class="text-center">
@@ -332,7 +332,7 @@ export default {
           target.classList.remove("active");
         },
         x: 10,
-        y: 10,
+        y: 148,
       });
 
       //Segunda página
@@ -438,7 +438,7 @@ export default {
 /** Custom print PDF */
 .pdfContent.active {
   max-width: 578px;
-  font-family: Courier;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 12px;
 }
 
