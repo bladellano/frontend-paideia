@@ -164,7 +164,7 @@ export default {
         "e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
       conclusionTextMedio:
         "e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Médio - Educação de Jovens e Adultos 1ª e 2ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
-      textWithCode: "Código do certificado: ",
+      textWithCode: "Código de validação: ",
       textBack:
         "Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023",
       obsBack: "",
@@ -177,7 +177,7 @@ export default {
         this.item.naturalness
       }, Pará, nascido(a) em ${this.displayDateInFull(
         this.item.birth_date
-      )}, CPF ${this.item.cpf}, RG ${this.item.rg}`;
+      )}, CPF ${this.item.cpf}`;
     },
     createdAt() {
       const currentDate = new Date();

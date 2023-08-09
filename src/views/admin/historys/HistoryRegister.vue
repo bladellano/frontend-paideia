@@ -442,6 +442,15 @@ export default {
   font-size: 12px;
 }
 
+.pdfContent.active input {
+	border: none;
+	background: none;
+	padding: 0;
+	margin: 0;
+	outline: none;
+  text-align: center;
+}
+
 .code{
 	position: absolute;
 	top: 0;
