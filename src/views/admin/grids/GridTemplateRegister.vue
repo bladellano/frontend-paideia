@@ -6,7 +6,7 @@
 
       <div v-for="(input, index) in item" :key="index">
         <div class="row my-2">
-          <div class="col-md-2">
+          <div class="col-md-3">
             <!-- Grids -->
             <label for="">Grade</label>
             <select
@@ -37,17 +37,17 @@
             >
               <option disabled value="" selected>-- Selecione --</option>
               <option
-                v-for="(opt, index) in disciplines"
-                :key="index"
+                v-for="opt in disciplines"
+                :key="opt.id"
                 :value="opt.id"
               >
-                {{ opt.name }}
+                {{ opt.name }} ({{ opt.teaching.name }})
               </option>
             </select>
           </div>
           <div class="col-md-1">
             <!-- Workload -->
-            <label for="">CH</label>
+            <label for="">CH <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Carga Horária"><font-awesome-icon icon="question"/></a></label>
             <input
               @keyup="filterNonNumeric"   
               placeholder="CH"
@@ -95,7 +95,7 @@
             </select>
           </div>
 
-          <div class="col-md-2">
+          <div class="col-md-1">
             <br/>
             <a class="btn btn-sm btn-danger" @click.prevent="removeField(index)">
               <font-awesome-icon icon="trash" />
@@ -204,6 +204,12 @@ export default {
     this.getDisciplines();
     this.getStages();
     this.getCourses();
+
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    
   },
 };
 </script>
