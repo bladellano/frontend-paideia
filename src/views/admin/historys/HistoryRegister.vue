@@ -97,7 +97,7 @@
           </div>
 
           <p class="text-center">
-            <b>{{ courseName | uppercase }}</b>
+            <b class="spacing">{{ courseName | uppercase }}</b>
           </p>
           <table class="table table-bordered">
             <thead>
@@ -332,7 +332,7 @@ export default {
           target.classList.remove("active");
         },
         x: 10,
-        y: 148,
+        y: 144,
       });
 
       //Segunda página
@@ -415,6 +415,11 @@ export default {
 </script>
 
 <style scoped>
+
+.spacing{
+  letter-spacing: 1px;
+}
+
 [readonly] {
   background-color: #eee;
 }
