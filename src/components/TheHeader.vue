@@ -36,12 +36,12 @@
             </li>
 
             <li class="nav-item">
-              <router-link
-                exact-active-class="active"
-                class="nav-link"
-                to="/cursos"
-                >Cursos</router-link
-              >
+              <a 
+                class="nav-link" 
+                href="https://paideiaeducacional.com.br/" 
+                target="_blank">
+                Cursos
+              </a>
             </li>
 
             <li class="nav-item">
