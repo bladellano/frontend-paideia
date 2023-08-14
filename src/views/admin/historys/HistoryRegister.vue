@@ -138,7 +138,7 @@
                       type="text"
                       class="form-control"
                       @input="filterNonNumeric"
-                      :value="stage.workload"
+                      :value="!stage.workload ? '***' : stage.workload"
                       :disabled="!stage.workload ? true : false"
                     />
                   </td>
@@ -151,7 +151,7 @@
                       :mask="['#.##', '##.##']"
                       :disabled="!stage.workload ? true : false"
                       :masked="true"
-                      placeholder="0.0"
+                      :placeholder="!stage.workload ? '***' : '0.0'"
                     />
                   </td>
 

@@ -38,7 +38,7 @@
         <div v-for="(template, index) in gridTemplate" :key="index">
 
           <div class="row my-2">
-            <div class="col-md-3">
+            <div class="col-md-4">
               <!-- Grids -->
               <label for="">Grade</label>
               <select
@@ -94,13 +94,13 @@
                   :key="index"
                   :value="opt.id"
                 >
-                  {{ opt.name }}
+                  {{ opt.name }} ({{ opt.teaching.name }})
                 </option>
               </select>
             </div>
             <div class="col-md-1">
               <!-- Workload -->
-              <label for="">CH</label>
+              <label for="">CH <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Carga Horária"><font-awesome-icon icon="question"/></a></label>
               <input
                 @keyup="filterNonNumeric"   
                 placeholder="CH"
@@ -109,7 +109,7 @@
                 v-model="template.workload"
               />
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
               <!-- Stage -->
               <label for="">Etapa</label>
               <select

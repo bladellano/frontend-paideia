@@ -161,9 +161,9 @@ export default {
       code: "",
       textSelectedForConclusion: null,
       conclusionTextFundamental:
-        "e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
+        "e outorga-lhe o presente Certificado, por ter concluído em abril de "+ new Date().getFullYear() +", o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
       conclusionTextMedio:
-        "e outorga-lhe o presente Certificado, por ter concluído em abril de 2023, o Ensino Médio - Educação de Jovens e Adultos 1ª e 2ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
+        "e outorga-lhe o presente Certificado, por ter concluído em abril de "+ new Date().getFullYear() +", o Ensino Médio - Educação de Jovens e Adultos 1ª e 2ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
       textWithCode: "Código de validação: ",
       textBack:
         "Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023",
@@ -175,7 +175,7 @@ export default {
     showInfoStudent() {
       return `${this.item.nationality}, natural de ${
         this.item.naturalness
-      }, Pará, nascido(a) em ${this.displayDateInFull(
+      }, nascido(a) em ${this.displayDateInFull(
         this.item.birth_date
       )}, CPF ${this.item.cpf}`;
     },
