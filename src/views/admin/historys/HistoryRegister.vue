@@ -97,7 +97,7 @@
           </div>
 
           <p class="text-center">
-            <b class="spacing">{{ courseName | uppercase }}</b>
+            <b>{{ courseName | uppercase }}</b>
           </p>
           <table class="table table-bordered">
             <thead>
@@ -128,7 +128,7 @@
             </thead>
             <tbody>
               <tr v-for="(discipline, index) in gridTemplate" :key="index">
-                <td>{{ index }}</td>
+                <td style="padding-left: 2px;">{{ index }}</td>
 
                 <template v-for="(stage) in discipline" >
 
@@ -310,15 +310,15 @@ export default {
       table.classList.add("pdfPrint");
       table.classList.remove("table");
 
-      doc.addImage(
-        backgroundImgBack,
-        "JPG",
-        0,
-        0,
-        doc.internal.pageSize.getWidth(),
-        doc.internal.pageSize.getHeight()
-      );
-
+      /* doc.addImage(
+            backgroundImgBack,
+            "JPG",
+            0,
+            0,
+            doc.internal.pageSize.getWidth(),
+            doc.internal.pageSize.getHeight()
+          );
+      */
       doc.html(target, {
         callback: (pdf) => { 
           pdf.save(this.fileName);
@@ -336,7 +336,8 @@ export default {
       });
 
       //Segunda página
-      doc.addPage();
+
+      /* doc.addPage();
 
       doc.addImage(
         backgroundImgBackLastPage,
@@ -345,7 +346,7 @@ export default {
         0,
         doc.internal.pageSize.getWidth(),
         doc.internal.pageSize.getHeight()
-      );
+      ); */
 
       this.$router.push({ name: "students" });
     },
@@ -416,10 +417,6 @@ export default {
 
 <style scoped>
 
-.spacing{
-  letter-spacing: 1px;
-}
-
 [readonly] {
   background-color: #eee;
 }
@@ -443,7 +440,7 @@ export default {
 /** Custom print PDF */
 .pdfContent.active {
   max-width: 578px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 

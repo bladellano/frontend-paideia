@@ -177,7 +177,7 @@ export default {
         this.item.naturalness
       }, nascido(a) em ${this.displayDateInFull(
         this.item.birth_date
-      )}, CPF ${this.item.cpf}`;
+      )}, CPF ${this.item.cpf}, `;
     },
     createdAt() {
       const currentDate = new Date();
@@ -222,16 +222,16 @@ export default {
       const doc = new jsPDF("l", "pt", "a4");
 
       //Primeira página
-      doc.addImage(
+      /* doc.addImage(
         backgroundImgFront,
         "JPG",
         0,
         0,
         doc.internal.pageSize.getWidth(),
         doc.internal.pageSize.getHeight()
-      );
+      ); */
 
-      doc.setFont("Times");
+      doc.setFont("helvetica");
 
       doc.setFontSize(42);
 
@@ -240,11 +240,11 @@ export default {
       doc.text(
         this.item.name,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + -40,
+        doc.internal.pageSize.getHeight() / 2 + -48,
         { align: "center" }
       );
 
-      doc.setFontSize(16);
+      doc.setFontSize(14);
 
       const splitTextShowInfo = doc.splitTextToSize(
         this.showInfoStudent,
@@ -254,7 +254,7 @@ export default {
       doc.text(
         splitTextShowInfo,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + -15,
+        doc.internal.pageSize.getHeight() / 2 + -13,
         { align: "center" }
       );
 
@@ -282,21 +282,21 @@ export default {
       doc.text(
         this.createdAtText,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + 120,
+        doc.internal.pageSize.getHeight() / 2 + 140,
         { align: "center" }
       );
 
       //Segunda página
       doc.addPage();
 
-      doc.addImage(
+      /* doc.addImage(
         backgroundImgBack,
         "JPG",
         0,
         0,
         doc.internal.pageSize.getWidth(),
         doc.internal.pageSize.getHeight()
-      );
+      ); */
 
       doc.setFontSize(20);
 
