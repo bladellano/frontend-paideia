@@ -143,6 +143,7 @@ import backgroundImgFront from "@/assets/bg-certificate-front.jpg";
 import backgroundImgBack from "@/assets/bg-certificate-back.jpg";
 import LoadingPage from "@/components/LoadingPage.vue";
 import { generateHash, displayDateInFull } from "@/helpers";
+import { font as GreatVibes } from '@/font/GreatVibes-Regular-normal'
 
 export default {
   name: "CertificateRegister",
@@ -219,6 +220,11 @@ export default {
       if(!this.textSelectedForConclusion)
         return Toast.fire('Selecione um texto de conclusão para o Certificado.',"", "error");
 
+      jsPDF.API.events.push(['addFonts', function () {
+        this.addFileToVFS('vibes.ttf', GreatVibes);
+        this.addFont('vibes.ttf', 'vibes', 'normal');
+      }]);
+
       const doc = new jsPDF("l", "pt", "a4");
 
       //Primeira página
@@ -231,18 +237,19 @@ export default {
         doc.internal.pageSize.getHeight()
       ); */
 
-      doc.setFont("helvetica");
-
-      doc.setFontSize(42);
+      doc.setFont("vibes");
+      doc.setFontSize(50);
 
       doc.setTextColor(0, 0, 0);
 
       doc.text(
         this.item.name,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + -48,
+        doc.internal.pageSize.getHeight() / 2 + -68,
         { align: "center" }
       );
+   
+      doc.setFont("helvetica");
 
       doc.setFontSize(14);
 
@@ -254,7 +261,7 @@ export default {
       doc.text(
         splitTextShowInfo,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + -13,
+        doc.internal.pageSize.getHeight() / 2 + -40,
         { align: "center" }
       );
 
@@ -262,27 +269,27 @@ export default {
 
       const splitText = doc.splitTextToSize(
         this.textSelectedForConclusion,
-        doc.internal.pageSize.getWidth() - 100
+        doc.internal.pageSize.getWidth() - 80
       );
 
       doc.text(
         splitText,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + 20,
+        doc.internal.pageSize.getHeight() / 2 + 0,
         { align: "center" }
       );
 
       doc.text(
         this.textWithCode + this.code,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + 90,
+        doc.internal.pageSize.getHeight() / 2 + 80,
         { align: "center" }
       );
 
       doc.text(
         this.createdAtText,
         doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() / 2 + 140,
+        doc.internal.pageSize.getHeight() / 2 + 125,
         { align: "center" }
       );
 

@@ -27,7 +27,6 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import LoadingPage from "@/components/LoadingPage.vue";
 import api from "@/services";
-console.log('api', api); ;
 
 export default {
   components: {
@@ -39,7 +38,6 @@ export default {
     };
   },
   mounted() {
-    console.log('this', this); ;
     $("#datatable").DataTable({
       dom: 'Bfrtip',
         buttons: [

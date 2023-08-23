@@ -331,7 +331,7 @@ export default {
           table.classList.add("table");
           target.classList.remove("active");
         },
-        x: 10,
+        x: 25,
         y: 144,
       });
 
@@ -439,9 +439,9 @@ export default {
 
 /** Custom print PDF */
 .pdfContent.active {
-  max-width: 578px;
+  max-width: 534px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .pdfContent.active input {
