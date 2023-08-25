@@ -203,8 +203,6 @@ import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
 import { filterNonNumeric, generateHash } from "@/helpers";
 import StatesMixin from "@/mixins/StatesMixin";
-import backgroundImgBack from "@/assets/bg-history.jpg";
-import backgroundImgBackLastPage from "@/assets/bg-history-last-page.jpg";
 
 export default {
   mixins: [StatesMixin],
@@ -310,15 +308,6 @@ export default {
       table.classList.add("pdfPrint");
       table.classList.remove("table");
 
-      /* doc.addImage(
-            backgroundImgBack,
-            "JPG",
-            0,
-            0,
-            doc.internal.pageSize.getWidth(),
-            doc.internal.pageSize.getHeight()
-          );
-      */
       doc.html(target, {
         callback: (pdf) => { 
           pdf.save(this.fileName);
@@ -331,22 +320,9 @@ export default {
           table.classList.add("table");
           target.classList.remove("active");
         },
-        x: 25,
-        y: 144,
+        x: 30,
+        y: 150,
       });
-
-      //Segunda página
-
-      /* doc.addPage();
-
-      doc.addImage(
-        backgroundImgBackLastPage,
-        "JPG",
-        0,
-        0,
-        doc.internal.pageSize.getWidth(),
-        doc.internal.pageSize.getHeight()
-      ); */
 
       this.$router.push({ name: "students" });
     },
@@ -441,9 +417,8 @@ export default {
 .pdfContent.active {
   max-width: 534px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 10px;
+  font-size: 9.5px;
 }
-
 .pdfContent.active input {
 	border: none;
 	background: none;
@@ -469,7 +444,6 @@ export default {
 .pdfContent.active .historyFooter {
   text-align: center;
 }
-
 .pdfPrint th,
 .pdfPrint td {
   border: 1px solid #000;

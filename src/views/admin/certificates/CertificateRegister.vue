@@ -139,8 +139,6 @@
 <script>
 import api from "@/services";
 import jsPDF from "jspdf";
-import backgroundImgFront from "@/assets/bg-certificate-front.jpg";
-import backgroundImgBack from "@/assets/bg-certificate-back.jpg";
 import LoadingPage from "@/components/LoadingPage.vue";
 import { generateHash, displayDateInFull } from "@/helpers";
 import { font as GreatVibes } from '@/font/GreatVibes-Regular-normal'
@@ -174,11 +172,15 @@ export default {
   },
   computed: {
     showInfoStudent() {
+
+      const numericCpf = this.item.cpf.replace(/\D/g, '');
+      const cpfWithMask = numericCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+
       return `${this.item.nationality}, natural de ${
         this.item.naturalness
       }, nascido(a) em ${this.displayDateInFull(
         this.item.birth_date
-      )}, CPF ${this.item.cpf}, `;
+      )}, CPF ${cpfWithMask},`;
     },
     createdAt() {
       const currentDate = new Date();
@@ -191,7 +193,7 @@ export default {
       return `${this.item.cpf}_certificado.pdf`;
     }
   },
-  methods: {
+  methods: {  
     handlerSelectText(ev) {
       if (ev.target.value == "FUND")
         this.textSelectedForConclusion = this.conclusionTextFundamental;
@@ -228,14 +230,6 @@ export default {
       const doc = new jsPDF("l", "pt", "a4");
 
       //Primeira página
-      /* doc.addImage(
-        backgroundImgFront,
-        "JPG",
-        0,
-        0,
-        doc.internal.pageSize.getWidth(),
-        doc.internal.pageSize.getHeight()
-      ); */
 
       doc.setFont("vibes");
       doc.setFontSize(50);
@@ -296,15 +290,6 @@ export default {
       //Segunda página
       doc.addPage();
 
-      /* doc.addImage(
-        backgroundImgBack,
-        "JPG",
-        0,
-        0,
-        doc.internal.pageSize.getWidth(),
-        doc.internal.pageSize.getHeight()
-      ); */
-
       doc.setFontSize(20);
 
       doc.text(
@@ -329,7 +314,6 @@ export default {
       );
 
       //Fim
-      // doc.save(this.fileName);
 
       //Saved storage api
       const blob = doc.output("blob");
