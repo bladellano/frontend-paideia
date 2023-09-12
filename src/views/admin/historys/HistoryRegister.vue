@@ -98,13 +98,13 @@
 
           <p class="text-center">
             <b>{{ courseName | uppercase }}</b>
-          </p>
+          </p> 
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th
                   rowspan="2"
-                  style="text-align: center; vertical-align: middle"
+                  style="text-align: center; vertical-align: middle; width: 35%;"
                 >
                   DISCIPLINA
                 </th>
@@ -320,8 +320,8 @@ export default {
           table.classList.add("table");
           target.classList.remove("active");
         },
-        x: 30,
-        y: 150,
+        x: 36,
+        y: 160,
       });
 
       this.$router.push({ name: "students" });
@@ -417,7 +417,7 @@ export default {
 .pdfContent.active {
   max-width: 534px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9.5px;
+  font-size: 8.5px;
 }
 .pdfContent.active input {
 	border: none;
@@ -454,7 +454,7 @@ export default {
 }
 .pdfPrint input {
   border: none;
-  background: transparent;
-  font-size: 12px;
+  font-size: 0.75rem;
+  text-align: center;
 }
 </style>
