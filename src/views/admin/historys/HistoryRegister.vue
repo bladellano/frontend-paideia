@@ -307,6 +307,7 @@ export default {
       target.classList.add("active");
       table.classList.add("pdfPrint");
       table.classList.remove("table");
+      table.classList.remove("table-bordered");
 
       doc.html(target, {
         callback: (pdf) => { 
@@ -318,9 +319,10 @@ export default {
 
           table.classList.remove("pdfPrint");
           table.classList.add("table");
+          table.classList.add("table-bordered");
           target.classList.remove("active");
         },
-        x: 36,
+        x: 32,
         y: 160,
       });
 
@@ -440,21 +442,35 @@ export default {
   border: 1px solid #000;
   padding: 4px;
   margin-bottom: 6px;
+  font-size: 10px;
 }
 .pdfContent.active .historyFooter {
   text-align: center;
 }
+.pdfPrint thead {
+	border-left: 1px solid #000;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+.pdfPrint thead tr:nth-child(2) th {
+  border-top: 1px solid #000;
+}
 .pdfPrint th,
 .pdfPrint td {
-  border: 1px solid #000;
-  border-collapse: collapse;
+  border-right: 1px solid #000;
+  border-collapse: collapse; 
 }
-.pdfPrint tr {
-  border: none;
+.pdfPrint tbody tr:nth-child(even) {
+  border: 1px solid #000;
+}
+.pdfPrint tbody tr > td:first-child {
+  border-left: 1px solid #000;
 }
 .pdfPrint input {
   border: none;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   text-align: center;
+  height: 18px;
 }
+
 </style>

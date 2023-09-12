@@ -262,7 +262,6 @@ export default {
       });
     },
     removeField(index) {
-      if (this.gridTemplate.length == 1) return;
       this.gridTemplate.splice(index, 1);
     },
     async getGrids() {
@@ -289,7 +288,6 @@ export default {
   mounted() {
     this.getGrid();
     this.getGridTemplate();
-
     this.getGrids();
     this.getDisciplines();
     this.getStages();
