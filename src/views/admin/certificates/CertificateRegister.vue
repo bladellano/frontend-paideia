@@ -140,7 +140,7 @@
 import api from "@/services";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { generateHash, displayDateInFull } from "@/helpers";
+import { generateHash, displayDateInFull, cpfWithMask} from "@/helpers";
 import { font as GreatVibes } from '@/font/GreatVibes-Regular-normal'
 
 export default {
@@ -155,6 +155,7 @@ export default {
       blobPDF: null,
       generateHash,
       displayDateInFull,
+      cpfWithMask,
       item: null,
       author: "Paideia Educacional",
       code: "",
@@ -173,14 +174,11 @@ export default {
   computed: {
     showInfoStudent() {
 
-      const numericCpf = this.item.cpf.replace(/\D/g, '');
-      const cpfWithMask = numericCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-
       return `${this.item.nationality}, natural de ${
         this.item.naturalness
       }, nascido(a) em ${this.displayDateInFull(
         this.item.birth_date
-      )}, CPF ${cpfWithMask},`;
+      )}, CPF ${cpfWithMask(this.item.cpf)},`;
     },
     createdAt() {
       const currentDate = new Date();

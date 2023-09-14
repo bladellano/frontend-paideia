@@ -50,7 +50,7 @@ export function displayDateInFull(date) {
     return `${day} de ${MonthsOfTheYear[month - 1]} de ${year}`;
 }
 
-export function handlerDelete(id, endpoint){
+export function handlerDelete(id, endpoint) {
 
     this.$swal({
         title: "Deseja confirmar a ação?",
@@ -62,15 +62,20 @@ export function handlerDelete(id, endpoint){
         confirmButtonText: "Sim, apague!",
         cancelButtonText: "Não, cancele!",
         buttonsStyling: true,
-        }).then(async (isConfirm) => {
-            if (isConfirm.value === true) {
-                try {
+    }).then(async (isConfirm) => {
+        if (isConfirm.value === true) {
+            try {
                 const { data } = await api.delete(`/${endpoint}/${id}`);
-                    Toast.fire(data.message, "", "success");
+                Toast.fire(data.message, "", "success");
                 this.getItens();
-                } catch (error) {
-                    Toast.fire(error.response.data.message , "", "error");
-                }
+            } catch (error) {
+                Toast.fire(error.response.data.message, "", "error");
             }
-        });
+        }
+    });
+}
+
+export function cpfWithMask(string){
+    const numericCpf = string.replace(/\D/g, '');
+    return numericCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }

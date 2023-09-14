@@ -91,8 +91,8 @@
             <p>NOME: {{ item.name }}</p>
             <p>MÃE: {{ item.name_mother }}</p>
             <p>NATURALIDADE: {{ item.naturalness }}</p>
-            <p>DATA DE NASCIMENTO: {{ item.birth_date }}</p>
-            <p>CPF: {{ item.cpf }}</p>
+            <p>DATA &nbsp;DE NASCIMENTO: {{ item.birth_date }}</p>
+            <p>CPF: {{ cpfWithMask(item.cpf) }}</p>
             <span class="code" title="Código de segurança para validação do documento. A cada atualização da página esse valor altera.">Código de validação: {{ code }}</span>
           </div>
 
@@ -201,7 +201,7 @@ import api from "@/services";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { filterNonNumeric, generateHash } from "@/helpers";
+import { filterNonNumeric, generateHash, cpfWithMask } from "@/helpers";
 import StatesMixin from "@/mixins/StatesMixin";
 
 export default {
@@ -215,11 +215,12 @@ export default {
     return {
       filterNonNumeric,
       generateHash,
+      cpfWithMask,
       folder:'history',
       teamId: null,
       blobPDF: null,
       item: null,
-      city: "Belém",
+      city: "Ananindeua",
       day: new Date().getDate(),
       month: null,
       year: new Date().getFullYear(),
