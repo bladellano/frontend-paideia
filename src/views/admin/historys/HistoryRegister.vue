@@ -37,7 +37,7 @@
             />
           </div>
 
-          <div class="form-group col-md-2">
+          <div class="form-group col-md-1">
             <label for="name">Estado</label>
             <input type="text" name="uf" v-model="uf" class="form-control" />
           </div>
@@ -66,7 +66,7 @@
 
           </div>
 
-          <div class="form-group col-md-2">
+          <div class="form-group col-md-1">
             <label for="name">Ano</label>
             <input
               type="text"
@@ -77,8 +77,20 @@
               class="form-control"
             />
           </div>
+
+          <div class="form-group col-md-2">
+            <label for="name">Média</label>
+            <input
+              type="text"
+              name="media"
+              v-model="media"
+              class="form-control"
+            />
+          </div>
+
         </div>
       </form>
+
     </div>
     <LoadingPage v-else />
     <!-- Lista grade para ser preenchida -->
@@ -166,7 +178,7 @@
               <b> {{ concatenateWithCommaAnd(rangeStage) }} Etapa(s)</b>
             </p>
             <p>CARGA HORÁRIA TOTAL: {{ totalWorkload }} HORAS AULAS</p>
-            <p>Observação: A média de aprovação por disciplina é 6,0 (seis)</p>
+            <p>Observação: A média de aprovação por disciplina é {{ this.media }}</p>
             <p>
               {{ city }} - {{ uf }}, {{ day }} de {{ month }} de {{ year }}.
             </p>
@@ -224,6 +236,7 @@ export default {
       day: new Date().getDate(),
       month: null,
       year: new Date().getFullYear(),
+      media: "6,0 (seis)",
       uf: "PA",
       teams: [],
       gridTemplate: {},
