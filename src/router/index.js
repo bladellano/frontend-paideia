@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 
 /** Site */
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 
 /** Admin */
@@ -70,11 +69,6 @@ const routes = [
         path: '/',
         name: 'home',
         component: Home
-    },
-    {
-        path: '/sobre',
-        name: 'about',
-        component: About
     },
     {
         path: '/login',
