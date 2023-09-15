@@ -21,7 +21,7 @@
             <th>Nome da mãe</th>
             <th>Criado</th>
             <th>Turma</th>
-            <th width="228px">Documentos</th>
+            <th width="222px">Documentos</th>
             <th width="98px"></th>
           </tr>
         </thead>
@@ -31,24 +31,12 @@
             <td>{{ item.name }}</td>
             <td>{{ item.phone }}</td>
             <td>{{ item.name_mother }}</td>
-
             <td>{{ item.created_at }}</td>
             <td>{{ item.teams_name }}</td>
             <td>
               <template v-if="item.teams_name">
-                
-                <router-link
-                :to="{ name: 'certificate-register', params: { student: item.id } }"
-                class="btn btn-sm btn-primary mx-1"
-                ><font-awesome-icon icon="cloud-arrow-down"/> Certificado
-                </router-link>
-
-                <router-link
-                :to="{ name: 'history-register', params: { student: item.id } }"
-                class="btn btn-sm btn-success"
-                ><font-awesome-icon icon="cloud-arrow-down"/> Histórico
-              </router-link>
-
+                <ButtonHistory :to="{ name: 'history-register', params: { student: item.id } }"/>
+                <ButtonCertificate :to="{ name: 'certificate-register', params: { student: item.id } }"/>
               </template>
             </td>
             <td>
@@ -77,12 +65,16 @@
 
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
+import ButtonHistory from "@/components/ButtonHistory.vue";
+import ButtonCertificate from "@/components/ButtonCertificate.vue";
 import { serialize, handlerDelete } from "@/helpers";
 
 export default {
   name: "StudentList",
   components: {
     Pagination,
+    ButtonHistory,
+    ButtonCertificate,
   },
   data() {
     return {

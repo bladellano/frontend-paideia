@@ -2,13 +2,14 @@
   <div id="app">
 
     <keep-alive>
-      <TheHeader/>
+      <TheHeader />
     </keep-alive>
+
+    <main id="main">
+      <router-view />
+    </main>
     
-      <main id="main">
-        <router-view />
-      </main>
-    <TheFooter/>
+    <TheFooter />
   </div>
 </template>
 
@@ -26,6 +27,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

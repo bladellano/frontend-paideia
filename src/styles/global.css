@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
 
 :root {
   --color-background: #fff;
@@ -17,9 +17,10 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 html,
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--color-background);
 }
 
@@ -47,6 +48,7 @@ a {
 #main {
   flex: 1;
 }
+
 label {
   font-weight: 800;
 }

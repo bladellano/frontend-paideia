@@ -53,7 +53,6 @@ import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 
 //Reports
 import GeneralReportOfStudents from '../views/admin/reports/GeneralReportOfStudents.vue'
-
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
@@ -77,21 +76,6 @@ const routes = [
         name: 'about',
         component: About
     },
-    /*  {
-         path: '/contato',
-         name: 'contact',
-         component: Contact
-     },
-     {
-         path: '/faq',
-         name: 'faq',
-         component: Faq
-     },
-     {
-         path: '/cursos',
-         name: 'courses',
-         component: Courses
-     }, */
     {
         path: '/login',
         name: "login",

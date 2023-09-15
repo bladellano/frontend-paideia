@@ -1,178 +1,72 @@
 <template>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <router-link class="navbar-brand" to="/">
-          <img src="@/assets/LogoMakr-1hrvwO.png" alt="VC" id="logo" />
-        </router-link>
+  <header id="hero" class="position-relative overflow-hidden pt-5 text-center bg-dark text-white">
+    <div class="container">
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerHeader"
-          aria-controls="navbarTogglerHeader"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarTogglerHeader">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link exact-active-class="active" class="nav-link" to="/"
-                >Home</router-link
-              >
-            </li>
-
-            <li class="nav-item">
-              <router-link
-                exact-active-class="active"
-                class="nav-link"
-                to="/sobre"
-                >Sobre</router-link
-              >
-            </li>
-
-            <li class="nav-item">
-              <a 
-                class="nav-link" 
-                href="https://paideiaeducacional.com.br/" 
-                target="_blank">
-                Cursos
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <router-link
-                exact-active-class="active"
-                class="nav-link"
-                to="/faq"
-                >FAQ</router-link
-              >
-            </li>
-
-            <li class="nav-item">
-              <router-link
-                exact-active-class="active"
-                class="nav-link"
-                to="/como-funciona"
-                >Como funciona?</router-link
-              >
-            </li>
-
-            <li class="nav-item">
-              <router-link
-                exact-active-class="active"
-                class="nav-link"
-                to="/contato"
-                >Contato</router-link
-              >
-            </li>
-
-            <!-- Admin -->
-          </ul>
-
-          <ul class="navbar-nav ml-auto" v-if="!isLogged">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/admin/login"
-                >Login</router-link
-              >
-            </li>
-          </ul>
-
-          <div class="dropdown" v-else>
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenu"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <font-awesome-icon icon="user" />
-              {{ userName }}
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-              <li>
-                <router-link class="dropdown-item" to="/admin"
-                  >Gestão</router-link
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" @click.prevent="logout"
-                  >Sair</a
-                >
-              </li>
-            </ul>
+      <div class="row">
+        <div class="col-md-6 text-right">
+          <div class="card-left ml-auto">
+            <h1 class="title-main">Verifique se seu certificado está validado</h1>
+            <p class="text-just">Somente instituições de ensino com reconhecimento nacional emitem
+              certificados que são oficialmente reconhecidos e autorizados..</p>
+            <h3 class="text-code">Abaixo digite o Código de seu certificado</h3>
           </div>
         </div>
+        <div class="col-md-6">
+          <img class="students" src="@/assets/woman.png" alt="Alunos">
+        </div>
       </div>
-    </nav>
+    </div>
+
   </header>
 </template>
 
-<script>
-import axios from "axios";
 
-import { EventBus } from "../main";
-
-export default {
-  name: "TheHeader",
-  data() {
-    return {
-      isLogged: false,
-      userName: null,
-    };
-  },
-  methods: {
-    logout() {
-      window.localStorage.removeItem("token");
-      this.isLogged = false;
-      this.$router.push({ name: "login" });
-    },
-    async me() {
-
-        const axiosInstance = axios.create({
-          baseURL: `${process.env.VUE_APP_BASE_URL}/api`,
-          headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-          },
-        });
-
-        const api = await axiosInstance.post("/auth/me");
-
-        if(!Object.keys(api.data).length) {
-          this.isLogged = this.userName = null;
-          window.localStorage.removeItem("token");
-        } else {
-          this.userName = api.data.name;
-          this.isLogged = true;
-        }
-    },
-  },
-  mounted() {
-    this.me();
-    EventBus.$on("update-logged-in-status", (bool, name) => {
-      this.isLogged = bool;
-      this.userName = name;
-    });
-  },
-  deactivated(){
-    console.log('> Header deactivated')
-  },
-  activated(){
-    console.log('> Header activated')
-  }
-};
-</script>
 
 <style scoped>
-#logo {
-  width: 60px;
+
+#hero {
+  background-image: url("@/assets/hero-bg.jpg");
+  position: relative;
+  height: 410px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.bg-dark {
-  background-color: var(--color-background-nav) !important;
+#hero::before {
+  content: "";
+  background: rgba(0, 12, 10, 0.842);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.students {
+  z-index: 999;
+  position: relative;
+}
+
+.card-left {
+  max-width: 450px;
+  text-align: left;
+  z-index: 999;
+  position: relative;
+}
+.title-main {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.text-just {
+  font-size: 1rem;
+  font-weight: 300;
+}
+.text-code {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0bff43;
 }
 </style>
