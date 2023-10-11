@@ -160,7 +160,7 @@
                     <TheMask
                       type="text"
                       class="form-control"
-                      :mask="['#.##', '##.##']"
+                      :mask="['#.#', '##.#']"
                       :disabled="!stage.workload ? true : false"
                       :masked="true"
                       :placeholder="!stage.workload ? '***' : '0.0'"

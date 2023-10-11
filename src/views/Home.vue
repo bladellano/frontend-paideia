@@ -26,7 +26,10 @@
                     class="btn btn-dark" 
                     type="button"
                     @click.prevent="hasDocument"
-                  >Procurar</button>
+                  >
+                  <font-awesome-icon class="d-md-none" icon="search" />
+                  <span class="d-none d-md-block">Procurar</span>
+                </button>
                 </div>
               </div>
             </div>
@@ -58,8 +61,8 @@
                 <label for="whatsapp">WhatsApp:</label>
                 <input type="text" class="form-control" id="whatsapp">
               </div>
-              <div class="mb-3">
-                <button type="submit" class="btn btn-outline-light btn-block">Enviar</button>
+              <div class="mb-3 d-grid">
+                <button type="submit" class="btn btn-outline-light">Enviar</button>
               </div>
             </form>
           </div>
@@ -158,6 +161,50 @@ export default {
   width: 340px;
   z-index: 999;
   position: relative;
+}
+
+/* Estilos para telas pequenas (MD) - 768px ou menos */
+@media (max-width: 768px) {
+  .border-input {
+    padding: 0;
+  }
+
+  .wrap-input {
+    padding: 32px 14px;
+    width: 98%;
+  }
+  .handshack {
+    display: none;
+  }
+
+  .contact {
+    padding-top: 20px;
+    width: 92%;
+    margin: 0 auto;
+  }
+
+  #hero {
+	  height: 346px;
+  }
+  .text-code {
+    font-size: 2.0rem;
+  }
+
+  .students {
+	display: none;
+  }
+
+  footer {
+    padding: 36px 0;
+  }
+  .input-group {
+	  justify-content: center;
+  }
+
+  .search-board h2 {
+	font-size: 2.5rem;
+  }
+ 
 }
 
 </style>
