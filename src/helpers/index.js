@@ -44,10 +44,12 @@ export function displayDateInFull(date) {
     const month = parseInt(dataSplit[1]);
     const year = parseInt(dataSplit[2]);
 
-    const MonthsOfTheYear = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
-    ];
+    const MonthsOfTheYear = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
-    return `${day} de ${MonthsOfTheYear[month - 1]} de ${year}`;
+    // Formata o dia para ter dois dígitos
+    const formattedDay = day.toString().padStart(2, '0');
+
+    return `${formattedDay} de ${MonthsOfTheYear[month - 1]} de ${year}`;
 }
 
 export function handlerDelete(id, endpoint) {
