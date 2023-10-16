@@ -1,78 +1,82 @@
 <template>
   <footer class="position-relative overflow-hidden p-md-5 text-center bg-dark text-white">
 
-    <div class="row">
-      <div class="col-md-3 my-auto">
-        <h4>Consulte nossa instituição:</h4>
-      </div>
-      <div class="col-md-3 col-12">
-        <a href="https://sistec.mec.gov.br/consultapublicaunidadeensino/" target="_blank">
-          <img src="@/assets/logo-sistec.png" alt="LOGO" class="img-fluid">
-        </a>
-      </div>
-      <div class="col-md-3 col-12">
-        <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas"
-          target="_blank">
-          <img src="@/assets/logo-catalogo-de-escolas.png" alt="LOGO" class="img-fluid">
-        </a>
-      </div>
-      <div class="col-md-3 col-12">
-        <a href="https://www.abed.org.br/site/pt/associados/consulta_associados_abed/" target="_blank">
-          <img src="@/assets/logo-abed.png" alt="LOGO" class="img-fluid">
-        </a>
-      </div>
-    </div>
+    <div class="container">
 
-    <div class="row">
-      <div class="col-md-4">
-        <h4 class="text-md-start">Contato:</h4>
-        <ul class="text-md-start">
-          <li>(91) 3722-9891</li>
-          <li>(91) 9 8176-9979 <font-awesome-icon icon="fa-brands fa-whatsapp" /></li>
-          <li>(91) 9 8208-4651 <font-awesome-icon icon="fa-brands fa-whatsapp" /></li>
-          <li><font-awesome-icon icon="envelope" /> contato@paideiaeducacional.com</li>
-        </ul>
-      </div>
-      <div class="col-md-4 my-auto">
-
-        <p class="text-secondary">
-        <div>
-          <router-link class="nav-link text-danger" to="/">Home</router-link>
+      <div class="row">
+        <div class="col-md-3 my-auto">
+          <h4 class="text-start">Consulte nossa instituição:</h4>
         </div>
-        <div v-if="!isLogged" class="pb-4">
-          <router-link class="nav-link text-danger" to="/admin/login">Login Administrativo</router-link>
+        <div class="col-md-3 col-12">
+          <a href="https://sistec.mec.gov.br/consultapublicaunidadeensino/" target="_blank">
+            <img src="@/assets/logo-sistec.png" alt="LOGO" class="img-fluid">
+          </a>
         </div>
+        <div class="col-md-3 col-12">
+          <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas"
+            target="_blank">
+            <img src="@/assets/logo-catalogo-de-escolas.png" alt="LOGO" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-3 col-12">
+          <a href="https://www.abed.org.br/site/pt/associados/consulta_associados_abed/" target="_blank">
+            <img src="@/assets/logo-abed.png" alt="LOGO" class="img-fluid">
+          </a>
+        </div>
+      </div>
 
-        <div v-else class="pb-4 dropdown">
-
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            <font-awesome-icon icon="user" />
-            {{ userName }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-            <li>
-              <router-link class="dropdown-item" to="/admin">Gestão</router-link>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="logout">Sair</a>
-            </li>
+      <div class="row">
+        <div class="col-md-4">
+          <h4 class="text-md-start">Contato:</h4>
+          <ul class="text-md-start">
+            <li>(91) 3722-9891</li>
+            <li>(91) 9 8176-9979 <font-awesome-icon icon="fa-brands fa-whatsapp" /></li>
+            <li>(91) 9 8208-4651 <font-awesome-icon icon="fa-brands fa-whatsapp" /></li>
+            <li><font-awesome-icon icon="envelope" /> contato@paideiaeducacional.com</li>
           </ul>
+        </div>
+        <div class="col-md-4 my-auto">
+
+          <p class="text-secondary">
+          <div>
+            <router-link class="nav-link text-danger" to="/">Home</router-link>
+          </div>
+          <div v-if="!isLogged" class="pb-4">
+            <router-link class="nav-link text-danger" to="/admin/login">Login Administrativo</router-link>
+          </div>
+
+          <div v-else class="pb-4 dropdown">
+
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <font-awesome-icon icon="user" />
+              {{ userName }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+              <li>
+                <router-link class="dropdown-item" to="/admin">Gestão</router-link>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click.prevent="logout">Sair</a>
+              </li>
+            </ul>
+
+          </div>
+
+          </p>
+          <p class="text-secondary small">
+            © Copyright Paideia Educacional. Todos os direitos reservados.
+          </p>
+          <p class="text-secondary small">
+            Desenvolvido por <a href="https://cdnssystems.com.br/" target="_blank">CDNS Systems Ltda</a>
+          </p>
 
         </div>
-
-        </p>
-        <p class="text-secondary small">
-          © Copyright Paideia Educacional. Todos os direitos reservados.
-        </p>
-        <p class="text-secondary small">
-          Desenvolvido por <a href="https://cdnssystems.com.br/" target="_blank">CDNS Systems Ltda</a>
-        </p>
-
+        <div class="col-md-4 my-auto text-md-end">
+          <img src="@/assets/logo.png" class="img-fluid logo-paideia" alt="LOGO">
+        </div>
       </div>
-      <div class="col-md-4 my-auto text-md-end">
-        <img src="@/assets/logo.png" class="img-fluid logo-paideia" alt="LOGO">
-      </div>
+
     </div>
 
   </footer>
