@@ -16,6 +16,7 @@ import "bootstrap/dist/js/bootstrap.js"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const EventBus = new Vue();
 
@@ -26,6 +27,8 @@ Vue.use(VueSweetalert2);
 Vue.use(VueTheMask)
 
 library.add(fas)
+library.add(faWhatsapp)
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const Toast = Swal.mixin({
