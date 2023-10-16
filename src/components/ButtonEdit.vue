@@ -1,6 +1,6 @@
 <template>
     <router-link :to="to" class="btn btn-sm btn-outline-secondary">
-        <font-awesome-icon icon="edit" />
+        <font-awesome-icon icon="edit"/>
     </router-link>
 </template>
   

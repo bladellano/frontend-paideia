@@ -3,33 +3,26 @@
     <section class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">
       <div class="container">
         <div class="search-board">
-          <h3>Digite o código completo de seu</h3>
-          <h2>CERTIFICADO</h2>
+          <h3>Digite o código completo</h3>
           <div class="wrap-input">
             <div class="border-input">
               <div class="input-group">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Digite o código do certificado"
-                  v-model="historic.code"
-                  name="historic"
-                >
+                <input type="text" class="form-control" placeholder="Digite o código do seu documento"
+                  v-model="historic.code" name="historic">
 
                 <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                  Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi emitido em <b>{{ (historic.content) ? historic.content.created_at : '' }}</b> em nome de(a) <b>{{ (historic.content) ? historic.content.student.name : '' }}</b>.
-                    <button @click="historic.content = null" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi
+                  emitido em <b>{{ (historic.content) ? historic.content.created_at : '' }}</b> em nome de(a) <b>{{
+                    (historic.content) ? historic.content.student.name : '' }}</b>.
+                  <button @click="historic.content = null" type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
                 </div>
 
                 <div class="input-group-append">
-                  <button 
-                    class="btn btn-dark" 
-                    type="button"
-                    @click.prevent="hasDocument"
-                  >
-                  <font-awesome-icon class="d-md-none" icon="search" />
-                  <span class="d-none d-md-block">Procurar</span>
-                </button>
+                  <button class="btn btn-dark" type="button" @click.prevent="hasDocument">
+                    <font-awesome-icon class="d-md-none" icon="search" />
+                    <span class="d-none d-md-block">Procurar</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -173,6 +166,7 @@ export default {
     padding: 32px 14px;
     width: 98%;
   }
+
   .handshack {
     display: none;
   }
@@ -183,28 +177,38 @@ export default {
     margin: 0 auto;
   }
 
-  #hero {
-	  height: 346px;
+  .contact h2 {
+    font-size: 1.2rem;
   }
+
+  #hero {
+    height: 346px;
+  }
+
   .text-code {
     font-size: 2.0rem;
   }
 
   .students {
-	display: none;
+    display: none;
   }
 
   footer {
     padding: 36px 0;
   }
+
   .input-group {
-	  justify-content: center;
+    justify-content: center;
   }
 
   .search-board h2 {
-	font-size: 2.5rem;
+    font-size: 2.5rem;
   }
- 
-}
 
+  .search-board h3 {
+    margin-top: 20px;
+    font-size: 1.4rem;
+  }
+
+}
 </style>
