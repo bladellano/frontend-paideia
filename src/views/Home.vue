@@ -39,25 +39,35 @@
             <img class="handshack" src="@/assets/handshack.png" alt="Handshack">
           </div>
           <div class="col-md-6 contact">
+
             <h2>Sua escola não é credenciada?</h2>
             <p>Entre em contato com a gente para ser uma escola autorizada!</p>
-            <form class="text-left">
+
+            <form class="text-left" @submit.prevent="sendEmail">
               <div class="mb-3">
                 <label for="name">Seu nome:</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" class="form-control" v-model="email.nome">
               </div>
               <div class="mb-3">
                 <label for="school">Escola:</label>
-                <input type="text" class="form-control" id="school">
+                <input type="text" class="form-control" v-model="email.escola">
               </div>
               <div class="mb-3">
                 <label for="whatsapp">WhatsApp:</label>
-                <input type="text" class="form-control" id="whatsapp">
+
+                <TheMask type="text" class="form-control" :mask="['(##) ####-####', '(##) #####-####']" :masked="true"
+                  v-model="email.whatsapp" />
+
               </div>
               <div class="mb-3 d-grid">
-                <button type="submit" class="btn btn-outline-light">Enviar</button>
+
+                <button v-if="!loading" type="submit" class="btn btn-outline-light">Enviar</button>
+
+                <LoadingPage class="loading" v-else />
+
               </div>
             </form>
+
           </div>
         </div>
 
@@ -69,12 +79,23 @@
 </template>
   
 <script>
+
 import api from "@/services";
+import LoadingPage from "@/components/LoadingPage.vue";
 
 export default {
+  components: {
+    LoadingPage
+  },
   name: "Home",
   data() {
     return {
+      loading: false,
+      email: {
+        nome: "",
+        escola: "",
+        whatsapp: "",
+      },
       historic: {
         code: "",
         content: null,
@@ -82,6 +103,27 @@ export default {
     };
   },
   methods: {
+    async sendEmail() {
+
+      if (!this.email.nome || !this.email.escola || !this.email.whatsapp)
+        return Toast.fire('Por favor, preencha todos os campos do formulário de contato.', "", "error");
+
+      this.loading = true;
+
+      const qr = new URLSearchParams(this.email).toString();
+
+      try {
+
+        const { data } = await api.get(`/send-mail?${qr}`);
+        Toast.fire(data.message, "", "success");
+        this.email.nome = this.email.escola = this.email.whatsapp = null;
+        
+      } catch (error) {
+        Toast.fire(errorsToString(error.response.data.errors), "", "error");
+      }
+
+      this.loading = false;
+    },
     async hasDocument() {
 
       if (!this.historic.code.length)
@@ -102,6 +144,23 @@ export default {
 </script>
   
 <style scoped>
+.loading {
+  background-color: white;
+  position: fixed;
+  transform: translate(0, -50%);
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #7f9c97;
+  box-shadow: 2px 2px 10px #8885;
+}
+
 .text-code {
   font-size: 2.5rem;
   font-weight: 700;

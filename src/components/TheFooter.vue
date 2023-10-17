@@ -5,7 +5,7 @@
 
       <div class="row">
         <div class="col-md-3 my-auto">
-          <h4 class="text-start">Consulte nossa instituição:</h4>
+          <h4 class="text-md-start">Consulte nossa instituição:</h4>
         </div>
         <div class="col-md-3 col-12">
           <a href="https://sistec.mec.gov.br/consultapublicaunidadeensino/" target="_blank">
