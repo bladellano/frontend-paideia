@@ -10,11 +10,12 @@
                 <input type="text" class="form-control" placeholder="Digite o código do seu documento"
                   v-model="historic.code" name="historic">
 
-                <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                  Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi
-                  emitido em <b>{{ (historic.content) ? historic.content.created_at : '' }}</b> em nome de(a) <b>{{
-                    (historic.content) ? historic.content.student.name : '' }}</b>.
-                  <button @click="historic.content = null" type="button" class="btn-close" data-bs-dismiss="alert"
+                <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" style="text-align: justify;">Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi emitido em nome de(a) <b>{{ (historic.content) ? historic.content.student.name : '' }}</b>.
+                  <button 
+                    @click="historic.content = null" 
+                    type="button" 
+                    class="btn-close" 
+                    data-bs-dismiss="alert"
                     aria-label="Close"></button>
                 </div>
 
@@ -40,8 +41,8 @@
           </div>
           <div class="col-md-6 contact">
 
-            <h2>Sua escola não é credenciada?</h2>
-            <p>Entre em contato com a gente para ser uma escola autorizada!</p>
+            <h2>Ficou alguma dúvida?</h2>
+            <p>Entre em contato CONOSCO!</p>
 
             <form class="text-left" @submit.prevent="sendEmail">
               <div class="mb-3">
