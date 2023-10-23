@@ -55,7 +55,8 @@ export default {
         const name = me.data.name;
 
         EventBus.$emit("update-logged-in-status", true, name);
-        this.$router.push({ name: "courses" });
+
+        window.location.href = "./"
 
       } catch (error) {
         Toast.fire(error.response.data.error, "", "error");

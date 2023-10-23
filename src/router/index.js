@@ -44,6 +44,11 @@ import TeamList from '../views/admin/teams/TeamList.vue'
 import TeamEdit from '../views/admin/teams/TeamEdit.vue'
 import TeamRegister from '../views/admin/teams/TeamRegister.vue'
 
+//User
+import UserList from '../views/admin/users/UserList.vue'
+import UserEdit from '../views/admin/users/UserEdit.vue'
+import UserRegister from '../views/admin/users/UserRegister.vue'
+
 //Grid
 import GridList from '../views/admin/grids/GridList.vue'
 import GridEdit from '../views/admin/grids/GridEdit.vue'
@@ -202,6 +207,23 @@ const routes = [
                 path: "turmas/registrar",
                 name: "team-register",
                 component: TeamRegister,
+            },
+            //Users
+            {
+                path: "usuarios",
+                name: "users",
+                component: UserList
+            },
+            {
+                path: "usuarios/:id/editar",
+                name: "user-edit",
+                component: UserEdit,
+                props: true,
+            },
+            {
+                path: "usuarios/registrar",
+                name: "user-register",
+                component: UserRegister,
             },
             //Grids
             {

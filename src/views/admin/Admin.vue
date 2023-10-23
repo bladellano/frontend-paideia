@@ -37,12 +37,12 @@
           <!-- CURSOS -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                aria-expanded="true" aria-controls="collapseOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 Cursos
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
               data-bs-parent="#accordion">
               <div class="accordion-body p-1">
                 <ul class="btn-toggle-nav list-unstyled fw-normal small">
@@ -206,6 +206,32 @@
               </div>
             </div>
           </div>
+
+          <!-- USUARIOS -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                Usuários
+              </button>
+            </h2>
+            <div id="collapseUsers" class="accordion-collapse collapse" aria-labelledby="headingThree"
+              data-bs-parent="#accordion">
+              <div class="accordion-body p-1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                  <li>
+                    <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/usuarios">Listar</router-link>
+                  </li>
+                  <li>
+                    <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/usuarios/registrar">Registrar</router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
           <!-- RELATORIO -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">

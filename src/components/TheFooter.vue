@@ -100,7 +100,7 @@ export default {
     logout() {
       window.localStorage.removeItem("token");
       this.isLogged = false;
-      this.$router.push({ name: "login" });
+      window.location.reload();
     },
     async me() {
 
