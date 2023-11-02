@@ -1,5 +1,5 @@
 <template>
-    <a class="btn btn-sm btn-outline-secondary mx-1" @click.prevent="handleClick">
+    <a class="btn btn-sm btn-danger mx-1" @click.prevent="handleClick">
         <font-awesome-icon icon="trash" />
     </a>
 </template>

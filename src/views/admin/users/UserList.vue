@@ -27,18 +27,8 @@
               <td class="text-center">{{ item.name }}</td>
               <td>{{ item.created_at }}</td>
               <td>
-                <router-link
-                  :to="{ name: 'user-edit', params: { id: item.id } }"
-                  class="btn btn-sm btn-secondary mx-1"
-                  ><font-awesome-icon icon="edit" />
-                </router-link>
-                <a
-                  v-if="item.id != idHideBtnRemove"
-                  href="#"
-                  @click.prevent="handlerDelete(item.id, 'users')"
-                  class="btn btn-sm btn-secondary mx-1"
-                  ><font-awesome-icon icon="trash" /></a
-                >
+                <ButtonEdit :to="{ name: 'user-edit', params: { id: item.id } }"/>
+                <ButtonDelete v-if="item.id != idHideBtnRemove" @delete="handlerDelete(item.id, 'disciplines')"/>
               </td>
             </tr>
           </tbody>
@@ -52,12 +42,16 @@
   <script>
   import api from "@/services";
   import Pagination from "@/components/Pagination.vue";
+  import ButtonEdit from "@/components/ButtonEdit.vue";
+  import ButtonDelete from "@/components/ButtonDelete.vue";
   import { serialize, handlerDelete } from "@/helpers";
   
   export default {
     name: "UserList",
     components: {
       Pagination,
+      ButtonEdit,
+      ButtonDelete
     },
     data() {
       return {

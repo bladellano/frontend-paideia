@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="to" class="btn btn-sm btn-outline-primary mx-1">
+    <router-link :to="to" class="btn btn-sm btn-info mx-1">
         Certificado
     </router-link>
 </template>

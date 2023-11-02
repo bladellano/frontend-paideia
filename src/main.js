@@ -20,6 +20,10 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export const EventBus = new Vue();
 
+// Filters
+Vue.filter('uppercase', v => v.toUpperCase());
+Vue.filter('lowercase', v => v.toLowerCase());
+
 Vue.config.productionTip = false
  
 Vue.use(VueAlertify);

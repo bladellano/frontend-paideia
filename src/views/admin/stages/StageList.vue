@@ -24,21 +24,12 @@
           <tbody>
             <tr v-for="item in items" :key="item.id">
               <td class="text-center"><span class="badge bg-secondary">{{ item.stage }}</span></td>
-              <td>{{ item.description }}</td>
+              <td>{{ item.description | uppercase }}</td>
               <td>{{ item.created_at }}</td>
               <td>
-                <router-link
-                  :to="{ name: 'stage-edit', params: { id: item.id } }"
-                  class="btn btn-sm btn-secondary mx-1"
-                  ><font-awesome-icon icon="edit" />
-                </router-link>
-                <a
-                  href="#"
-                  @click.prevent="handlerDelete(item.id, 'stages')"
-                  class="btn btn-sm btn-secondary mx-1"
-                  ><font-awesome-icon icon="trash" /></a
-                >
-              </td>
+              <ButtonEdit :to="{ name: 'stage-edit', params: { id: item.id } }"/>
+              <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
+            </td>
             </tr>
           </tbody>
         </table>
@@ -51,12 +42,16 @@
     <script>
   import api from "@/services";
   import Pagination from "@/components/Pagination.vue";
+  import ButtonEdit from "@/components/ButtonEdit.vue";
+import ButtonDelete from "@/components/ButtonDelete.vue";
   import { serialize, handlerDelete } from "@/helpers";
   
   export default {
     name: "StageList",
     components: {
       Pagination,
+      ButtonEdit,
+    ButtonDelete
     },
     data() {
       return {

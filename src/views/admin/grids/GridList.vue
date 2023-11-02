@@ -26,21 +26,12 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.obs }}</td>
+            <td>{{ item.name | uppercase }}</td>
+            <td>{{ item.obs | uppercase }}</td>
             <td>{{ item.created_at }}</td>
             <td>
-              <router-link
-                :to="{ name: 'grid-edit', params: { id: item.id } }"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="edit" />
-              </router-link>
-              <a
-                href="#"
-                @click.prevent="handlerDelete(item.id, 'grids')"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="trash" /></a
-              >
+              <ButtonEdit :to="{ name: 'grid-edit', params: { id: item.id } }"/>
+              <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
             </td>
           </tr>
         </tbody>
@@ -54,12 +45,16 @@
 <script>
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
+import ButtonEdit from "@/components/ButtonEdit.vue";
+import ButtonDelete from "@/components/ButtonDelete.vue";
 import { serialize, handlerDelete } from "@/helpers";
 
 export default {
   name: "GridList",
   components: {
     Pagination,
+    ButtonEdit,
+    ButtonDelete
   },
   data() {
     return {

@@ -17,7 +17,6 @@
           <tr>
             <th><a href="#" @click="sort($event, 'id')">#</a></th>
             <th><a href="#" @click="sort($event, 'name')">Nome</a></th>
-            <th>Telefone</th>
             <th>Nome da mãe</th>
             <th>Criado</th>
             <th>Turma</th>
@@ -28,11 +27,10 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.phone }}</td>
-            <td>{{ item.name_mother }}</td>
+            <td>{{ item.name | uppercase }}</td>
+            <td>{{ item.name_mother | uppercase}}</td>
             <td>{{ item.created_at }}</td>
-            <td>{{ item.teams_name }}</td>
+            <td>{{ item.teams_name | uppercase }}</td>
             <td>
               <template v-if="item.teams_name">
                 <ButtonHistory :to="{ name: 'history-register', params: { student: item.id } }"/>
@@ -40,17 +38,8 @@
               </template>
             </td>
             <td>
-              <router-link
-                :to="{ name: 'student-edit', params: { id: item.id } }"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="edit" />
-              </router-link>
-              <a
-                href="#"
-                @click.prevent="handlerDelete(item.id, 'students')"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="trash" /></a
-              >
+              <ButtonEdit :to="{ name: 'student-edit', params: { id: item.id } }"/>
+              <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
             </td>
           </tr>
         </tbody>
@@ -67,6 +56,8 @@ import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
 import ButtonHistory from "@/components/ButtonHistory.vue";
 import ButtonCertificate from "@/components/ButtonCertificate.vue";
+import ButtonEdit from "@/components/ButtonEdit.vue";
+import ButtonDelete from "@/components/ButtonDelete.vue";
 import { serialize, handlerDelete } from "@/helpers";
 
 export default {
@@ -75,6 +66,8 @@ export default {
     Pagination,
     ButtonHistory,
     ButtonCertificate,
+    ButtonEdit,
+    ButtonDelete
   },
   data() {
     return {

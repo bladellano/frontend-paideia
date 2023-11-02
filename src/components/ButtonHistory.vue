@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="to" class="btn btn-sm btn-outline-success mx-1">
+    <router-link :to="to" class="btn btn-sm btn-success mx-1">
         Histórico
     </router-link>
 </template>

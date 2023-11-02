@@ -29,26 +29,17 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ item.name | uppercase}}</td>
 
-            <td>{{ item.city }}</td>
-            <td>{{ item.responsible }}</td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.phone }}</td>
+            <td>{{ item.city | uppercase }}</td>
+            <td>{{ item.responsible | uppercase }}</td>
+            <td>{{ item.email | lowercase }}</td>
+            <td><span class="badge bg-dark">{{ item.phone }}</span></td>
 
             <td>{{ item.created_at }}</td>
             <td>
-              <router-link
-                :to="{ name: 'polo-edit', params: { id: item.id } }"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="edit" />
-              </router-link>
-              <a
-                href="#"
-                @click.prevent="handlerDelete(item.id, 'polos')"
-                class="btn btn-sm btn-secondary mx-1"
-                ><font-awesome-icon icon="trash" /></a
-              >
+              <ButtonEdit :to="{ name: 'polo-edit', params: { id: item.id } }"/>
+              <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
             </td>
           </tr>
         </tbody>
@@ -62,12 +53,16 @@
   <script>
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
+import ButtonEdit from "@/components/ButtonEdit.vue";
+import ButtonDelete from "@/components/ButtonDelete.vue";
 import { serialize, handlerDelete } from "@/helpers";
 
 export default {
   name: "PoloList",
   components: {
     Pagination,
+    ButtonEdit,
+    ButtonDelete
   },
   data() {
     return {

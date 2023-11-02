@@ -30,9 +30,9 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ item.name | uppercase }}</td>
 
-            <td>{{ item.teaching.name }}</td>
+            <td>{{ item.teaching.name | uppercase }}</td>
 
             <td>{{ item.amount_of_reviews }}</td>
             <td>{{ item.workload }}</td>

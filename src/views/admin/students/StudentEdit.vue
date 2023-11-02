@@ -142,7 +142,7 @@
             <select name="gender" v-model="team_id" class="form-control">
               <option value="" selected>-- Selecione --</option>
               <option v-for="(opt, index) in teams" :key="index" :value="opt.id">
-              {{ opt.name }}
+              {{ opt.name | uppercase}}
               </option>
             </select>
           </div>

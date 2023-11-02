@@ -22,7 +22,7 @@
             <select id="team" class="form-control" @change="getFullGrid">
               <option disabled value="" selected>-- Selecione --</option>
               <option v-for="team in teams" :key="team.id" :value="team.id">
-                {{ team.name }}
+                {{ team.name | uppercase }}
               </option>
             </select>
           </div>
