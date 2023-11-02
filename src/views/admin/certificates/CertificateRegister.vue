@@ -140,7 +140,7 @@
 import api from "@/services";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { generateHash, displayDateInFull, cpfWithMask} from "@/helpers";
+import { generateHash, displayDateInFull, cpfWithMask, slug} from "@/helpers";
 import { font as GreatVibes } from '@/font/GreatVibes-Regular-normal'
 
 export default {
@@ -156,9 +156,13 @@ export default {
       generateHash,
       displayDateInFull,
       cpfWithMask,
+      slug,
       item: null,
       author: "Paideia Educacional",
       code: "",
+      typeDocument: "CERTIFICATE",
+      teamName:"",
+      attachments: [],
       textSelectedForConclusion: null,
       conclusionTextFundamental:
         "e outorga-lhe o presente Certificado, por ter concluído em abril de "+ new Date().getFullYear() +", o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
@@ -188,7 +192,14 @@ export default {
       return `Ananindeua - Pará, ${this.displayDateInFull(date)}`;
     },
     fileName(){
-      return `${this.item.cpf}_certificado.pdf`;
+      const document = this.attachments;
+      
+      if(!document.length) 
+        return `${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
+
+      const partials = document[0].path.split('/');
+      const fullNameFile = partials[partials.length - 1];
+      return `${fullNameFile}`;
     }
   },
   methods: {  
@@ -201,6 +212,8 @@ export default {
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
+        this.teamName = res.data[0].teams[0].name || ""
+        this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
         this.item = res.data[0];
       });
     },
@@ -317,28 +330,29 @@ export default {
       const blob = doc.output("blob");
       this.storeDocumentPDF(blob);
 
-      this.hasDocument(this.fileName)
+      this.hasDocument()
     },
     async storeDocumentPDF(blob) {
       const formData = new FormData();
 
       formData.append("pdf", blob);
       formData.append("code", this.code);
-      formData.append("type", "CERTIFICATE");
+      formData.append("type", this.typeDocument);
+      formData.append("team", this.teamName);
       formData.append("folder", this.folder);
-      formData.append("document_name", "certificado");
+      formData.append("document_name", this.typeDocument);
       try {
         await api.post(`/documents/${this.$route.params.student}/store-document`, formData);
       } catch (error) {
         Toast.fire(error, "", "error");
       }
     },
-    async hasDocument(filename) {
+    async hasDocument() {
       this.blobPDF = null;
 
       let bool = true;
       await api
-        .get(`/documents/storage/${this.folder}/${filename}`, {
+        .get(`/documents/storage/${this.folder}/${this.fileName}`, {
           responseType: "blob",
         })
         .then((response) => {

@@ -213,7 +213,7 @@ import api from "@/services";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { filterNonNumeric, generateHash, cpfWithMask } from "@/helpers";
+import { filterNonNumeric, generateHash, cpfWithMask, slug } from "@/helpers";
 import StatesMixin from "@/mixins/StatesMixin";
 
 export default {
@@ -228,10 +228,14 @@ export default {
       filterNonNumeric,
       generateHash,
       cpfWithMask,
+      slug,
       folder:'history',
       teamId: null,
+      teamName: "",
       blobPDF: null,
       item: null,
+      attachments: [],
+      typeDocument:'HISTORIC',
       city: "Ananindeua",
       day: new Date().getDate(),
       month: null,
@@ -262,7 +266,14 @@ export default {
       return this.stagesNumbers;
     },
     fileName(){
-      return `${this.item.cpf}_historico.pdf`;
+      const document = this.attachments;
+
+      if(!document.length) 
+        return `${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
+
+      const partials = document[0].path.split('/');
+      const fullNameFile = partials[partials.length - 1];
+      return `${fullNameFile}`;
     }
   },
   methods: {
@@ -283,9 +294,10 @@ export default {
 
       formData.append("pdf", blob);
       formData.append("code", this.code);
-      formData.append("type", "HISTORIC");
+      formData.append("team", this.teamName);
+      formData.append("type", this.typeDocument);
       formData.append("folder", this.folder);
-      formData.append("document_name", "historico");
+      formData.append("document_name", this.typeDocument);
 
       try {
         await api.post(`/documents/${this.item.id}/store-document`, formData);
@@ -310,7 +322,7 @@ export default {
       const doc = new jsPDF("p", "pt", "a4");
 
       doc.setProperties({
-        title: `Histórico Escolar de ${this.item.name}`,
+        title: `Histórico Escolar de ${this.item.name} | ${this.teamName}`,
         author: this.author,
         creator: this.author,
       });
@@ -344,6 +356,7 @@ export default {
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
+        this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument)
         this.item = res.data[0];
         this.teams = this.item.teams;
       });
@@ -363,6 +376,7 @@ export default {
     },
     async getFullGrid(ev) {
 
+      this.teamName = ev.target.options[ev.target.options.selectedIndex].text
       this.teamId = ev.currentTarget.value;
       const isShowHistoryPDF = await this.hasDocument(this.fileName);
       

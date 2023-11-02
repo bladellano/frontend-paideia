@@ -77,7 +77,17 @@ export function handlerDelete(id, endpoint) {
     });
 }
 
-export function cpfWithMask(string){
+export function cpfWithMask(string) {
     const numericCpf = string.replace(/\D/g, '');
     return numericCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+export function slug(string) {
+    return string
+    .normalize("NFD") // Normaliza a string (decomposição)
+    .replace(/[\u0300-\u036f]/g, "") // Remove os acentos (caracteres diacríticos)
+    .replace(/[^\w\s-]/g, "") // Remove caracteres especiais (exceto hífens e espaços)
+    .replace(/\s+/g, "-") // Substitui espaços em branco por hífens
+    .replace(/-+/g, "-") // Remove múltiplos hífens seguidos
+    .toLowerCase(); // Converte para letras minúsculas
 }
