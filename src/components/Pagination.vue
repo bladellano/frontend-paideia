@@ -57,7 +57,15 @@ export default {
   },
   watch: {
     source() {
-      this.pages = range(1, this.source.last_page + 1);
+
+      const currentPage = this.source.current_page;
+      const lastPage = this.source.last_page;
+
+      this.startPage = Math.max(1, currentPage - 5);
+      this.endPage = Math.min(lastPage, currentPage + 5);
+      
+      this.pages = range(this.startPage, this.endPage + 1);
+
     },
   },
 };
