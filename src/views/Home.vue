@@ -50,8 +50,12 @@
                 <input type="text" class="form-control" v-model="email.nome">
               </div>
               <div class="mb-3">
-                <label for="school">Escola:</label>
-                <input type="text" class="form-control" v-model="email.escola">
+                <label for="email">E-mail:</label>
+                <input type="email" class="form-control" v-model="email.e_mail">
+              </div>
+              <div class="mb-3">
+                <label for="doubt">Dúvida:</label>
+                <input type="text" class="form-control" v-model="email.doubt">
               </div>
               <div class="mb-3">
                 <label for="whatsapp">WhatsApp:</label>
@@ -94,7 +98,8 @@ export default {
       loading: false,
       email: {
         nome: "",
-        escola: "",
+        e_mail: "",
+        doubt: "",
         whatsapp: "",
       },
       historic: {
@@ -106,7 +111,7 @@ export default {
   methods: {
     async sendEmail() {
 
-      if (!this.email.nome || !this.email.escola || !this.email.whatsapp)
+      if (!this.email.nome || !this.email.e_mail || !this.email.whatsapp || !this.email.doubt)
         return Toast.fire('Por favor, preencha todos os campos do formulário de contato.', "", "error");
 
       this.loading = true;
@@ -117,10 +122,10 @@ export default {
 
         const { data } = await api.get(`/send-mail?${qr}`);
         Toast.fire(data.message, "", "success");
-        this.email.nome = this.email.escola = this.email.whatsapp = null;
+        this.email.nome = this.email.e_mail = this.email.whatsapp = this.email.doubt = null;
         
       } catch (error) {
-        Toast.fire(errorsToString(error.response.data.errors), "", "error");
+        Toast.fire(error.response.data.message, "", "error");
       }
 
       this.loading = false;
