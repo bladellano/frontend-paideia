@@ -129,10 +129,10 @@
                 <template v-for="(stage) in rangeStage" >
 
                   <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <th style="text-align: center" > C/H TOTAL </th>
+                  <th style="text-align: center; white-space: nowrap" > C/H TOTAL </th>
 
                   <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <th style="text-align: center" > ETAPA {{ stage }} </th>
+                  <th style="text-align: center; white-space: nowrap" > ETAPA {{ stage }} </th>
 
                 </template>
               

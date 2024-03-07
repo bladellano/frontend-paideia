@@ -49,7 +49,7 @@
                 :key="index"
                 :value="opt.id"
               >
-                {{ opt.name }}
+                {{ opt.name | uppercase }}
               </option>
             </select>
           </div>
@@ -115,7 +115,7 @@ export default {
       await api.get(`/teams/${this.id}`).then((res) => {
         const { name, start_date, end_date, polo_id, grid_id } = res.data[0];
         this.item = {
-          name,
+          name: name.toUpperCase(),
           start_date: this.convertDateToDB(start_date),
           end_date: this.convertDateToDB(end_date),
           polo_id,
