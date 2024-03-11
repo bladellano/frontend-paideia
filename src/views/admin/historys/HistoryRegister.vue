@@ -111,67 +111,80 @@
           <p class="text-center">
             <b>{{ courseName | uppercase }}</b>
           </p> 
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th
-                  rowspan="2"
-                  style="text-align: center; vertical-align: middle; width: 35%;"
-                >
-                  DISCIPLINA
-                </th>
-                <th :colspan="(totalStage * 2)" style="text-align: center">
-                  RESULTADO FINAL
-                </th>
-              </tr>
-              <tr>
 
-                <template v-for="(stage) in rangeStage" >
+          <form ref="formHistoric" @submit.prevent="saveGrades">
 
-                  <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <th style="text-align: center; white-space: nowrap" > C/H TOTAL </th>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th
+                    rowspan="2"
+                    style="text-align: center; vertical-align: middle; width: 35%;"
+                  >
+                    DISCIPLINA
+                  </th>
+                  <th :colspan="(totalStage * 2)" style="text-align: center">
+                    RESULTADO FINAL
+                  </th>
+                </tr>
 
-                  <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <th style="text-align: center; white-space: nowrap" > ETAPA {{ stage }} </th>
+                <tr>
 
-                </template>
-              
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(discipline, index) in gridTemplate" :key="index">
-                <td style="padding-left: 2px;">{{ index }}</td>
+                  <template v-for="(stage) in rangeStage" >
 
-                <template v-for="(stage) in discipline" >
+                    <!-- eslint-disable-next-line vue/require-v-for-key -->
+                    <th style="text-align: center; white-space: nowrap" > C/H TOTAL </th>
 
-                  <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      @input="filterNonNumeric"
-                      :value="!stage.workload ? '***' : stage.workload"
-                      :disabled="!stage.workload ? true : false"
-                    />
-                  </td>
+                    <!-- eslint-disable-next-line vue/require-v-for-key -->
+                    <th style="text-align: center; white-space: nowrap" > ETAPA {{ stage }} </th>
 
-                  <!-- eslint-disable-next-line vue/require-v-for-key -->
-                  <td>
-                    <TheMask
-                      type="text"
-                      class="form-control"
-                      :mask="['#.#', '##.#']"
-                      :disabled="!stage.workload ? true : false"
-                      :masked="true"
-                      :placeholder="!stage.workload ? '***' : '0.0'"
-                    />
-                  </td>
+                  </template>
+                
+                </tr>
 
-                </template>
+              </thead>
 
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr v-for="(discipline, index) in gridTemplate" :key="index">
+                  <td style="padding-left: 2px;">{{ index }}</td>
+
+                  <template v-for="(stage) in discipline" >
+                    <!-- eslint-disable-next-line vue/require-v-for-key -->
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control"
+                        @input="filterNonNumeric"
+                        :value="!stage.workload ? '***' : stage.workload"
+                        :disabled="!stage.workload ? true : false"
+                      />
+                    </td>
+
+                    <!-- eslint-disable-next-line vue/require-v-for-key -->
+                    <td>
+                      <TheMask
+                        type="text"
+                        class="form-control"
+                        :value="!stage.workload ? '0.0' : getGradeByInput(stage.stage_id, stage.discipline_id, teamId)"
+                        :name="'grade[' + item.id + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + teamId + ']'"
+                        :mask="['#.#', '##.#']"
+                        :disabled="!stage.workload ? true : false"
+                        :masked="true"
+                        :placeholder="!stage.workload ? '***' : '0.0'"
+                      />
+                    </td>
+
+                  </template>
+
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="form-group text-center my-2">
+              <button type="submit" class="btn btn-success btn-sm" id="btnSaveGrades">SALVAR NOTAS NO HISTÓRICO</button>
+            </div>
+
+          </form>
 
           <div class="historyFooter text-center">
             <p>
@@ -186,7 +199,7 @@
         </div>
         <!-- ./ pdfContent -->
         <div class="form-group text-center my-2">
-          <button @click="makePDF" class="btn btn-success">Gerar PDF</button>
+          <button @click="makePDF" class="btn btn-success btn-sm">GERAR DOCUMENTO EM PDF</button>
         </div>
       </div>
 
@@ -225,6 +238,7 @@ export default {
   },
   data() {
     return {
+      grades: [],
       filterNonNumeric,
       generateHash,
       cpfWithMask,
@@ -277,6 +291,31 @@ export default {
     }
   },
   methods: {
+     getGradeByInput(stageId, disciplineId, teamId){
+
+      if(!this.grades.length)
+        return;
+
+      const gradeFiltered = this.grades.filter((grade) => grade.stage_id == stageId && grade.discipline_id == disciplineId && grade.team_id == teamId);
+      return gradeFiltered[0].grade ?? 0;
+
+    },
+    async getGradeByStudent(){
+      const record = await api.get(`/grades/${this.student}/get-grade-by-student?`, { responseType: 'json' });
+      this.grades = record.data;
+    },
+    async saveGrades() {
+
+      const formData = new FormData(this.$refs.formHistoric);
+
+      try {
+        const result = await api.post(`/grades`, formData);
+        Toast.fire("Mensagem", result.data.message, "success");
+      } catch (error) {
+        Toast.fire("Error", error.response.data.message, "error");
+      }
+
+    },
     async destroyPDF(){
       api.get(`/documents/${this.folder}/${this.fileName}/remove`)
       .then(response => {
@@ -329,6 +368,8 @@ export default {
 
       const table = document.querySelector("table");
       const target = document.querySelector(".pdfContent");
+
+      target.querySelector('#btnSaveGrades').remove();
 
       target.classList.add("active");
       table.classList.add("pdfPrint");
@@ -417,6 +458,7 @@ export default {
   mounted() {
     this.getItem();
     this.code = this.generateHash('HIST_');
+    this.getGradeByStudent();
   },
 };
 </script>
@@ -446,7 +488,7 @@ export default {
 /** Custom print PDF */
 .pdfContent.active {
   max-width: 534px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 8.5px;
 }
 .pdfContent.active input {
