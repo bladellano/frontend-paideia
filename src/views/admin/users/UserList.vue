@@ -1,6 +1,6 @@
 <template>
     <div>
-      <section class="container my-4">
+      <section class="container-fluid my-4">
         <h4 class="my-4">Relação de todas as <strong>Usuários</strong></h4>
   
         <div class="well mb-4">

@@ -1,5 +1,5 @@
 <template>
-  <section class="container my-4">
+  <section class="container-fluid my-4">
     <h4 class="my-4">Cadastro de <strong>Disciplina</strong></h4>
 
     <form @submit.prevent="handlerSubmit">

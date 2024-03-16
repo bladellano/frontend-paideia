@@ -19,6 +19,11 @@ import TeachingList from '../views/admin/teachings/TeachingList.vue'
 import TeachingEdit from '../views/admin/teachings/TeachingEdit.vue'
 import TeachingRegister from '../views/admin/teachings/TeachingRegister.vue'
 
+//Documents
+import DocumentList from '../views/admin/teachings/documents/DocumentList.vue'
+import DocumentRegister from '../views/admin/teachings/documents/DocumentRegister.vue'
+import DocumentEdit from '../views/admin/teachings/documents/DocumentEdit.vue'
+
 //Polo
 import PoloList from '../views/admin/polos/PoloList.vue'
 import PoloEdit from '../views/admin/polos/PoloEdit.vue'
@@ -111,7 +116,12 @@ const routes = [
             {
                 path: "ensinos",
                 name: "teachings",
-                component: TeachingList
+                component: TeachingList,
+            },
+            {
+                path: "ensinos/documentos",
+                name: "documents",
+                component: DocumentList
             },
             {
                 path: "ensinos/:id/editar",
@@ -124,6 +134,19 @@ const routes = [
                 name: "ensino-register",
                 component: TeachingRegister,
             },
+            // DOCUMENTOS
+            {
+                path: "ensinos/documentos/registrar",
+                name: "document-register",
+                component: DocumentRegister
+            },
+            {
+                path: "ensinos/documentos/:id/editar",
+                name: "document-edit",
+                component: DocumentEdit,
+                props: true,
+            },
+            // FIM
             {
                 path: "polos",
                 name: "polos",
@@ -142,9 +165,9 @@ const routes = [
             },
             //Etapas
             {
-            path: "etapas",
-            name: "stages",
-            component: StageList
+                path: "etapas",
+                name: "stages",
+                component: StageList
             },
             {
                 path: "etapas/:id/editar",

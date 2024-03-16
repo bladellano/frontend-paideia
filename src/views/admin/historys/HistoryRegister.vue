@@ -1,5 +1,5 @@
 <template>
-  <section class="container my-4">
+  <section class="container-fluid my-4">
     <h4 class="my-4">Criando <strong>Histórico</strong></h4>
 
     <div v-if="item">
@@ -183,7 +183,9 @@
             <div class="form-group text-center my-2">
               <button type="submit" class="btn btn-success btn-sm" id="btnSaveGrades">SALVAR NOTAS NO HISTÓRICO</button>
             </div>
-
+            <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)">
+                Voltar
+              </button>
           </form>
 
           <div class="historyFooter text-center">

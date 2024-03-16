@@ -1,5 +1,5 @@
 <template>
-  <section class="container my-4">
+  <section class="container-fluid my-4">
     <h4 class="my-4">Editando <strong>Ensino</strong></h4>
 
     <div v-if="item">

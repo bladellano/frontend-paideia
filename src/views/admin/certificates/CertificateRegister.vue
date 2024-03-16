@@ -1,137 +1,107 @@
 <template>
-  <section class="container my-4">
+  <section class="container-fluid my-4">
+
     <h4 class="my-4">Criando <strong>Certificado</strong></h4>
 
     <div v-if="item && !blobPDF">
-      <div class="pdfContent">
-        <div class="internal">
-          <h2>{{ item.name }}</h2>
 
-          <p>
-            <strong>{{ showInfoStudent }}</strong>
-          </p>
+      <div class="row">
+        <div class="col-md-8">
 
-          <p>{{ textSelectedForConclusion }}</p>
+          <div class="pdfContent">
+            <div class="internal">
+              <h2>{{ item.name }}</h2>
 
-          <p>{{ textWithCode }} {{ code }}</p>
+              <p>
+                <strong>{{ showInfoStudent }}</strong>
+              </p>
 
-          <p>{{ createdAt }}</p>
-        </div>
-      </div>
+              <p>{{ textDocumentSelected }}</p>
 
-      <hr />
+              <p>{{ textWithCode }} {{ code }}</p>
 
-      <div class="accordion" id="accordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-              aria-expanded="true"
-              aria-controls="collapseOne"
-            >
-              Frente
-            </button>
-          </h2>
-          <div
-            id="collapseOne"
-            class="accordion-collapse collapse show"
-            aria-labelledby="headingOne"
-            data-bs-parent="#accordion"
-          >
-            <div class="accordion-body">
-              <label for="">Texto de conclusão de ensino:</label>
-              <select
-                name=""
-                id=""
-                class="form-control"
-                @change="handlerSelectText"
-              >
-                <option value="" selected disabled>-- Selecione --</option>
-                <option value="FUND">Fundamental</option>
-                <option value="MED">Médio</option>
-              </select>
-
-              <label for="">Linha 1:</label>
-              <textarea
-                cols="30"
-                rows="4"
-                class="form-control mt-2"
-                v-model="textSelectedForConclusion"
-              ></textarea>
-              <label for="">Linha 2:</label>
-              <input
-                type="text"
-                class="form-control mt-2"
-                v-model="textWithCode"
-              />
-              <label for="">Linha 3:</label>
-              <input
-                type="text"
-                class="form-control mt-2"
-                v-model="createdAtText"
-              />
+              <p>{{ createdAtText }}</p>
             </div>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-            >
-              Verso
-            </button>
-          </h2>
-          <div
-            id="collapseTwo"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#accordion"
-          >
-            <div class="accordion-body">
-              <label for="">Linha 1:</label>
-              <textarea
-                cols="30"
-                rows="4"
-                class="form-control mt-2"
-                v-model="textBack"
-              ></textarea>
-              <label for="">Linha 2 (observação):</label>
-              <input type="text" class="form-control mt-2" v-model="obsBack" />
+
+        <div class="col-md-4">
+
+          <div class="accordion" id="accordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapse-front" aria-expanded="true" aria-controls="collapse-front">
+                  Frente
+                </button>
+              </h2>
+              <div id="collapse-front" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  <label for="">Texto de Documentos:</label>
+                  <select name="" id="" class="form-control" @change="handlerSelectText">
+                    <option value="" selected disabled>-- Selecione --</option>
+
+                    <option v-for="(opt, index) in textDocuments" :key="index" :value="opt.id">
+                      {{ opt.name }}
+                    </option>
+
+                  </select>
+                  <hr />
+
+                  <label for="">Linha 1:</label>
+                  <textarea cols="30" rows="8" class="form-control mt-2" v-model="textDocumentSelected"></textarea>
+                  <label for="">Linha 2:</label>
+                  <input type="text" class="form-control mt-2" v-model="textWithCode" />
+                  <label for="">Linha 3:</label>
+                  <input type="text" class="form-control mt-2" v-model="createdAtText" />
+                  <hr>
+                  <label class="text-danger" for="code">Código Validador:</label>
+                  <input type="text" class="form-control mt-2" v-model="code" id="code"/>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapse-back" aria-expanded="false" aria-controls="collapse-back">
+                  Verso
+                </button>
+              </h2>
+              <div id="collapse-back" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  <label for="">Linha 1:</label>
+                  <textarea cols="30" rows="4" class="form-control mt-2" v-model="textBack"></textarea>
+                  <label for="">Linha 2 (observação):</label>
+                  <input type="text" class="form-control mt-2" v-model="obsBack" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-6 text-center">
+              <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)">
+                Voltar
+              </button>
+            </div>
+            <div class="col-md-6 text-center">
+
+              <button v-if="!blobPDF" @click="makePDF" class="btn btn-success btn-sm text-uppercase">Gerar PDF</button>
+
             </div>
           </div>
         </div>
       </div>
-   
+
     </div>
 
-    <iframe
-      v-else
-      :src="blobPDF"
-      width="100%"
-      height="680"
-      style="border: none"
-    >
+    <iframe v-else :src="blobPDF" width="100%" height="680" style="border: none">
     </iframe>
 
-    <div class="row mt-2">
-        <div class="col-md-6 text-center">
-          <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
-            Voltar
-          </button>
-        </div>
-        <div class="col-md-6 text-center">
-          <button v-if="!blobPDF" @click="makePDF" class="btn btn-success">Gerar PDF</button>
-          <button v-else @click="destroyPDF" class="btn btn-sm btn-danger">Apagar Certificado</button>
-        </div>
-    </div>
+    <button v-if="blobPDF" @click="destroyPDF" class="btn btn-sm text-uppercase btn-danger ">Apagar Certificado</button>
 
   </section>
 </template>
@@ -140,7 +110,7 @@
 import api from "@/services";
 import jsPDF from "jspdf";
 import LoadingPage from "@/components/LoadingPage.vue";
-import { generateHash, displayDateInFull, cpfWithMask, slug} from "@/helpers";
+import { generateHash, displayDateInFull, cpfWithMask, slug } from "@/helpers";
 import { font as GreatVibes } from '@/font/GreatVibes-Regular-normal'
 
 export default {
@@ -151,7 +121,8 @@ export default {
   },
   data() {
     return {
-      folder:'certificate',
+      folder: 'certificate',
+      textDocuments: [],
       blobPDF: null,
       generateHash,
       displayDateInFull,
@@ -161,13 +132,9 @@ export default {
       author: "Paideia Educacional",
       code: "",
       typeDocument: "CERTIFICATE",
-      teamName:"",
+      teamName: "",
       attachments: [],
-      textSelectedForConclusion: null,
-      conclusionTextFundamental:
-        "e outorga-lhe o presente Certificado, por ter concluído em abril de "+ new Date().getFullYear() +", o Ensino Fundamental - Educação de Jovens e Adultos 3ª e 4ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
-      conclusionTextMedio:
-        "e outorga-lhe o presente Certificado, por ter concluído em abril de "+ new Date().getFullYear() +", o Ensino Médio - Educação de Jovens e Adultos 1ª e 2ª etapas, dentro das prerrogativas e os direitos estabelecidos nas Leis de Ensino do País.",
+      textDocumentSelected: null,
       textWithCode: "Código de validação: ",
       textBack:
         "Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023",
@@ -178,23 +145,21 @@ export default {
   computed: {
     showInfoStudent() {
 
-      return `${this.item.nationality}, natural de ${
-        this.item.naturalness
-      }, nascido(a) em ${this.displayDateInFull(
-        this.item.birth_date
-      )}, CPF ${cpfWithMask(this.item.cpf)},`;
+      return `${this.item.nationality}, natural de ${this.item.naturalness
+        }, nascido(a) em ${this.displayDateInFull(
+          this.item.birth_date
+        )}, CPF ${cpfWithMask(this.item.cpf)},`;
     },
     createdAt() {
       const currentDate = new Date();
-      const date = `${currentDate.getDate()}/${
-        currentDate.getMonth() + 1
-      }/${currentDate.getFullYear()}`;
+      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1
+        }/${currentDate.getFullYear()}`;
       return `Ananindeua - Pará, ${this.displayDateInFull(date)}`;
     },
-    fileName(){
+    fileName() {
       const document = this.attachments;
-      
-      if(!document.length) 
+
+      if (!document.length)
         return `${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
 
       const partials = document[0].path.split('/');
@@ -202,36 +167,43 @@ export default {
       return `${fullNameFile}`;
     }
   },
-  methods: {  
+  methods: {
+    getFullYear() {
+      return new Date().getFullYear();
+    },
     handlerSelectText(ev) {
-      if (ev.target.value == "FUND")
-        this.textSelectedForConclusion = this.conclusionTextFundamental;
 
-      if (ev.target.value == "MED")
-        this.textSelectedForConclusion = this.conclusionTextMedio;
+      const idText = ev.target.value;
+      const text = this.textDocuments.filter(e => e.id == idText);
+      this.textDocumentSelected = text[0].content.replace(/\[\[DATA_ANO\]\]/g, this.getFullYear());
+    },
+    async getTextDocuments() {
+      await api.get(`/text-documents`).then((res) => {
+        this.textDocuments = res.data.data;
+      });
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
-        this.teamName = res.data[0].teams[0].name || ""
+        this.teamName = res.data[0].teams[0].name || "";
         this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
         this.item = res.data[0];
       });
     },
-    destroyPDF(){
+    destroyPDF() {
 
       api.get(`/documents/${this.folder}/${this.fileName}/remove`)
-      .then(response => {
-        this.blobPDF = null;
-        Toast.fire(response.data.message, "", "success");
-      })
-      .catch((error) => {
-        Toast.fire(error.response.data.message,"", "error");
-      });
+        .then(response => {
+          this.blobPDF = null;
+          Toast.fire(response.data.message, "", "success");
+        })
+        .catch((error) => {
+          Toast.fire(error.response.data.message, "", "error");
+        });
     },
     makePDF() {
 
-      if(!this.textSelectedForConclusion)
-        return Toast.fire('Selecione um texto de conclusão para o Certificado.',"", "error");
+      if (!this.textDocumentSelected)
+        return Toast.fire('Selecione um texto de conclusão para o Certificado.', "", "error");
 
       jsPDF.API.events.push(['addFonts', function () {
         this.addFileToVFS('vibes.ttf', GreatVibes);
@@ -253,7 +225,7 @@ export default {
         doc.internal.pageSize.getHeight() / 2 + -68,
         { align: "center" }
       );
-   
+
       doc.setFont("helvetica");
 
       doc.setFontSize(14);
@@ -273,7 +245,7 @@ export default {
       doc.setFontSize(20);
 
       const splitText = doc.splitTextToSize(
-        this.textSelectedForConclusion,
+        this.textDocumentSelected,
         doc.internal.pageSize.getWidth() - 80
       );
 
@@ -365,7 +337,7 @@ export default {
   },
   watch: {
     item(n, o) {
-      if (this.hasDocument(`${n.cpf}_certificado.pdf`)) 
+      if (this.hasDocument(`${n.cpf}_certificado.pdf`))
         this.blobPDF = null;
     },
   },
@@ -373,15 +345,12 @@ export default {
     this.getItem();
     this.code = this.generateHash("CERT_");
     this.createdAtText = this.createdAt;
+    this.getTextDocuments();
   },
 };
 </script>
 
 <style scoped>
-.accordion-button {
-  background-color: var(--color-background-nav) !important;
-  color: #fff !important;
-}
 .pdfContent {
   margin: 0 auto;
   width: 100%;
@@ -389,12 +358,12 @@ export default {
   border: 1px solid #9996;
   display: flex;
   align-items: center;
-  background-image: url("@/assets/bg-certificate-front.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
   padding: 0 60px;
+  border: 1px dashed #999;
+  max-height: 500px;
+  background-color: #eee;
 }
+
 .pdfContent .internal {
   text-align: center;
 }

@@ -1,15 +1,16 @@
 <template>
-  <section class="container">
+  <section class="container-fluid">
 
     <div class="content">
 
-      <div class="mt-4" style="width: 150px;">
+      <div class="mt-4" style="width: 180px;">
 
         <div href="/" class="d-flex align-items-center pb-1 pt-1 mb-3 text-decoration-none border-bottom">
           <h5>Menu</h5>
         </div>
 
         <div class="accordion" id="accordion">
+          
           <!-- ENSINOS -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingTwo">
@@ -34,6 +35,29 @@
               </div>
             </div>
           </div>
+
+          <!-- DOCUMENTOS -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#text-documents" aria-expanded="false" aria-controls="text-documents">
+                Documentos
+              </button>
+            </h2>
+            <div id="text-documents" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+              data-bs-parent="#accordion">
+              <div class="accordion-body p-1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                  <li>
+                    <router-link 
+                      class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/ensinos/documentos">Templates</router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <!-- CURSOS -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -275,7 +299,7 @@ export default {
   
 <style scoped>
 .accordion-button {
-  background-color: var(--color-background-nav) !important;
+  background-color: var(--color-primary) !important;
   border: none;
   color: #fff !important;
   width: 100%;
