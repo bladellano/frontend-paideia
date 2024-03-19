@@ -183,7 +183,7 @@
             <div class="form-group text-center my-2">
               <button type="submit" class="btn btn-success btn-sm" id="btnSaveGrades">SALVAR NOTAS NO HISTÓRICO</button>
             </div>
-            <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)">
+            <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)" id="btnBack">
                 Voltar
               </button>
           </form>
@@ -372,6 +372,7 @@ export default {
       const target = document.querySelector(".pdfContent");
 
       target.querySelector('#btnSaveGrades').remove();
+      target.querySelector('#btnBack').remove();
 
       target.classList.add("active");
       table.classList.add("pdfPrint");
