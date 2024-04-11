@@ -2,7 +2,7 @@
   <section class="container-fluid my-4">
     <h4 class="my-4">Editando <strong>Aluno</strong></h4>
 
-    <div v-if="item">
+    <div v-if="student">
       <form @submit.prevent="handlerSubmit" @reset="reset">
         <div class="row">
           <div class="form-group col-md-4">
@@ -11,12 +11,12 @@
               type="text"
               class="form-control"
               name="name"
-              v-model="item.name"
+              v-model="student.name"
             />
           </div>
           <div class="form-group col-md-2">
             <label for="gender">Gênero</label>
-            <select name="gender" v-model="item.gender" class="form-control">
+            <select name="gender" v-model="student.gender" class="form-control">
               <option disabled value="">-- Selecione --</option>
               <option value="F">F</option>
               <option value="M">M</option>
@@ -29,7 +29,7 @@
               name="email"
               class="form-control"
               id="email"
-              v-model="item.email"
+              v-model="student.email"
             />
           </div>
         </div>
@@ -43,7 +43,7 @@
               name="phone"
               class="form-control"
               :mask="['(##)#####-#####']"
-              v-model="item.phone"
+              v-model="student.phone"
               :masked="true"
             />
           </div>
@@ -54,7 +54,7 @@
               name="cpf"
               class="form-control"
               :mask="['###.###.###-##']"
-              v-model="item.cpf"
+              v-model="student.cpf"
             />
           </div>
         </div>
@@ -62,7 +62,7 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="rg">RG</label>
-            <input type="text" class="form-control" id="rg" v-model="item.rg" />
+            <input type="text" class="form-control" id="rg" v-model="student.rg" />
           </div>
           <div class="form-group col-md-6">
             <label for="expedient_body">Orgão expedidor</label>
@@ -71,7 +71,7 @@
               name="rg"
               class="form-control"
               id="expedient_body"
-              v-model="item.expedient_body"
+              v-model="student.expedient_body"
             />
           </div>
         </div>
@@ -83,7 +83,7 @@
               type="text"
               name="nationality"
               class="form-control"
-              v-model="item.nationality"
+              v-model="student.nationality"
             />
           </div>
           <div class="form-group col-md-6">
@@ -93,7 +93,7 @@
               name="naturalness"
               class="form-control"
               id="naturalness"
-              v-model="item.naturalness"
+              v-model="student.naturalness"
             />
           </div>
         </div>
@@ -105,7 +105,7 @@
               type="date"
               name="birth_date"
               class="form-control"
-              v-model="item.birth_date"
+              v-model="student.birth_date"
             />
           </div>
           <div class="form-group col-md-6">
@@ -114,127 +114,422 @@
               type="text"
               name="name_mother"
               class="form-control"
-              v-model="item.name_mother"
+              v-model="student.name_mother"
             />
           </div>
         </div>
 
         <div class="form-group text-center my-2">
           <button type="submit" class="btn btn-success btn-sm mx-2">
-            Salvar
+            SALVAR
           </button>
-          <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
+          <button type="reset" class="btn btn-secondary btn-sm">LIMPAR</button>
         </div>
       </form>
-
-      <h4 class="my-4">Situação:
-       
-      </h4>
-    
-      <form action="" class="mb-4" @submit.prevent="handlerRegisterStudentInTeam" @reset="reset">
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="name" class="mb-2">Turma   
-              <span class="badge" v-bind:class="!!team_id ? 'bg-success' : 'bg-danger'">
-                Matrículado
-              </span>
-            </label>
-            <select name="gender" v-model="team_id" class="form-control">
-              <option value="" selected>-- Selecione --</option>
-              <option v-for="(opt, index) in teams" :key="index" :value="opt.id">
-              {{ opt.name | uppercase}}
-              </option>
-            </select>
+      <!-- 
+        <h4 class="my-4">Situação:</h4>
+      
+        <form class="mb-4" @submit.prevent="handlerRegisterStudentInTeam" @reset="reset">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="name" class="mb-2">Turma   
+                <span class="badge" v-bind:class="!!team_id ? 'bg-success' : 'bg-danger'">
+                  Matrículado
+                </span>
+              </label>
+              <select name="gender" v-model="team_id" class="form-control">
+                <option value="" selected>-- Selecione --</option>
+                <option v-for="(opt, index) in teams" :key="index" :value="opt.id">
+                {{ opt.name | uppercase}}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group text-center my-2">
-          <button type="submit" class="btn btn-success btn-sm mx-2">Salvar</button>
-          <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
-        </div>
+          <div class="form-group text-center my-2">
+            <button type="submit" class="btn btn-success btn-sm mx-2">Salvar</button>
+            <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
+          </div>
 
-      </form>
+      </form> -->
 
-      <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
+      <!-- //? Novo processo de matricular -->
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <ul class="nav nav-tabs" id="studentTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="registration-tab" data-bs-toggle="tab" data-bs-target="#registration-tab-pane" type="button" role="tab" aria-controls="registration-tab-pane" aria-selected="true">MATRÍCULA(S)</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial-tab-pane" type="button" role="tab" aria-controls="financial-tab-pane" aria-selected="false">FINANCEIRO</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-tab-pane" type="button" role="tab" aria-controls="documents-tab-pane" aria-selected="false">DOCUMENTO(S)</button>
+            </li>
+         
+          </ul>
+          <div class="tab-content" id="studentTabContent">
+
+            <div class="tab-pane fade show active" id="registration-tab-pane" role="tabpanel" aria-labelledby="registration-tab" tabindex="0">
+
+              <div  class="row my-2">
+
+                <div class="col-md-6">
+
+                  <!-- //? Matricular -->
+                  <form @submit.prevent="handlerRegistration">
+                    <div class="mb-3">
+                      <label for="team" class="form-label">Turma</label>
+                      <select name="team" v-model="teamRegistration" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(team, key) in teams" :key="key" :value="team.id">
+                          {{ team.name | uppercase}}
+                        </option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm text-uppercase">Matricular</button>
+                  </form>
+                </div>
+
+                <div v-if="!!hasRegistration.length" class="col-md-6">
+                  <small>Turmas em que o aluno está matriculado:</small>
+                  <ul class="list-group">
+
+                    <li v-for="(registration, key ) in student.registrations" class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <button class="btn btn-sm btn-outline-secondary" :title="`${registration.user.name} - ${registration.created_at}`">
+                          {{ String(registration.id).padStart(6, '0') }} | {{ registration.team.name | uppercase }}
+                        </button>
+                        
+                        <ButtonDelete @delete="handlerDelete(registration.id, 'registrations')"/>
+
+                    </li>
+
+                  </ul>
+
+                </div>
+
+                <div class="col-md-6" v-else>
+                  <div class="alert alert-warning" role="alert">
+                    Não há matrícula registrada para este aluno.
+                  </div>
+                </div> 
+
+              </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="financial-tab-pane" role="tabpanel" aria-labelledby="financial-tab" tabindex="0">
+
+              <!-- //? Financeiro -->
+
+              <div class="row my-2 p-2">
+                <small class="p-0">Situação financeira do aluno:</small>
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Matrícula</th>
+                      <th scope="col">Serviço</th>
+                      <th scope="col">Valor</th>
+                      <th scope="col">Vencimento</th>
+                      <th scope="col">Quitado</th>
+                      <th scope="col">Forma de Pagto</th>
+                      <th scope="col">Obs.</th>
+                      <th scope="col">Criando</th>
+                      <th scope="col">Usuário</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <template v-if="!!hasRegistration.length" v-for="(registration) in student.registrations" >
+
+                      <tr v-for="(financial) in registration.financials">
+                        <td>{{ financial.id }}</td>
+                        <td>{{ String(financial.registration_id).padStart(6, '0') }}</td>
+                        <td>{{ financial.service_type.name }}</td>
+                        <td>{{ financial.value | currency}}</td>
+                        <td>{{ financial.due_date }}</td>
+                        <td>{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
+                        <td>{{ financial.payment_type.name }}</td>
+                        <td>{{ financial.observations }}</td>
+                        <td>{{ financial.created_at }}</td>
+                        <td>{{ financial.user.name }}</td>
+                        <td> <ButtonDelete @delete="handlerDelete(financial.id, 'financials')"/> </td>
+                      </tr>
+
+                    </template>
+
+                  </tbody>
+                </table>
+
+              </div>
+              <hr>
+              <div class="row my-2">
+
+                <div class="col-md-12">
+
+                  <form ref="formFinancial" @submit.prevent="handlerFinancial" class="row" @reset="reset">
+
+                    <div class="mb-3 col-md-3">
+                      <label for="registration" class="form-label">Nº de matrícula</label>
+                      <select v-if="!!hasRegistration.length" name="registration_id" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(registration, key) in student.registrations" :key="key" :value="registration.id">
+                          {{ String(registration.id).padStart(6, '0') }} - {{ registration.team.name | uppercase }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3 col-md-2">
+                      <label for="value" class="form-label">Valor</label>
+
+                      <input 
+                        type="text"
+                        class="form-control form-control-sm" 
+                        name="value"
+                        placeholder="0,00"
+                        data-thousands="." 
+                        data-decimal=","
+                      >
+
+                    </div>
+
+                    <div class="mb-3 col-md-2">
+                      <label for="due_date" class="form-label">Vencimento</label>
+                      <input type="date" class="form-control form-control-sm" name="due_date" placeholder="R$">
+                    </div>
+
+                    <div class="mb-3 col-md-1">
+                      <label for="paid" class="form-label">Quitado</label>
+                      <select name="paid" class="form-control form-control-sm">
+                        <option value="" selected disabled>--</option>
+                        <option value="0">NÃO</option>
+                        <option value="1">SIM</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3 col-md-2">
+                      <label for="service_type_id" class="form-label">Tipo de Serviço</label>
+                      <select name="service_type_id" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(service, key) in serviceTypes" :key="key" :value="service.id">
+                          {{ service.name | uppercase}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 col-md-2">
+                      <label for="payment_type" class="form-label">Forma de Pagto</label>
+                      <select name="payment_type" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(payment, key) in paymentTypes" :key="key" :value="payment.id">
+                          {{ payment.name | uppercase}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <button type="submit" class="btn btn-success btn-sm text-uppercase">Criar</button>
+                      <button type="reset" class="btn btn-secondary btn-sm text-uppercase mx-1">Limpar</button>
+                    </div>
+                  </form>
+
+                </div>
+          
+              </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="documents-tab-pane" role="tabpanel" aria-labelledby="documents-tab" tabindex="0">
+              <div class="row my-2">
+                <div class="col-md-4">
+                  <div class="d-grid gap-2 col-12 mx-auto">
+                    <router-link :to="{ name: 'history-register', params: { student: student.id } }" class="btn btn-success btn-sm" type="button">GERAR HISTÓRICO</router-link>
+                    <router-link :to="{ name: 'certificate-register', params: { student: student.id } }" class="btn btn-info btn-sm" type="button">GERAR CERTIFICADO</router-link>
+                  </div>
+                </div>
+                <div class="col-md-8">
+
+                  <!-- //? Documentos -->
+                  <small class="p-0">Documentos emitidos para o aluno até o momento:</small>
+                  <ul class="list-group" v-if="!!hasDocuments.length">
+
+                    <li v-for="(document, key ) in student.documents" class="list-group-item d-flex justify-content-between align-items-center">
+
+                      <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-secondary" :title="`${document.file_name} - ${document.created_at}`">
+                        {{ document.file_name }} - {{ document.created_at }}
+                      </button>
+
+                      <a href="#" class="btn btn-sm btn-outline-secondary"@click.prevent="destroyPDF(document)"> <font-awesome-icon icon="trash" /></a>
+
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>      
+      </div>
+      <hr>
+      <button class="btn btn-sm btn-secondary text-uppercase" @click="$router.go(-1)">
         Voltar
       </button>
+    
     </div>
 
     <LoadingPage v-else />
 </section>
 </template>
   
-  <script>
+<script>
+
 import api from "@/services";
-import { errorsToString, convertDateToDB } from "@/helpers";
+import { errorsToString, convertDateToDB, handlerDelete } from "@/helpers";
 import LoadingPage from "@/components/LoadingPage.vue";
+import ButtonDelete from "@/components/ButtonDelete.vue";
 
 export default {
   name: "StudentEdit",
   components: {
     LoadingPage,
+    ButtonDelete
   },
   props: ["id"],
   data() {
     return {
       convertDateToDB,
-      item: {},
+      student: {},
       teams: {},
-      team_id:null,
+      serviceTypes: {},
+      paymentTypes: {},
+      team_id: null,
+      teamRegistration: "",
+      financial:{
+        registration_id: "",
+        payment_type: "",
+        service_type_id: "",
+        due_date: "",
+        paid: "",
+        value: "",
+      },
+      hasRegistration: [],
+      hasDocuments: [],
+      handlerDelete
     };
   },
   watch:{
-    item(n, o){
+    student(n, o){
       this.team_id = n.teams.length ? n.teams[0].id : ''
     }
   },
   methods: {
+    async getBlob(doc) {
+      await api
+        .get(`/documents/storage/${doc.folder}/${doc.file_name}`, {
+          responseType: "blob",
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/pdf" });
+
+          const link = document.createElement('a');
+
+          link.href = URL.createObjectURL(blob);
+          link.download = doc.file_name;
+          link.click();
+          URL.revokeObjectURL(link.href);
+          
+        })
+        .catch(error => console.error(error))
+    },
+    async destroyPDF(doc){
+      api.get(`/documents/${doc.folder}/${doc.file_name}/remove`)
+      .then(response => {
+        Toast.fire('Sucesso', response.data.message, "success");
+        this.getItens();
+      })
+      .catch((error) => {
+        Toast.fire('Erro', error.response.data.message, "error");
+      });
+    },
     async getTeams() {
       await api.get(`/teams?page=0&perPage=99999`).then((res) => {
         this.teams = res.data.data;
       });
     },
-    async getItem() {
-      await api.get(`/students/${this.id}`).then((res) => {
-        const {
-          name,
-          email,
-          phone,
-          cpf,
-          rg,
-          expedient_body,
-          nationality,
-          naturalness,
-          name_mother,
-          birth_date,
-          gender,
-          teams
-        } = res.data[0];
-
-        this.item = {
-          name,
-          email,
-          phone,
-          cpf,
-          rg,
-          expedient_body,
-          nationality,
-          naturalness,
-          name_mother,
-          birth_date:this.convertDateToDB(birth_date),
-          gender,
-          teams
-        };
+    async getServiceType() {
+      await api.get(`/service-types?page=0&perPage=99999`).then((res) => {
+        this.serviceTypes = res.data.data;
       });
     },
+    async getPaymentService() {
+      await api.get(`/payment-types?page=0&perPage=99999`).then((res) => {
+        this.paymentTypes = res.data.data;
+      });
+    },
+    async getItens() {
+
+      await api.get(`/students/${this.id}`).then((res) => {
+        const student = res.data[0];
+        student.birth_date = this.convertDateToDB(student.birth_date);
+
+        this.hasRegistration = student.registrations; 
+        this.hasDocuments = student.documents; 
+
+        this.student = student;
+
+      });
+    },
+    decimal(v) {
+      return v.replace(/\D/g, '') / 100;
+    },
+    async handlerFinancial() {
+
+      try {
+
+        const formData = new FormData(this.$refs.formFinancial);
+        formData.set('value', this.decimal(formData.get('value')))
+
+        const { data } = await api.post(`/financials`, formData);
+
+        Toast.fire("Sucesso", data.message, "success");
+
+        this.getItens();
+
+      } catch (error) {
+
+        Toast.fire("Erro", error.response.data.message, "error");
+      }
+    },
+    async handlerRegistration() {
+
+      try {
+
+        const { data } = await api.post(`/registrations`, { 'student_id':this.id, 'team_id': this.teamRegistration});
+
+        Toast.fire("Sucesso", data.message, "success");
+
+        this.getItens();
+
+      } catch (error) {
+
+        Toast.fire("Erro", error.response.data.message, "error");
+      }
+    },
     async handlerSubmit() {
-      const form = Object.assign({}, this.item);
+      const form = Object.assign({}, this.student);
 
       try {
         const { data } = await api.put(`/students/${this.$route.params.id}`, form);
         Toast.fire(data.message, "", "success");
       } catch (error) {
-        Toast.fire(errorsToString(error.response.data.errors), "", "error");
+        Toast.fire("Erro", errorsToString(error.response.data.errors), "error");
       }
     },
     async handlerRegisterStudentInTeam(){
@@ -246,22 +541,27 @@ export default {
 
         this.$router.push({ name: "students" });
 
-        Toast.fire(data.message, "", "success");
+        Toast.fire("Sucesso", data.message, "success");
 
       } catch (error) {
-        Toast.fire(errorsToString(error.response.data.errors), "", "error");
+        Toast.fire("Erro", errorsToString(error.response.data.errors), "error");
       }
     },
     reset() {
-      this.getItem();
+      this.getItens();
     },
   },
   mounted() {
-    this.getItem();
+    this.getItens();
     this.getTeams();
+    this.getServiceType();
+    this.getPaymentService();
+
+    $('input[name="value"]').maskMoney();
+
   },
 };
 </script>
   
-  <style scoped>
+<style scoped>
 </style>

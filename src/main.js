@@ -23,6 +23,16 @@ export const EventBus = new Vue();
 // Filters
 Vue.filter('uppercase', v => v.toUpperCase());
 Vue.filter('lowercase', v => v.toLowerCase());
+Vue.filter('currency', function (value) {
+
+  if (typeof value !== "number") 
+    return value;
+  
+  return value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+});
 
 Vue.config.productionTip = false
  

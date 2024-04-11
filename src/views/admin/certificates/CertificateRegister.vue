@@ -152,19 +152,15 @@ export default {
     },
     createdAt() {
       const currentDate = new Date();
-      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1
-        }/${currentDate.getFullYear()}`;
+      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1 }/${currentDate.getFullYear()}`;
       return `Ananindeua - Pará, ${this.displayDateInFull(date)}`;
     },
-    fileName() {
-      const document = this.attachments;
-
-      if (!document.length)
-        return `${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
-
-      const partials = document[0].path.split('/');
-      const fullNameFile = partials[partials.length - 1];
-      return `${fullNameFile}`;
+    newNameFile() {
+      return `XPTO_${this.item.cpf}_${this.typeDocument}.pdf`;
+    },
+    fileFound(){
+      const generatedFiles = this.attachments.filter(e => e.file_name.includes(`XPTO_${this.item.cpf}`));
+      return generatedFiles.length ? generatedFiles[0].file_name : '';
     }
   },
   methods: {
@@ -184,14 +180,14 @@ export default {
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
-        this.teamName = res.data[0].teams[0].name || "";
+        this.teamName = res.data[0].teams.length ? res.data[0].teams[0].name : "";
         this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
         this.item = res.data[0];
       });
     },
     destroyPDF() {
 
-      api.get(`/documents/${this.folder}/${this.fileName}/remove`)
+      api.get(`/documents/${this.folder}/${this.fileFound}/remove`)
         .then(response => {
           this.blobPDF = null;
           Toast.fire(response.data.message, "", "success");
@@ -302,7 +298,8 @@ export default {
       const blob = doc.output("blob");
       this.storeDocumentPDF(blob);
 
-      this.hasDocument()
+      // this.hasDocument()
+      this.hasDocument(this.newNameFile)
     },
     async storeDocumentPDF(blob) {
       const formData = new FormData();
@@ -310,34 +307,37 @@ export default {
       formData.append("pdf", blob);
       formData.append("code", this.code);
       formData.append("type", this.typeDocument);
-      formData.append("team", this.teamName);
+      //! @TODO formData.append("team", this.teamName);
       formData.append("folder", this.folder);
       formData.append("document_name", this.typeDocument);
+      formData.append("registration", 'XPTO');
+
       try {
         await api.post(`/documents/${this.$route.params.student}/store-document`, formData);
       } catch (error) {
         Toast.fire(error, "", "error");
       }
     },
-    async hasDocument() {
+    async hasDocument(filename) {
       this.blobPDF = null;
-
+      // FOCO
       let bool = true;
+
       await api
-        .get(`/documents/storage/${this.folder}/${this.fileName}`, {
+        .get(`/documents/storage/${this.folder}/${filename}`, {
           responseType: "blob",
         })
         .then((response) => {
           const blob = new Blob([response.data], { type: "application/pdf" });
           this.blobPDF = URL.createObjectURL(blob);
         })
-        .catch(() => (bool = false));
+        .catch(() => bool = false);
       return bool;
     },
   },
   watch: {
     item(n, o) {
-      if (this.hasDocument(`${n.cpf}_certificado.pdf`))
+      if (this.hasDocument(this.newNameFile))
         this.blobPDF = null;
     },
   },

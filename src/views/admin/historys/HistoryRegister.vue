@@ -18,13 +18,14 @@
         </div>
         <div class="row">
           <div class="form-group col-md-3">
-            <label for="name">Turma</label>
+            <label for="name">Turmas</label>
             <select id="team" class="form-control" @change="getFullGrid">
               <option disabled value="" selected>-- Selecione --</option>
-              <option v-for="team in teams" :key="team.id" :value="team.id">
-                {{ team.name | uppercase }}
+              <option v-for="registration in registrations" :key="registration.team.id" :value="registration.team.id" :data-matricula="registration.id">
+                {{ registration.team.name | uppercase }}
               </option>
             </select>
+
           </div>
 
           <div class="form-group col-md-2">
@@ -80,6 +81,7 @@
 
           <div class="form-group col-md-2">
             <label for="name">Média</label>
+
             <input
               type="text"
               name="media"
@@ -207,7 +209,7 @@
 
       <div v-else>
 
-        <button v-if="blobPDF" class="btn btn-sm btn-danger my-2" @click="destroyPDF">Apagar Histórico</button>
+        <button v-if="blobPDF" class="btn btn-sm btn-danger my-2" @click="destroyPDF">APAGAR HISTÓRICO</button>
 
         <iframe :src="blobPDF" 
         width="100%" 
@@ -252,20 +254,22 @@ export default {
       item: null,
       attachments: [],
       typeDocument:'HISTORIC',
-      city: "Ananindeua",
+      city: process.env.VUE_APP_CITY,
       day: new Date().getDate(),
-      month: null,
+      month: "",
       year: new Date().getFullYear(),
-      media: "6,0 (seis)",
+      media: process.env.VUE_APP_MEDIA_HISTORICO,
       uf: "PA",
       teams: [],
+      registrations: [],
       gridTemplate: {},
       courseName: "",
       totalStage: 0,
       totalWorkload: 0,
       stagesNumbers: 0,
-      author: "Paideia Educacional",
-      code:'',
+      author: process.env.VUE_APP_AUTHOR,
+      code: '',
+      registration: '',
     };
   },
   filters: {
@@ -281,11 +285,18 @@ export default {
     rangeStage() {
       return this.stagesNumbers;
     },
+    newNameFile() {
+      return `${this.registration}_${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}`;
+    },
+    fileFound(){
+      const generatedFiles = this.attachments.filter(e => e.file_name.includes(`${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}`));
+      return generatedFiles.length ? generatedFiles[0].file_name : '';
+    },
     fileName(){
       const document = this.attachments;
 
       if(!document.length) 
-        return `${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
+        return `${this.registration}_${this.item.cpf}_${this.slug(this.teamName).toUpperCase()}_${this.typeDocument}.pdf`
 
       const partials = document[0].path.split('/');
       const fullNameFile = partials[partials.length - 1];
@@ -299,7 +310,7 @@ export default {
         return;
 
       const gradeFiltered = this.grades.filter((grade) => grade.stage_id == stageId && grade.discipline_id == disciplineId && grade.team_id == teamId);
-      return gradeFiltered[0].grade ?? 0;
+      return gradeFiltered.length ? gradeFiltered[0].grade : '0.0';
 
     },
     async getGradeByStudent(){
@@ -319,7 +330,7 @@ export default {
 
     },
     async destroyPDF(){
-      api.get(`/documents/${this.folder}/${this.fileName}/remove`)
+      api.get(`/documents/${this.folder}/${this.fileFound}/remove`)
       .then(response => {
         this.blobPDF = null;
         document.querySelector('select').value = "";
@@ -330,7 +341,6 @@ export default {
       });
     },
     async storeDocumentPDF(blob) {
-
       const formData = new FormData();
 
       formData.append("pdf", blob);
@@ -339,17 +349,18 @@ export default {
       formData.append("type", this.typeDocument);
       formData.append("folder", this.folder);
       formData.append("document_name", this.typeDocument);
+      formData.append("registration", this.registration);
 
       try {
         await api.post(`/documents/${this.item.id}/store-document`, formData);
       } catch (error) {
-        Toast.fire(error,"", "error");
+        Toast.fire("Erro", error, "error");
       }
     },
     makePDF() {
       if (!this.city || !this.uf || !this.day || !this.month || !this.year) {
 
-        Toast.fire("Por favor, preencha todos os campos.", "", "error");
+        Toast.fire("Erro", "Por favor, preencha todos os campos.", "error");
 
         return window.scroll({
           top: 0,
@@ -381,7 +392,7 @@ export default {
 
       doc.html(target, {
         callback: (pdf) => { 
-          pdf.save(this.fileName);
+          pdf.save(this.newNameFile);
 
           //Saved storage api
           const blob = pdf.output("blob");
@@ -396,13 +407,14 @@ export default {
         y: 160,
       });
 
-      this.$router.push({ name: "students" });
+      this.$router.push({ name: "student-edit", params: { id: this.item.id }});
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
         this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument)
         this.item = res.data[0];
         this.teams = this.item.teams;
+        this.registrations = this.item.registrations;
       });
     },
     async hasDocument(filename){
@@ -420,9 +432,17 @@ export default {
     },
     async getFullGrid(ev) {
 
-      this.teamName = ev.target.options[ev.target.options.selectedIndex].text
-      this.teamId = ev.currentTarget.value;
-      const isShowHistoryPDF = await this.hasDocument(this.fileName);
+      this.gridTemplate = {};
+
+      const { target, currentTarget } = ev;
+
+      const selectedIndex = target.options.selectedIndex;
+
+      this.registration = target.options[selectedIndex].dataset.matricula;
+      this.teamName = target.options[selectedIndex].text;
+      this.teamId = currentTarget.value;
+
+      const isShowHistoryPDF = await this.hasDocument(this.fileFound);
       
       if(isShowHistoryPDF)
        return;

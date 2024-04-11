@@ -42,7 +42,7 @@
             <router-link class="nav-link text-danger" to="/">Home</router-link>
           </div>
           <div v-if="!isLogged" class="pb-4">
-            <router-link class="nav-link text-danger" to="/admin/login">Login Administrativo</router-link>
+            <router-link class="nav-link text-danger" :to="{ name: 'login' }">Login Administrativo</router-link>
           </div>
 
           <div v-else class="pb-4 dropdown">

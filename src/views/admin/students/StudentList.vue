@@ -19,8 +19,9 @@
             <th><a href="#" @click="sort($event, 'name')">Nome</a></th>
             <th>Nome da mãe</th>
             <th>Criado</th>
-            <th>Turma</th>
-            <th width="222px">Documentos</th>
+            <th>Turma [Será removido]</th>
+            <!-- @TODO Sera removido -->
+            <!-- <th width="222px">Documentos</th> -->
             <th width="98px"></th>
           </tr>
         </thead>
@@ -30,13 +31,13 @@
             <td>{{ item.name | uppercase }}</td>
             <td>{{ item.name_mother | uppercase}}</td>
             <td>{{ item.created_at }}</td>
-            <td>{{ item.teams_name | uppercase }}</td>
-            <td>
+            <td> <a href="#" class="btn btn-outline-secondary btn-sm">{{ item.teams_name ? item.teams_name : '→' | uppercase}}</a> </td>
+            <!-- <td>
               <template v-if="item.teams_name">
                 <ButtonHistory :to="{ name: 'history-register', params: { student: item.id } }"/>
                 <ButtonCertificate :to="{ name: 'certificate-register', params: { student: item.id } }"/>
               </template>
-            </td>
+            </td> @TODO Remover -->
             <td>
               <ButtonEdit :to="{ name: 'student-edit', params: { id: item.id } }"/>
               <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
