@@ -160,14 +160,14 @@
 
           <ul class="nav nav-tabs" id="studentTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="registration-tab" data-bs-toggle="tab" data-bs-target="#registration-tab-pane" type="button" role="tab" aria-controls="registration-tab-pane" aria-selected="true">MATRÍCULA(S)</button>
+              <button class="nav-link active" id="registration-tab" data-bs-toggle="tab" data-bs-target="#registration-tab-pane" type="button" role="tab" aria-controls="registration-tab-pane" aria-selected="true">👨‍🎓MATRÍCULA(S)</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial-tab-pane" type="button" role="tab" aria-controls="financial-tab-pane" aria-selected="false">FINANCEIRO</button>
+              <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial-tab-pane" type="button" role="tab" aria-controls="financial-tab-pane" aria-selected="false">💰FINANCEIRO</button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-tab-pane" type="button" role="tab" aria-controls="documents-tab-pane" aria-selected="false">DOCUMENTO(S)</button>
+              <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-tab-pane" type="button" role="tab" aria-controls="documents-tab-pane" aria-selected="false">🖇️DOCUMENTO(S)</button>
             </li>
          
           </ul>
@@ -200,7 +200,7 @@
 
                     <li v-for="(registration, key ) in student.registrations" class="list-group-item d-flex justify-content-between align-items-center">
 
-                        <button class="btn btn-sm btn-outline-secondary" :title="`${registration.user.name} - ${registration.created_at}`">
+                        <button class="btn btn-sm btn-outline-success" :title="`${registration.user.name} - ${registration.created_at}`">
                           {{ String(registration.id).padStart(6, '0') }} | {{ registration.team.name | uppercase }}
                         </button>
                         
@@ -360,7 +360,7 @@
 
                     <li v-for="(document, key ) in student.documents" class="list-group-item d-flex justify-content-between align-items-center">
 
-                      <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-secondary" :title="`${document.file_name} - ${document.created_at}`">
+                      <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-danger" :title="`${document.file_name} - ${document.created_at}`">
                         {{ document.file_name }} - {{ document.created_at }}
                       </button>
 
