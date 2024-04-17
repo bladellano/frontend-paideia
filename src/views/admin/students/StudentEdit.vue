@@ -126,32 +126,6 @@
           <button type="reset" class="btn btn-secondary btn-sm">LIMPAR</button>
         </div>
       </form>
-      <!-- 
-        <h4 class="my-4">Situação:</h4>
-      
-        <form class="mb-4" @submit.prevent="handlerRegisterStudentInTeam" @reset="reset">
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="name" class="mb-2">Turma   
-                <span class="badge" v-bind:class="!!team_id ? 'bg-success' : 'bg-danger'">
-                  Matrículado
-                </span>
-              </label>
-              <select name="gender" v-model="team_id" class="form-control">
-                <option value="" selected>-- Selecione --</option>
-                <option v-for="(opt, index) in teams" :key="index" :value="opt.id">
-                {{ opt.name | uppercase}}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group text-center my-2">
-            <button type="submit" class="btn btn-success btn-sm mx-2">Salvar</button>
-            <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
-          </div>
-
-      </form> -->
 
       <!-- //? Novo processo de matricular -->
 
@@ -168,6 +142,10 @@
 
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-tab-pane" type="button" role="tab" aria-controls="documents-tab-pane" aria-selected="false">🖇️DOCUMENTO(S)</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#books-tab-pane" type="button" role="tab" aria-controls="books-tab-pane" aria-selected="false">📓LIVRO(S)</button>
             </li>
          
           </ul>
@@ -373,6 +351,61 @@
               </div>
             </div>
 
+            <div class="tab-pane fade" id="books-tab-pane" role="tabpanel" aria-labelledby="books-tab" tabindex="0">
+
+              <div class="row my-2">
+
+                <div class="col-md-4">
+
+                  <form ref="formBook" @submit.prevent="handlerCreateBook">
+                    <div class="mb-3">
+                      <label for="team" class="form-label">Turma</label>
+                      <select name="team_id" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(team, key) in teams" :key="key" :value="team.id">
+                          {{ team.name | uppercase}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6 mb-3"><input placeholder="N.º de Registro" type="text" class="form-control form-control-sm" name="registration_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Livro" type="text" class="form-control form-control-sm" name="book_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º da Folha" type="text" class="form-control form-control-sm" name="page_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="Data de Emissão" type="text" class="form-control form-control-sm" name="issue_date"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Certificado" type="text" class="form-control form-control-sm" name="certificate_seal_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Histórico" type="text" class="form-control form-control-sm" name="history_seal_number"></div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm text-uppercase">Salvar</button>
+                  </form>
+
+                </div>
+
+                <div class="col-md-8">
+                  <!-- //? Livros -->
+                  <small class="p-0">Livros emitidos para o aluno até o momento:</small>
+                  <ul class="list-group" v-if="!!hasBooks.length">
+
+                    <li v-for="(book, key ) in student.books" class="list-group-item d-flex justify-content-between align-items-center">
+
+                      <button class="btn btn-sm btn-outline-dark" :title="`${key} - ${book.created_at}`">
+                        N.º de Registro: {{ book.registration_number }} /
+                        N.º do Livro: {{ book.book_number }} /
+                        N.º da Folha: {{ book.page_number }} /
+                        Data de Emissão: {{ book.issue_date }} /
+                        N.º do Selo do Certificado: {{ book.certificate_seal_number }} /
+                        N.º do Selo do Histórico: {{ book.history_seal_number }} /
+                      </button>
+
+                      <ButtonDelete @delete="handlerDelete(book.id, 'books')"/>
+
+                    </li>
+
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
           </div>
 
         </div>      
@@ -421,6 +454,7 @@ export default {
       },
       hasRegistration: [],
       hasDocuments: [],
+      hasBooks: [],
       handlerDelete
     };
   },
@@ -481,6 +515,7 @@ export default {
 
         this.hasRegistration = student.registrations; 
         this.hasDocuments = student.documents; 
+        this.hasBooks = student.books; 
 
         this.student = student;
 
@@ -488,6 +523,25 @@ export default {
     },
     decimal(v) {
       return v.replace(/\D/g, '') / 100;
+    },
+    async handlerCreateBook() {
+      
+      try {
+
+        const formData = new FormData(this.$refs.formBook);
+        formData.set('student_id', this.id);
+
+        const { data } = await api.post(`/books`, formData);
+
+        Toast.fire("Sucesso", data.message, "success");
+
+        this.getItens();
+
+      } catch (error) {
+
+        Toast.fire("Erro", error.response.data.message, "error");
+
+      }
     },
     async handlerFinancial() {
 

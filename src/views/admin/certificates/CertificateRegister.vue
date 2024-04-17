@@ -136,10 +136,10 @@ export default {
       attachments: [],
       textDocumentSelected: null,
       textWithCode: "Código de validação: ",
-      textBack:
-        "Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023",
+      textBack: "Certificado Registrado sob nº 03\nNo Livro nº 1 Folha nº 01\nEm 08 de maio de 2023",
       obsBack: "",
       createdAtText: "",
+      books: [],
     };
   },
   computed: {
@@ -183,6 +183,11 @@ export default {
         this.teamName = res.data[0].teams.length ? res.data[0].teams[0].name : "";
         this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
         this.item = res.data[0];
+        this.books = res.data[0].books;
+
+        if(this.books.length) //! @TODO
+          this.textBack = `Certificado Registrado sob nº ${this.books[0].registration_number} \nNo Livro nº ${this.books[0].book_number} Folha nº ${this.books[0].page_number}\nEm ${this.books[0].issue_date}`;
+        
       });
     },
     destroyPDF() {
@@ -298,7 +303,6 @@ export default {
       const blob = doc.output("blob");
       this.storeDocumentPDF(blob);
 
-      // this.hasDocument()
       this.hasDocument(this.newNameFile)
     },
     async storeDocumentPDF(blob) {
@@ -320,8 +324,8 @@ export default {
     },
     async hasDocument(filename) {
       this.blobPDF = null;
-      // FOCO
-      let bool = true;
+      
+      var bool = true;
 
       await api
         .get(`/documents/storage/${this.folder}/${filename}`, {
