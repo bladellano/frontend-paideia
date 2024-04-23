@@ -39,7 +39,6 @@
                 data-bs-parent="#accordion">
                 <div class="accordion-body">
 
-                  <!-- FOCO -->
                   <label for="">Matrícula(s):</label>
 
                   <select name="registration" id="registration" v-model="registration" class="form-control form-control-sm mb-2" @change="verifyExistsCertificate">
@@ -176,10 +175,7 @@ export default {
       return new Date().getFullYear();
     },
     verifyExistsCertificate(ev) {
-
       this.getItem();
-      console.log("ev ", ev);
-
     },
     handlerSelectText(ev) {
 
@@ -322,7 +318,7 @@ export default {
     },
     async storeDocumentPDF(blob) {
       const formData = new FormData();
-      // FOCO
+      
       formData.append("pdf", blob);
       formData.append("code", this.code);
       formData.append("type", this.typeDocument);
