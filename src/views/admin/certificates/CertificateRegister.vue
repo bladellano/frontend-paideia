@@ -38,8 +38,19 @@
               <div id="collapse-front" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                 data-bs-parent="#accordion">
                 <div class="accordion-body">
+
+                  <!-- FOCO -->
+                  <label for="">Matrícula(s):</label>
+
+                  <select name="registration" id="registration" v-model="registration" class="form-control form-control-sm mb-2" @change="verifyExistsCertificate">
+                    <option value="" selected disabled>-- Selecione --</option>
+                    <option v-for="(opt, index) in hasRegistration" :key="index" :value="opt.id">
+                      {{ String(opt.id).padStart(6, '0') }} | {{ opt.team.name }}
+                    </option>
+                  </select>
+
                   <label for="">Texto de Documentos:</label>
-                  <select name="" id="" class="form-control" @change="handlerSelectText">
+                  <select name="" id="" class="form-control form-control-sm" @change="handlerSelectText">
                     <option value="" selected disabled>-- Selecione --</option>
 
                     <option v-for="(opt, index) in textDocuments" :key="index" :value="opt.id">
@@ -50,14 +61,14 @@
                   <hr />
 
                   <label for="">Linha 1:</label>
-                  <textarea cols="30" rows="8" class="form-control mt-2" v-model="textDocumentSelected"></textarea>
+                  <textarea cols="30" rows="8" class="form-control form-control-sm mt-2" v-model="textDocumentSelected"></textarea>
                   <label for="">Linha 2:</label>
-                  <input type="text" class="form-control mt-2" v-model="textWithCode" />
+                  <input type="text" class="form-control form-control-sm mt-2" v-model="textWithCode" />
                   <label for="">Linha 3:</label>
-                  <input type="text" class="form-control mt-2" v-model="createdAtText" />
+                  <input type="text" class="form-control form-control-sm mt-2" v-model="createdAtText" />
                   <hr>
                   <label class="text-danger" for="code">Código Validador:</label>
-                  <input type="text" class="form-control mt-2" v-model="code" id="code"/>
+                  <input type="text" class="form-control form-control-sm mt-2" v-model="code" id="code" />
 
                 </div>
               </div>
@@ -73,24 +84,17 @@
                 data-bs-parent="#accordion">
                 <div class="accordion-body">
                   <label for="">Linha 1:</label>
-                  <textarea cols="30" rows="4" class="form-control mt-2" v-model="textBack"></textarea>
+                  <textarea cols="30" rows="4" class="form-control form-control-sm mt-2" v-model="textBack"></textarea>
                   <label for="">Linha 2 (observação):</label>
-                  <input type="text" class="form-control mt-2" v-model="obsBack" />
+                  <input type="text" class="form-control form-control-sm mt-2" v-model="obsBack" />
                 </div>
               </div>
             </div>
           </div>
 
           <div class="row mt-2">
-            <div class="col-md-6 text-center">
-              <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)">
-                Voltar
-              </button>
-            </div>
-            <div class="col-md-6 text-center">
-
+            <div class="col-md-12 text-center">
               <button v-if="!blobPDF" @click="makePDF" class="btn btn-success btn-sm text-uppercase">Gerar PDF</button>
-
             </div>
           </div>
         </div>
@@ -101,7 +105,9 @@
     <iframe v-else :src="blobPDF" width="100%" height="680" style="border: none">
     </iframe>
 
-    <button v-if="blobPDF" @click="destroyPDF" class="btn btn-sm text-uppercase btn-danger ">Apagar Certificado</button>
+    <button v-if="blobPDF" @click="destroyPDF" class="btn btn-sm text-uppercase btn-danger me-2">Apagar Certificado</button>
+
+    <button class="btn btn-sm text-uppercase btn-secondary text-uppercase" @click="$router.go(-1)">Voltar</button>
 
   </section>
 </template>
@@ -140,6 +146,8 @@ export default {
       obsBack: "",
       createdAtText: "",
       books: [],
+      hasRegistration: [],
+      registration:""
     };
   },
   computed: {
@@ -152,20 +160,26 @@ export default {
     },
     createdAt() {
       const currentDate = new Date();
-      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1 }/${currentDate.getFullYear()}`;
+      const date = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
       return `Ananindeua - Pará, ${this.displayDateInFull(date)}`;
     },
     newNameFile() {
-      return `XPTO_${this.item.cpf}_${this.typeDocument}.pdf`;
+      return `${this.registration}_${this.item.cpf}_${this.typeDocument}.pdf`;
     },
-    fileFound(){
-      const generatedFiles = this.attachments.filter(e => e.file_name.includes(`XPTO_${this.item.cpf}`));
+    fileFound() {
+      const generatedFiles = this.attachments.filter(e => e.file_name.includes(`${this.registration}_${this.item.cpf}`));
       return generatedFiles.length ? generatedFiles[0].file_name : '';
     }
   },
   methods: {
     getFullYear() {
       return new Date().getFullYear();
+    },
+    verifyExistsCertificate(ev) {
+
+      this.getItem();
+      console.log("ev ", ev);
+
     },
     handlerSelectText(ev) {
 
@@ -184,10 +198,11 @@ export default {
         this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
         this.item = res.data[0];
         this.books = res.data[0].books;
+        this.hasRegistration = res.data[0].registrations; 
 
-        if(this.books.length) //! @TODO
+        if (this.books.length) //! @TODO
           this.textBack = `Certificado Registrado sob nº ${this.books[0].registration_number} \nNo Livro nº ${this.books[0].book_number} Folha nº ${this.books[0].page_number}\nEm ${this.books[0].issue_date}`;
-        
+
       });
     },
     destroyPDF() {
@@ -203,8 +218,8 @@ export default {
     },
     makePDF() {
 
-      if (!this.textDocumentSelected)
-        return Toast.fire('Selecione um texto de conclusão para o Certificado.', "", "error");
+      if (!this.textDocumentSelected || !this.registration)
+        return Toast.fire("Erro", 'Você não selecionou um texto ou a matrícula para gerar o certificado.', "error");
 
       jsPDF.API.events.push(['addFonts', function () {
         this.addFileToVFS('vibes.ttf', GreatVibes);
@@ -307,14 +322,14 @@ export default {
     },
     async storeDocumentPDF(blob) {
       const formData = new FormData();
-
+      // FOCO
       formData.append("pdf", blob);
       formData.append("code", this.code);
       formData.append("type", this.typeDocument);
       //! @TODO formData.append("team", this.teamName);
       formData.append("folder", this.folder);
       formData.append("document_name", this.typeDocument);
-      formData.append("registration", 'XPTO');
+      formData.append("registration", this.registration);
 
       try {
         await api.post(`/documents/${this.$route.params.student}/store-document`, formData);
@@ -324,7 +339,7 @@ export default {
     },
     async hasDocument(filename) {
       this.blobPDF = null;
-      
+
       var bool = true;
 
       await api
