@@ -273,6 +273,16 @@
                       to="/admin/reports/general-report-of-students">Geral</router-link>
                   </li>
 
+                  <li>
+                    <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/reports/diario-de-classe">Diário de Classe</router-link>
+                  </li>
+
+                  <li>
+                    <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2"
+                      to="/admin/reports/lista-simples-por-turma">Lista Simples Por Turma</router-link>
+                  </li>
+
                 </ul>
               </div>
             </div>
