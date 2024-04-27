@@ -63,6 +63,7 @@ import GridTemplateRegister from '../views/admin/grids/GridTemplateRegister.vue'
 //Reports
 import GeneralReportOfStudents from '../views/admin/reports/GeneralReportOfStudents.vue'
 import DiarioDeClasse from '../views/admin/reports/DiarioDeClasse.vue'
+import AlunosPorTurma from '../views/admin/reports/AlunosPorTurma.vue'
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
@@ -295,6 +296,11 @@ const routes = [
                 path: "reports/diario-de-classe",
                 name: "diario-de-classe",
                 component: DiarioDeClasse,
+            },
+            {
+                path: "reports/alunos-por-turma",
+                name: "alunos-por-turma",
+                component: AlunosPorTurma,
             },
         ]
     }

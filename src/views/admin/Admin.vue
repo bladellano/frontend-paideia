@@ -280,7 +280,7 @@
 
                   <li>
                     <router-link class="text-decoration-none btn btn-secondary btn-sm mt-2"
-                      to="/admin/reports/lista-simples-por-turma">Lista Simples Por Turma</router-link>
+                      to="/admin/reports/alunos-por-turma">Alunos Por Turma</router-link>
                   </li>
 
                 </ul>
