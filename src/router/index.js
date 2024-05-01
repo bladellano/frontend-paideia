@@ -133,7 +133,7 @@ const routes = [
             },
             {
                 path: "ensinos/registrar",
-                name: "ensino-register",
+                name: "teaching-register",
                 component: TeachingRegister,
             },
             // DOCUMENTOS
