@@ -176,7 +176,7 @@
                   <small>Turmas em que o aluno está matriculado:</small>
                   <ul class="list-group">
 
-                    <li v-for="(registration, key ) in student.registrations" class="list-group-item d-flex justify-content-between align-items-center">
+                    <li v-for="(registration, key) in student.registrations" :key="key" class="list-group-item d-flex justify-content-between align-items-center">
 
                         <button class="btn btn-sm btn-outline-success" :title="`${registration.user.name} - ${registration.created_at}`">
                           {{ String(registration.id).padStart(6, '0') }} | {{ registration.team.name | uppercase }}
@@ -214,8 +214,9 @@
                       <th scope="col">Serviço</th>
                       <th scope="col">Valor</th>
                       <th scope="col">Vencimento</th>
+                      <th scope="col">Data do Pagamento</th>
                       <th scope="col">Quitado</th>
-                      <th scope="col">Forma de Pagto</th>
+                      <th scope="col">Forma de Pagamento</th>
                       <th scope="col">Obs.</th>
                       <th scope="col">Criando</th>
                       <th scope="col">Usuário</th>
@@ -224,22 +225,31 @@
                   </thead>
                   <tbody>
 
-                    <template v-if="!!hasRegistration.length" v-for="(registration) in student.registrations" >
+                    <template v-if="!!hasRegistration.length">
 
-                      <tr v-for="(financial) in registration.financials">
-                        <td>{{ financial.id }}</td>
-                        <td>{{ String(financial.registration_id).padStart(6, '0') }}</td>
-                        <td>{{ financial.service_type.name }}</td>
-                        <td>{{ financial.value | currency}}</td>
-                        <td>{{ financial.due_date }}</td>
-                        <td>{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
-                        <td>{{ financial.payment_type.name }}</td>
-                        <td>{{ financial.observations }}</td>
-                        <td>{{ financial.created_at }}</td>
-                        <td>{{ financial.user.name }}</td>
-                        <td> <ButtonDelete @delete="handlerDelete(financial.id, 'financials')"/> </td>
-                      </tr>
+                      <template v-for="(registration) in student.registrations">
 
+                        <tr v-for="(financial, index) in registration.financials" :key="index">
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.id }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ String(financial.registration_id).padStart(6, '0') }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.service_type.name }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.value | currency}}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.due_date }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.pay_day }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.payment_type.name }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.observations }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.created_at }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)" >{{ financial.user.name }}</td>
+                          <td :class="styleToHighlightPaymentStatus(financial)"  style="width:100px"> 
+                            <button class="btn btn-outline-secondary btn-sm" @click="showModalFinancial(financial.id)">
+                              <font-awesome-icon icon="edit" />
+                            </button>
+                            <ButtonDelete @delete="handlerDelete(financial.id, 'financials')"/> 
+                          </td>
+                        </tr>
+
+                      </template>
                     </template>
 
                   </tbody>
@@ -250,7 +260,6 @@
               <div class="row my-2">
 
                 <div class="col-md-12">
-
                   <form ref="formFinancial" @submit.prevent="handlerFinancial" class="row" @reset="reset">
 
                     <div class="mb-3 col-md-3">
@@ -263,7 +272,7 @@
                       </select>
                     </div>
 
-                    <div class="mb-3 col-md-2">
+                    <div class="mb-3 col-md-1">
                       <label for="value" class="form-label">Valor</label>
 
                       <input 
@@ -279,7 +288,7 @@
 
                     <div class="mb-3 col-md-2">
                       <label for="due_date" class="form-label">Vencimento</label>
-                      <input type="date" class="form-control form-control-sm" name="due_date" placeholder="R$">
+                      <input type="date" class="form-control form-control-sm" name="due_date">
                     </div>
 
                     <div class="mb-3 col-md-1">
@@ -301,13 +310,24 @@
                       </select>
                     </div>
                     <div class="mb-3 col-md-2">
-                      <label for="payment_type" class="form-label">Forma de Pagto</label>
+                      <label for="payment_type" class="form-label">Forma de Pagamento</label>
                       <select name="payment_type" class="form-control form-control-sm">
                         <option value="" selected disabled>-- Selecione --</option>
                         <option v-for="(payment, key) in paymentTypes" :key="key" :value="payment.id">
                           {{ payment.name | uppercase}}
                         </option>
                       </select>
+                    </div>
+
+                    <div class="mb-3 col-md-1">
+                      <label for="observations" class="form-label">Observação</label>
+
+                      <input 
+                        type="text"
+                        class="form-control form-control-sm" 
+                        name="observations"
+                      >
+
                     </div>
 
                     <div class="col-md-4">
@@ -336,7 +356,7 @@
                   <small class="p-0">Documentos emitidos para o aluno até o momento:</small>
                   <ul class="list-group" v-if="!!hasDocuments.length">
 
-                    <li v-for="(document, key ) in student.documents" class="list-group-item d-flex justify-content-between align-items-center">
+                    <li v-for="(document, key) in student.documents" :key="key" class="list-group-item d-flex justify-content-between align-items-center">
 
                       <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-danger" :title="`${document.file_name} - ${document.created_at}`">
                         {{ document.file_name }} - {{ document.created_at }}
@@ -385,7 +405,7 @@
                   <small class="p-0">Livros emitidos para o aluno até o momento:</small>
                   <ul class="list-group" v-if="!!hasBooks.length">
 
-                    <li v-for="(book, key ) in student.books" class="list-group-item d-flex justify-content-between align-items-center">
+                    <li v-for="(book, key) in student.books" :key="key" class="list-group-item d-flex justify-content-between align-items-center">
 
                       <button class="btn btn-sm btn-outline-dark" :title="`${key} - ${book.created_at}`">
                         N.º de Registro: {{ book.registration_number }} /
@@ -418,7 +438,123 @@
     </div>
 
     <LoadingPage v-else />
+
+    <!-- MODAL FINANCIAL -->
+    <!--//! @TODO criar um componente para os campos do financeiro - nao precisa engloba os VERBOS (POST, PUT) -->
+    <div class="modal fade" id="modalFinancial" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Financeiro</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <form ref="formFinancialUpdate" @submit.prevent="handlerFinancialUpdate">
+
+              <div class="row mb-3 form-update">
+
+                  <label for="registration_id" class="col-sm-6 col-form-label">Matrícula</label>
+                  <div class="col-sm-6">
+                    <input 
+                      disabled
+                      type="text" 
+                      class="form-control form-control-sm" 
+                      name="registration_id"
+                    >
+                  </div>
+                  <!-- -- --  -->
+                  <label for="value" class="col-sm-6 col-form-label">Valor</label>
+                  <div class="col-sm-6">
+                    <input 
+                      type="text" 
+                      class="form-control form-control-sm" 
+                      name="value"
+                      data-thousands="." 
+                      placeholder="0,00"
+                      data-decimal=","
+                    >
+                  </div>
+                  <!-- -- --  -->
+                  <label for="due_date" class="col-sm-6 col-form-label">Vencimento</label>
+                  <div class="col-sm-6">
+                    <input 
+                      type="date" 
+                      class="form-control form-control-sm" 
+                      name="due_date"
+                    >
+                  </div>
+
+                  <!-- -- --  -->
+                  <label for="paid" class="col-sm-6 col-form-label">Quitado</label>
+                  <div class="col-sm-6">
+                    <select name="paid" class="form-control form-control-sm">
+                      <option value="" selected disabled>--</option>
+                      <option value="0">NÃO</option>
+                      <option value="1">SIM</option>
+                    </select>
+                  </div>
+
+                  <!-- -- --  -->
+                  <label for="service_type_id" class="col-sm-6 col-form-label">Tipo de Serviço</label>
+                  <div class="col-sm-6">
+                    <select name="service_type_id" class="form-control form-control-sm">
+                      <option value="" selected disabled>-- Selecione --</option>
+                      <option v-for="(service, key) in serviceTypes" :key="key" :value="service.id">
+                        {{ service.name | uppercase}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- -- --  -->
+                  <label for="payment_type" class="col-sm-6 col-form-label">Forma de Pagamento</label>
+                  <div class="col-sm-6">
+                    <select name="payment_type" class="form-control form-control-sm">
+                        <option value="" selected disabled>-- Selecione --</option>
+                        <option v-for="(payment, key) in paymentTypes" :key="key" :value="payment.id">
+                          {{ payment.name | uppercase}}
+                        </option>
+                      </select>
+                  </div>
+
+                     <!-- -- --  -->
+                  <label for="pay_day" class="col-sm-6 col-form-label">Dia do Pagamento</label>
+                  <div class="col-sm-6">
+                    <input 
+                      type="date" 
+                      class="form-control form-control-sm" 
+                      name="pay_day"
+                    >
+                  </div>
+
+                  <!-- -- --  -->
+                  <label for="observations" class="col-sm-12 col-form-label">Observação</label>
+                  <div class="col-sm-12">
+                    <input 
+                      type="text" 
+                      class="form-control form-control-sm" 
+                      name="observations"
+                    >
+                  </div>
+              
+              </div>
+
+              <button type="submit" class="btn btn-success btn-sm">
+                ATUALIZAR
+              </button>
+              
+          </form>
+              
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">FECHAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </section>
+
 </template>
   
 <script>
@@ -443,6 +579,7 @@ export default {
       serviceTypes: {},
       paymentTypes: {},
       team_id: null,
+      financial_id: null,
       teamRegistration: "",
       financial:{
         registration_id: "",
@@ -457,13 +594,17 @@ export default {
       hasBooks: [],
       handlerDelete
     };
-  },
+  }, 
   watch:{
     student(n, o){
       this.team_id = n.teams.length ? n.teams[0].id : ''
     }
   },
   methods: {
+    styleToHighlightPaymentStatus(financial) {
+      //! @TODO adicionar mais status: padrao, pago e nao pago (passou do vencimento)
+      return financial.paid ? 'table-success' : 'table-danger'
+    },
     async getBlob(doc) {
       await api
         .get(`/documents/storage/${doc.folder}/${doc.file_name}`, {
@@ -543,6 +684,28 @@ export default {
 
       }
     },
+    async handlerFinancialUpdate() {
+      
+      try {
+
+        const formData = new FormData(this.$refs.formFinancialUpdate);
+        formData.set('value', this.decimal(formData.get('value')))
+
+        const { data } = await api.put(`/financials/${this.financial_id}`, Object.fromEntries(formData.entries()));
+
+        Toast.fire("Sucesso", data.message, "success");
+
+        this.getItens();
+
+        this.financial_id = null;
+
+        } catch (error) {
+
+        Toast.fire("Erro", error.response.data.message, "error");
+
+      }
+
+    },  
     async handlerFinancial() {
 
       try {
@@ -555,6 +718,49 @@ export default {
         Toast.fire("Sucesso", data.message, "success");
 
         this.getItens();
+
+      } catch (error) {
+
+        Toast.fire("Erro", error.response.data.message, "error");
+      }
+    },
+    async showModalFinancial(id) {
+
+      try {
+
+        const { data } = await api.get(`/financials/${id}`);
+
+        for(let field in data) {
+
+          const hasField = document.querySelector(`.form-update [name="${field}"]`);
+
+          if(hasField) {
+
+            if(field == 'due_date' || field == 'pay_day') {
+
+              hasField.value = this.convertDateToDB(data[field]);
+
+            } else if (field == 'value') {
+
+              const valorFormatado = data[field].toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              });
+
+              hasField.value = valorFormatado;
+
+            } else {
+
+              hasField.value = data[field];
+
+            }
+
+          }
+        }
+
+        jQuery("#modalFinancial").modal('show');
+
+        this.financial_id = id;
 
       } catch (error) {
 
