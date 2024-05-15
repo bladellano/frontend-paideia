@@ -167,7 +167,7 @@
                       <TheMask
                         type="text"
                         class="form-control"
-                        :value="!stage.workload ? '0.0' : getGradeByInput(stage.stage_id, stage.discipline_id, teamId)"
+                        :value="!stage.workload ? '***' : getGradeByInput(stage.stage_id, stage.discipline_id, teamId)"
                         :name="'grade[' + item.id + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + teamId + ']'"
                         :mask="['#.#', '##.#']"
                         :disabled="!stage.workload ? true : false"

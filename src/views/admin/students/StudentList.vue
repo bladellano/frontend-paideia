@@ -23,14 +23,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.name | uppercase }}</td>
-            <td>{{ item.name_mother | uppercase}}</td>
-            <td>{{ item.created_at }}</td>
+          <tr v-for="student in items" :key="student.id">
+            <td>{{ student.id }}</td>
+            <td>{{ student.name | uppercase }} <span class="badge bg-success text-uppercase">{{ student.teams }}</span></td>
+            <td>{{ student.name_mother | uppercase}}</td>
+            <td>{{ student.created_at }}</td>
             <td>
-              <ButtonEdit :to="{ name: 'student-edit', params: { id: item.id } }"/>
-              <ButtonDelete @delete="handlerDelete(item.id, 'students')"/>
+              <ButtonEdit :to="{ name: 'student-edit', params: { id: student.id } }"/>
+              <ButtonDelete @delete="handlerDelete(student.id, 'students')"/>
             </td>
           </tr>
         </tbody>
@@ -92,10 +92,9 @@ export default {
       let uri = `/students?page=${page}` + query;
 
       await api.get(uri).then((res) => {
+
         const students = res.data.data.map(function (student) {
-          student.teams_name = student.teams
-            ? student.teams.map((team) => team.name).join(", ") // Pega somente o nome das turmas dos objetos
-            : [];
+          student.teams = student.registrations.map(item => item.team.name).join(" / ");
           return student;
         });
 
