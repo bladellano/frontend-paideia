@@ -91,3 +91,7 @@ export function slug(string) {
     .replace(/-+/g, "-") // Remove múltiplos hífens seguidos
     .toLowerCase(); // Converte para letras minúsculas
 }
+
+export function decimal(v) {
+    return v.replace(/\D/g, '') / 100;
+}

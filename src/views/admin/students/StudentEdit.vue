@@ -206,22 +206,15 @@
 
                                 <tr v-for="(financial, index) in registration.financials" :key="index">
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.id }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{
-                                    String(financial.registration_id).padStart(6, '0') }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)"><span
-                                      class="badge rounded-pill bg-secondary">{{ registration.team.name }}</span></td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.service_type.name
-                                    }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.value | currency }}
-                                  </td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ String(financial.registration_id).padStart(6, '0') }}</td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)"><span class="badge rounded-pill bg-secondary">{{ registration.team.name }}</span></td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.service_type.name }}</td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.value | currency }} </td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.due_date }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.pay_day }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.paid ? 'SIM' :
-                                    'NÃO' }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.payment_type.name
-                                    }}</td>
-                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.observations }}
-                                  </td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.payment_type.name }}</td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.observations }} </td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.created_at }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.user.name }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)" style="width:100px">
@@ -265,20 +258,15 @@
                               <select v-if="!!hasRegistration.length" name="registration_id"
                                 class="form-control form-control-sm">
                                 <option value="" selected disabled>-- Selecione --</option>
-                                <option v-for="(registration, key) in student.registrations" :key="key"
-                                  :value="registration.id">
-                                  {{ String(registration.id).padStart(6, '0') }} - {{ registration.team.name | uppercase
-                                  }}
+                                <option v-for="(registration, key) in student.registrations" :key="key" :value="registration.id">
+                                  {{ String(registration.id).padStart(6, '0') }} - {{ registration.team.name | uppercase }}
                                 </option>
                               </select>
                             </div>
 
                             <div class="mb-3 col-md-1">
                               <label for="value" class="form-label">Valor</label>
-
-                              <input type="text" class="form-control form-control-sm" name="value" placeholder="0,00"
-                                data-thousands="." data-decimal=",">
-
+                              <input type="text" class="form-control form-control-sm" name="value" placeholder="0,00" data-thousands="." data-decimal=",">
                             </div>
 
                             <div class="mb-3 col-md-2">
@@ -316,9 +304,7 @@
 
                             <div class="mb-3 col-md-1">
                               <label for="observations" class="form-label">Observação</label>
-
                               <input type="text" class="form-control form-control-sm" name="observations">
-
                             </div>
 
                             <div class="col-md-4">
@@ -338,15 +324,12 @@
 
             </div>
 
-            <div class="tab-pane fade" id="documents-tab-pane" role="tabpanel" aria-labelledby="documents-tab"
-              tabindex="0">
+            <div class="tab-pane fade" id="documents-tab-pane" role="tabpanel" aria-labelledby="documents-tab" tabindex="0">
               <div class="row my-2">
                 <div class="col-md-4">
                   <div class="d-grid gap-2 col-12 mx-auto">
-                    <router-link :to="{ name: 'history-register', params: { student: student.id } }"
-                      class="btn btn-success btn-sm" type="button">GERAR HISTÓRICO</router-link>
-                    <router-link :to="{ name: 'certificate-register', params: { student: student.id } }"
-                      class="btn btn-info btn-sm" type="button">GERAR CERTIFICADO</router-link>
+                    <router-link :to="{ name: 'history-register', params: { student: student.id } }" class="btn btn-success btn-sm" type="button">GERAR HISTÓRICO</router-link>
+                    <router-link :to="{ name: 'certificate-register', params: { student: student.id } }" class="btn btn-info btn-sm" type="button">GERAR CERTIFICADO</router-link>
                   </div>
                 </div>
                 <div class="col-md-8">
@@ -355,17 +338,15 @@
                   <small class="p-0">Documentos emitidos para o aluno até o momento:</small>
                   <ul class="list-group" v-if="!!hasDocuments.length">
 
-                    <li v-for="(document, key) in student.documents" :key="key"
-                      class="list-group-item d-flex justify-content-between align-items-center">
+                    <li v-for="(document, key) in student.documents" :key="key" class="list-group-item d-flex justify-content-between align-items-center">
 
-                      <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-danger"
-                        :title="`${document.file_name} - ${document.created_at}`">
+                      <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-danger" :title="`${document.file_name} - ${document.created_at}`">
                         {{ document.file_name }} - {{ document.created_at }}
                       </button>
 
                       <a href="#" class="btn btn-sm btn-outline-secondary" @click.prevent="destroyPDF(document)">
 
-                        <font-awesome-icon icon="trash" /></a>
+                      <font-awesome-icon icon="trash" /></a>
 
                     </li>
 
@@ -391,18 +372,12 @@
                       </select>
                     </div>
                     <div class="row mb-3">
-                      <div class="col-md-6 mb-3"><input placeholder="N.º de Registro" type="text"
-                          class="form-control form-control-sm" name="registration_number"></div>
-                      <div class="col-md-6 mb-3"><input placeholder="N.º do Livro" type="text"
-                          class="form-control form-control-sm" name="book_number"></div>
-                      <div class="col-md-6 mb-3"><input placeholder="N.º da Folha" type="text"
-                          class="form-control form-control-sm" name="page_number"></div>
-                      <div class="col-md-6 mb-3"><input placeholder="Data de Emissão" type="text"
-                          class="form-control form-control-sm" name="issue_date"></div>
-                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Certificado" type="text"
-                          class="form-control form-control-sm" name="certificate_seal_number"></div>
-                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Histórico" type="text"
-                          class="form-control form-control-sm" name="history_seal_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º de Registro" type="text" class="form-control form-control-sm" name="registration_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Livro" type="text" class="form-control form-control-sm" name="book_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º da Folha" type="text" class="form-control form-control-sm" name="page_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="Data de Emissão" type="text" class="form-control form-control-sm" name="issue_date"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Certificado" type="text" class="form-control form-control-sm" name="certificate_seal_number"></div>
+                      <div class="col-md-6 mb-3"><input placeholder="N.º do Selo do Histórico" type="text" class="form-control form-control-sm" name="history_seal_number"></div>
                     </div>
                     <button type="submit" class="btn btn-success btn-sm text-uppercase">Salvar</button>
                   </form>
@@ -480,10 +455,10 @@
                   <input type="date" class="form-control form-control-sm" name="due_date">
                 </div>
 
-                <!-- -- --  -->
+                <!-- -- -- -->
                 <label for="paid" class="col-sm-6 col-form-label">Quitado</label>
                 <div class="col-sm-6">
-                  <select name="paid" class="form-control form-control-sm">
+                  <select name="paid" class="form-control form-control-sm" v-model="paidValue">
                     <option value="" selected disabled>--</option>
                     <option value="0">NÃO</option>
                     <option value="1">SIM</option>
@@ -526,9 +501,14 @@
 
               </div>
 
-              <button type="submit" class="btn btn-success btn-sm">
-                ATUALIZAR
-              </button>
+              <div class="row">
+                <div class="col-md-6">
+                  <button type="submit" class="btn btn-success btn-sm">ATUALIZAR</button>
+                </div>
+                <div class="col-md-6 text-end"> 
+                  <a v-if="showReceipt" type="button" @click="generateReceipt" class="link-secondary"><u>🧾 Emitir Recibo</u></a>
+                </div>
+              </div>
 
             </form>
 
@@ -547,7 +527,7 @@
 <script>
 
 import api from "@/services";
-import { errorsToString, convertDateToDB, handlerDelete } from "@/helpers";
+import { errorsToString, convertDateToDB, handlerDelete, decimal } from "@/helpers";
 import LoadingPage from "@/components/LoadingPage.vue";
 import ButtonDelete from "@/components/ButtonDelete.vue";
 
@@ -561,12 +541,14 @@ export default {
   data() {
     return {
       convertDateToDB,
-      student: {},
-      teams: {},
-      serviceTypes: {},
-      paymentTypes: {},
-      team_id: null,
-      financial_id: null,
+      decimal,
+      handlerDelete,
+      student: [],
+      teams: [],
+      serviceTypes: [],
+      paymentTypes: [],
+      team_id: "",
+      financial_id: "",
       teamRegistration: "",
       financial: {
         registration_id: "",
@@ -576,15 +558,19 @@ export default {
         paid: "",
         value: "",
       },
+      showReceipt: 0,
+      paidValue: "",
       hasRegistration: [],
       hasDocuments: [],
       hasBooks: [],
-      handlerDelete
     };
   },
   watch: {
     student(n, o) {
       this.team_id = n.teams.length ? n.teams[0].id : ''
+    },
+    paidValue(n, o) {
+      this.showReceipt = +n;
     }
   },
   methods: {
@@ -661,9 +647,6 @@ export default {
 
       });
     },
-    decimal(v) {
-      return v.replace(/\D/g, '') / 100;
-    },
     async handlerCreateBook() {
 
       try {
@@ -688,6 +671,7 @@ export default {
       try {
 
         const formData = new FormData(this.$refs.formFinancialUpdate);
+
         formData.set('value', this.decimal(formData.get('value')))
 
         const { data } = await api.put(`/financials/${this.financial_id}`, Object.fromEntries(formData.entries()));
@@ -723,11 +707,48 @@ export default {
         Toast.fire("Erro", error.response.data.message, "error");
       }
     },
+    async generateReceipt() {
+
+      if (!this.financial_id)
+        return Toast.fire('Erro', 'Por favor, selecione uma pendência financeira.', "error");
+
+        try {
+
+            this.loading = !this.loading;
+
+            await api
+                .get(`/exports/receipt/${this.financial_id}`, {
+                    responseType: "blob",
+                })
+                .then((response) => {
+
+                    const blob = new Blob(
+                        [response.data],
+                        { type: "application/pdf" }
+                    );
+
+                    const a = document.createElement("a");
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `Recibo - ` + this.student.name.toUpperCase();
+                    a.click();
+
+                });
+
+        } catch (error) {
+            Toast.fire('Erro', error.message, "error");
+        }
+
+        this.loading = !this.loading;
+
+    },
     async showModalFinancial(id) {
 
       try {
 
         const { data } = await api.get(`/financials/${id}`);
+
+        this.showReceipt = data.paid;
+        this.paidValue = data.paid;
 
         for (let field in data) {
 
