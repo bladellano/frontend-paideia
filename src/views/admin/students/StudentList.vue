@@ -25,7 +25,7 @@
         <tbody>
           <tr v-for="student in items" :key="student.id">
             <td>{{ student.id }}</td>
-            <td>{{ student.name | uppercase }} <span class="badge bg-success text-uppercase">{{ student.teams }}</span></td>
+            <td>{{ student.name | uppercase }} <span v-html="student.teams"></span> </td>
             <td>{{ student.name_mother | uppercase}}</td>
             <td>{{ student.created_at }}</td>
             <td>
@@ -94,7 +94,7 @@ export default {
       await api.get(uri).then((res) => {
 
         const students = res.data.data.map(function (student) {
-          student.teams = student.registrations.map(item => item.team.name).join(" / ");
+          student.teams = student.registrations.map(item => `<span class="badge bg-success text-uppercase mx-1">${item.team.name}</span>`).join("");
           return student;
         });
 
