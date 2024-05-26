@@ -307,9 +307,20 @@
                               <input type="text" class="form-control form-control-sm" name="observations">
                             </div>
 
-                            <div class="col-md-4">
-                              <button type="submit" class="btn btn-success btn-sm text-uppercase">Criar</button>
-                              <button type="reset" class="btn btn-secondary btn-sm text-uppercase mx-1">Limpar</button>
+                            <div class="col-md-12 d-flex justify-content-between">
+                              <div class="d-flex">
+                                <button type="submit" title="Informe no campo à direita a quantidade de repetições desta ação." class="btn btn-success btn-sm text-uppercase">
+                                  Criar <font-awesome-icon icon="question"/>
+                                </button>
+                                <input 
+                                      @keyup="filterNonNumeric" 
+                                      type="text"
+                                      name="numberOfTimesToEnter" 
+                                      v-model="numberOfTimesToEnter" 
+                                      class="form-control form-control-sm ms-2 w-25"
+                                >
+                              </div>
+                              <button type="reset" class="btn btn-secondary btn-sm text-uppercase">Limpar</button>
                             </div>
                           </form>
 
@@ -527,7 +538,7 @@
 <script>
 
 import api from "@/services";
-import { errorsToString, convertDateToDB, handlerDelete, decimal } from "@/helpers";
+import { errorsToString, convertDateToDB, handlerDelete, decimal, filterNonNumeric } from "@/helpers";
 import LoadingPage from "@/components/LoadingPage.vue";
 import ButtonDelete from "@/components/ButtonDelete.vue";
 
@@ -543,6 +554,7 @@ export default {
       convertDateToDB,
       decimal,
       handlerDelete,
+      filterNonNumeric,
       student: [],
       teams: [],
       serviceTypes: [],
@@ -563,9 +575,13 @@ export default {
       hasRegistration: [],
       hasDocuments: [],
       hasBooks: [],
+      numberOfTimesToEnter: 1
     };
   },
   watch: {
+    numberOfTimesToEnter(n, o){
+      isNaN(Number(n)) && setTimeout(() => this.numberOfTimesToEnter = o, 500);
+    },
     student(n, o) {
       this.team_id = n.teams.length ? n.teams[0].id : ''
     },
@@ -689,21 +705,45 @@ export default {
       }
 
     },
+    increaseMonthsInstallments(_date, _increment) {
+
+      const date = new Date(_date);
+
+      date.setMonth(date.getMonth() + _increment);
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    },
     async handlerFinancial() {
 
       try {
 
-        const formData = new FormData(this.$refs.formFinancial);
-        formData.set('value', this.decimal(formData.get('value')))
+        const form = this.$refs.formFinancial;
+        const mes = form.querySelector('[name="due_date"]').value ;
 
-        const { data } = await api.post(`/financials`, formData);
+        if(isNaN(this.numberOfTimesToEnter))
+          return Toast.fire("Atenção", 'Por favor, preencha a quantidade de forma correta.', "warning");
 
-        Toast.fire("Sucesso", data.message, "success");
+        for (let i = 0; i < this.numberOfTimesToEnter; i++) {
+
+          form.querySelector('[name="due_date"]').value = this.increaseMonthsInstallments(mes, i);
+
+          const formData = new FormData(form);
+
+          formData.set('value', this.decimal(formData.get('value')));
+
+          var { data } = await api.post(`/financials`, formData);
+
+          Toast.fire("Sucesso", data.message, "success");
+
+        }
 
         this.getItens();
 
       } catch (error) {
-
         Toast.fire("Erro", error.response.data.message, "error");
       }
     },
