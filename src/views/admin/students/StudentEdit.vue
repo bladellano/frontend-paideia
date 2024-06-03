@@ -582,9 +582,6 @@ export default {
     numberOfTimesToEnter(n, o){
       isNaN(Number(n)) && setTimeout(() => this.numberOfTimesToEnter = o, 500);
     },
-    student(n, o) {
-      this.team_id = n.teams.length ? n.teams[0].id : ''
-    },
     paidValue(n, o) {
       this.showReceipt = +n;
     }
