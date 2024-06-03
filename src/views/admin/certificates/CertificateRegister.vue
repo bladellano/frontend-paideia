@@ -220,7 +220,6 @@ export default {
       author: "Paideia Educacional",
       code: "",
       typeDocument: "CERTIFICATE",
-      teamName: "",
       attachments: [],
       textDocumentSelected: null,
       textWithCode: "Código de validação: ",
@@ -280,12 +279,9 @@ export default {
     },
     async getItem() {
       await api.get(`/students/${this.student}`).then((res) => {
-        this.teamName = res.data[0].teams.length
-          ? res.data[0].teams[0].name
-          : "";
-        this.attachments = res.data[0].documents.filter(
-          (e) => e.type == this.typeDocument
-        );
+
+        this.attachments = res.data[0].documents.filter(e => e.type == this.typeDocument);
+
         this.item = res.data[0];
         this.books = res.data[0].books;
         this.hasRegistration = res.data[0].registrations;
@@ -422,7 +418,6 @@ export default {
       formData.append("pdf", blob);
       formData.append("code", this.code);
       formData.append("type", this.typeDocument);
-      //! @TODO formData.append("team", this.teamName);
       formData.append("folder", this.folder);
       formData.append("document_name", this.typeDocument);
       formData.append("registration", this.registration);
