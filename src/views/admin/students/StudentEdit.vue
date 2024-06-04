@@ -84,9 +84,17 @@
 
           <ul class="nav nav-tabs" id="studentTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="registration-tab" data-bs-toggle="tab"
-                data-bs-target="#registration-tab-pane" type="button" role="tab" aria-controls="registration-tab-pane"
-                aria-selected="true">👨‍🎓MATRÍCULA(S)</button>
+              <button 
+                class="nav-link active"
+                id="registration-tab" 
+                data-bs-toggle="tab"
+                data-bs-target="#registration-tab-pane" 
+                type="button" 
+                role="tab" 
+                aria-controls="registration-tab-pane"
+                aria-selected="true">
+                  👨‍🎓MATRÍCULA(S)
+                </button>
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial-tab-pane"
@@ -337,13 +345,13 @@
 
             <div class="tab-pane fade" id="documents-tab-pane" role="tabpanel" aria-labelledby="documents-tab" tabindex="0">
               <div class="row my-2">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="d-grid gap-2 col-12 mx-auto">
                     <router-link :to="{ name: 'history-register', params: { student: student.id } }" class="btn btn-success btn-sm" type="button">GERAR HISTÓRICO</router-link>
                     <router-link :to="{ name: 'certificate-register', params: { student: student.id } }" class="btn btn-info btn-sm" type="button">GERAR CERTIFICADO</router-link>
                   </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-9">
 
                   <!-- //? Documentos -->
                   <small class="p-0">Documentos emitidos para o aluno até o momento:</small>
@@ -354,6 +362,21 @@
                       <button @click.prevent="getBlob(document)" class="btn btn-sm btn-outline-danger" :title="`${document.file_name} - ${document.created_at}`">
                         {{ document.file_name }} - {{ document.created_at }}
                       </button>
+                      <!--//! @TODO tem que remover, é apenas provisório -->
+                      <div>
+                        <small class="p-0">ID DO ALUNO:</small>
+                        <input 
+                          title="Aqui, você pode alterar o ID do aluno, que aparece na URL do navegador na parte superior da tela."
+                          :data-document-id="document.id" 
+                          style="width:86px; background:#fafec2" 
+                          @change="changeStudentOfDocument" 
+                          type="text" 
+                          :value="student.id"
+                          class="form-control form-control-sm"
+                        />
+                      </div>
+
+                      <!--//! @TODO ate aqui -->
 
                       <a href="#" class="btn btn-sm btn-outline-secondary" @click.prevent="destroyPDF(document)">
 
@@ -575,7 +598,8 @@ export default {
       hasRegistration: [],
       hasDocuments: [],
       hasBooks: [],
-      numberOfTimesToEnter: 1
+      numberOfTimesToEnter: 1,
+      students: []
     };
   },
   watch: {
@@ -587,6 +611,16 @@ export default {
     }
   },
   methods: {
+    async changeStudentOfDocument(e) {
+
+      try {
+        const { data } = await api.put(`/documents/${e.target.dataset.documentId}`, {student_id:e.target.value});
+        Toast.fire("Sucesso", data.message, "success");
+
+      } catch (error) {
+        Toast.fire("Erro", error.response.data.message, "error");
+      }
+    },
     styleToHighlightPaymentStatus(financial) {
 
       const dueDate = new Date(this.convertDateToDB(financial.due_date));
@@ -635,6 +669,11 @@ export default {
       await api.get(`/teams?page=0&perPage=99999`).then((res) => {
         this.teams = res.data.data;
       });
+    },
+    async getStudents() {
+      // await api.get(`/students?page=0&perPage=99999`).then((res) => {
+        this.students =[];
+      // });
     },
     async getServiceType() {
       await api.get(`/service-types?page=0&perPage=99999`).then((res) => {
@@ -869,6 +908,7 @@ export default {
     },
   },
   mounted() {
+    this.getStudents();
     this.getItens();
     this.getTeams();
     this.getServiceType();
