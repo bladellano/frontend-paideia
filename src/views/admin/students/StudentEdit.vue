@@ -670,11 +670,6 @@ export default {
         this.teams = res.data.data;
       });
     },
-    async getStudents() {
-      // await api.get(`/students?page=0&perPage=99999`).then((res) => {
-        this.students =[];
-      // });
-    },
     async getServiceType() {
       await api.get(`/service-types?page=0&perPage=99999`).then((res) => {
         this.serviceTypes = res.data.data;
@@ -758,18 +753,17 @@ export default {
       try {
 
         const form = this.$refs.formFinancial;
-        const mes = form.querySelector('[name="due_date"]').value ;
+        const mes = form.querySelector('[name="due_date"]').value;
 
         if(isNaN(this.numberOfTimesToEnter))
           return Toast.fire("Atenção", 'Por favor, preencha a quantidade de forma correta.', "warning");
 
         for (let i = 0; i < this.numberOfTimesToEnter; i++) {
 
-          form.querySelector('[name="due_date"]').value = this.increaseMonthsInstallments(mes, i);
-
           const formData = new FormData(form);
 
           formData.set('value', this.decimal(formData.get('value')));
+          formData.set('due_date', this.increaseMonthsInstallments(mes, i));
 
           var { data } = await api.post(`/financials`, formData);
 
@@ -908,7 +902,6 @@ export default {
     },
   },
   mounted() {
-    this.getStudents();
     this.getItens();
     this.getTeams();
     this.getServiceType();
