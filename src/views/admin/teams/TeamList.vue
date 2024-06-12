@@ -36,7 +36,7 @@
               <td>{{ item.created_at }}</td>
               <td>
               <ButtonEdit :to="{ name: 'team-edit', params: { id: item.id } }"/>
-              <ButtonDelete @delete="handlerDelete(item.id, 'disciplines')"/>
+              <ButtonDelete @delete="handlerDelete(item.id, 'teams')"/>
               </td>
             </tr>
           </tbody>
