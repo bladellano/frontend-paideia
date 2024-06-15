@@ -3,7 +3,7 @@
 
     <div class="content">
 
-      <div class="mt-4" style="width: 220px;">
+      <div class="mt-4" style="width: 180px;">
 
         <!-- //* Super menu! -->
         <MenuAccordion>

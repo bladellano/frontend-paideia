@@ -48,6 +48,8 @@ import StudentRegister from '../views/admin/students/StudentRegister.vue'
 import TeamList from '../views/admin/teams/TeamList.vue'
 import TeamEdit from '../views/admin/teams/TeamEdit.vue'
 import TeamRegister from '../views/admin/teams/TeamRegister.vue'
+import TeamStudents from '../views/admin/teams/TeamStudents.vue'
+import NotesRegister from '../views/admin/teams/students/NotesRegister.vue'
 
 //User
 import UserList from '../views/admin/users/UserList.vue'
@@ -228,6 +230,20 @@ const routes = [
                 component: TeamEdit,
                 props: true,
             },
+            {
+                path: "turmas/:id/alunos",
+                name: "team-students",
+                component: TeamStudents, //FOCO
+                props: true,
+                children: [
+                    {
+                        path: ':student/notas',
+                        name: "team-student-notes",
+                        component: NotesRegister,
+                        props: true,
+                    }
+                ]
+            },     
             {
                 path: "turmas/registrar",
                 name: "team-register",

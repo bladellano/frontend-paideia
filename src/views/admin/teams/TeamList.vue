@@ -22,7 +22,7 @@
               <th>Polo</th>
               <th>Grade</th>
               <th>Criado</th>
-              <th width="98px"></th>
+              <th width="208px"></th>
             </tr>
           </thead>
           <tbody>
@@ -35,6 +35,11 @@
               <td>{{ item.grid_id ? item.grid.name : '' | uppercase }}</td>
               <td>{{ item.created_at }}</td>
               <td>
+              <router-link 
+                class="btn btn-outline-secondary btn-sm mx-1" 
+                :to="{ name: 'team-students', params: { id: item.id }}" 
+                >Lançar Notas
+              </router-link>
               <ButtonEdit :to="{ name: 'team-edit', params: { id: item.id } }"/>
               <ButtonDelete @delete="handlerDelete(item.id, 'teams')"/>
               </td>
