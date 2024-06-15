@@ -28,7 +28,7 @@
           <tbody>
             <tr v-for="item in items" :key="item.id">
               <td>{{ item.id }}</td>
-              <td>{{ item.name | uppercase }}</td>
+              <td>{{ item.name | uppercase }} <span class="badge bg-primary">{{ item.registrations.length }}</span></td>
               <td>{{ item.start_date }}</td>
               <td>{{ item.end_date }}</td>
               <td>{{ item.polo_id ? item.polo.name : '' | uppercase }}</td>
@@ -83,12 +83,12 @@
   
         this.sortDirection = this.sortDirection ? 0 : 1;
   
-        this.getItens();
+        this.getTeams();
       },
       navigate(page) {
-        this.getItens(page);
+        this.getTeams(page);
       },
-      async getItens(page = 1) {
+      async getTeams(page = 1) {
         let query = serialize({
           search: this.search,
           sortDesc: this.sortDirection,
@@ -104,11 +104,11 @@
       },
     },
     mounted() {
-      this.getItens();
+      this.getTeams();
     },
     watch: {
       async search(ev) {
-        this.getItens();
+        this.getTeams();
       },
     },
   };
