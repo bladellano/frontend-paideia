@@ -13,28 +13,33 @@
     <div v-if="registrations">
 
       <h5 class="list-inline-item card-title fs-6">TURMA:</h5>
-      <h6 class="list-inline-item card-subtitle mb-2 text-primary">{{ team_name | uppercase }}</h6>
+      <h6 class="list-inline-item card-subtitle mb-2">
+        <router-link :to="{ name: 'team-edit', params: { id: this.$route.params.id } }" target="_blank">
+          <u>{{ team_name | uppercase }}</u>
+        </router-link>
+      </h6>
       <br/>
       <h5 class="list-inline-item card-title fs-6">PERÍODO:</h5>
       <h6 class="list-inline-item card-subtitle mb-2 text-muted">{{ start_date }} - {{  end_date  }}</h6>
       <br/>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
 
           <div class="list-group">
 
             <router-link 
-              v-for="(registration, index) in registrations" 
-              :to="{ name: 'team-student-notes', params: { student: registration.student.id }}" 
-              :key="registration.id"  
+              v-for="(discipline, i) in disciplines" 
+              :to="{ name: 'disciplines-students', params: { discipline: discipline.id }}" 
+              :key="discipline.id"  
               class="list-group-item list-group-item-action">
-             {{ index + 1 }} - {{ registration.student.name }}
+              {{ ++i }} - {{ discipline.discipline }}
             </router-link>
+
           </div>
 
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
 
           <transition mode="out-in">
             <router-view></router-view>
@@ -42,7 +47,6 @@
 
         </div>
       </div>
- 
 
     </div>
 
@@ -64,12 +68,18 @@ export default {
   data() {
     return {
       registrations: [],
+      disciplines: [],
       team_name: "",
       start_date: "",
       end_date: "",
     };
   },
   methods: {
+    async getDisciplinesByTeam() {
+      await api.get(`/teams/${this.$route.params.id}/disciplines`).then((res) => {
+        this.disciplines = res.data;
+      });
+    },
     async getTeamAndRegistrations() {
       await api.get(`teams/${this.$route.params.id}/students`).then((res) => {
 
@@ -85,6 +95,7 @@ export default {
   },
   mounted() {
     this.getTeamAndRegistrations();
+    this.getDisciplinesByTeam();
   },
 };
 </script>

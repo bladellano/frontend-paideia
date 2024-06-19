@@ -4,45 +4,50 @@
 
     <div v-if="teamGridTemplate" class="card-body">
         
-        <h5 class="list-inline-item card-title fs-6">CURSO:</h5>
-        <h6 class="list-inline-item card-subtitle mb-2 text-muted">{{ teamGridTemplate.course_name | uppercase }}</h6>
-        <br/>
-        <h5 class="list-inline-item card-title fs-6">NOME:</h5>
-        <h6 class="list-inline-item card-subtitle mb-2 text-primary">{{ student.name | uppercase }}</h6>
-        <br/>
-        <h5 class="list-inline-item card-title fs-6">CPF:</h5>
-        <h6 class="list-inline-item card-subtitle mb-2 text-muted">{{ student.cpf }}</h6>
-        <br/>
-        <h5 class="list-inline-item card-title fs-6">GRADE:</h5>
-        <h6 class="list-inline-item card-subtitle mb-2 text-muted">{{ teamGridTemplate.grid_name | uppercase }}</h6>
-
+        <h5 class="list-inline-item card-title fs-6">DISCIPLINA:</h5>
+        <h6 class="list-inline-item card-subtitle mb-2 text-muted">{{ discipline_name | uppercase }}</h6> 
+        
         <form ref="formHistoric" @submit.prevent="saveGrades">
             <table class="table table-hover">
 
             <thead>
                 <tr>
-                <th>DISCIPLINA</th>
-                    <th v-for="stage in teamGridTemplate.stagesNumbers" :key="stage">
-                        ETAPA {{ stage }}
-                    </th>
+                <th>ALUNO</th>
+                <th v-for="stage in teamGridTemplate.stagesNumbers" :key="stage">
+                    ETAPA {{ stage }}
+                </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(discipline, name) in teamGridTemplate.list" :key="name">
-                    <td>{{ name }}</td>
+
+              <template v-for="student in students">
+
+                <tr v-for="(discipline, name) in teamGridTemplate.list" :key="`${student.id}_${name}`">
+
+                    <td> 
+                      <router-link :to="{ name: 'student-edit', params: { id: student.id } }" target="_blank">
+                        <u>{{ student.name | uppercase }}</u>
+                      </router-link> 
+                    </td>
+
                     <td v-for="(stage, index) in discipline" :key="index">
+
                         <TheMask
                             style="width:60px; margin: 0 auto"
                             type="text"
                             class="form-control form-control-sm"
-                            :value="getGradeByInput(stage.stage_id, stage.discipline_id, $route.params.id)"
-                            :name="'grade[' + $route.params.student + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + $route.params.id + ']'"
+                            :value="getGradeByInput(student.id, stage.stage_id, stage.discipline_id, $route.params.id)"
+                            :name="'grade[' + student.id + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + $route.params.id + ']'"
                             :mask="['#.#', '##.#']"
                             :masked="true"
                             :placeholder="'0.0'"
                         />
+
                     </td>
-                </tr>
+                </tr> 
+
+              </template>
+
             </tbody>
             </table>
 
@@ -77,15 +82,16 @@ export default {
   data() {
     return {
       student: null,
+      discipline_name: "",
       notes: [],
       teamGridTemplate: null,
+      students: [],
     };
   },
   watch: {
     '$route' (to, from) {
-        this.getStudent();
+        this.getTeamAndRegistrations();
         this.getGridTemplate();
-        this.getNotesByStudent();
     }
   },
   methods: {
@@ -113,38 +119,38 @@ export default {
         }
 
     },
-    getGradeByInput(stageId, disciplineId, teamId){
+    getGradeByInput(studentId, stageId, disciplineId, teamId){
 
         if(!this.notes.length)
             return;
 
-        const gradeFiltered = this.notes.filter((grade) => grade.stage_id == stageId && grade.discipline_id == disciplineId && grade.team_id == teamId);
+        const gradeFiltered = this.notes.filter(grade => grade.student_id == studentId && grade.stage_id == stageId && grade.discipline_id == disciplineId && grade.team_id == teamId);
+
         return gradeFiltered.length ? gradeFiltered[0].grade : '0.0';
     },
-    async getStudent() {
-      await api.get(`/students/${this.$route.params.student}`).then((res) => {
-        this.student = res.data[0];
-      });
-    },
     async getNotesByStudent() {
-      const record = await api.get(
-        `/grades/${this.$route.params.student}/get-grade-by-student?`
-      );
+      const record = await api.get(`/teams/${this.$route.params.id}/grades`);
       this.notes = record.data;
     },
     async getGridTemplate() {
       /** this.$route.params.id = team_id */
       await api
-        .get(`/grids/${this.$route.params.id}/get-full-grid`)
+        .get(`/grids/${this.$route.params.id}/get-full-grid?discipline_id=${this.$route.params.discipline}`)
         .then((res) => {
           this.teamGridTemplate = res.data;
+          this.discipline_name = Object.keys(res.data.list)[0];
         });
+    },
+    async getTeamAndRegistrations() {
+      await api.get(`teams/${this.$route.params.id}/students`).then((res) => {
+        this.students = res.data.registrations
+      });
     },
   },
   mounted() {
-    this.getStudent();
-    this.getNotesByStudent();
+    this.getTeamAndRegistrations();
     this.getGridTemplate();
+    this.getNotesByStudent();
   } 
 };
 </script>

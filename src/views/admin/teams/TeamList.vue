@@ -37,7 +37,7 @@
               <td>
               <router-link 
                 class="btn btn-outline-secondary btn-sm mx-1" 
-                :to="{ name: 'team-students', params: { id: item.id }}" 
+                :to="{ name: 'team-disciplines', params: { id: item.id }}" 
                 >Lançar Notas
               </router-link>
               <ButtonEdit :to="{ name: 'team-edit', params: { id: item.id } }"/>

@@ -231,14 +231,14 @@ const routes = [
                 props: true,
             },
             {
-                path: "turmas/:id/alunos",
-                name: "team-students",
-                component: TeamStudents, //FOCO
+                path: "turmas/:id/disciplinas",
+                name: "team-disciplines",
+                component: TeamStudents,
                 props: true,
                 children: [
                     {
-                        path: ':student/notas',
-                        name: "team-student-notes",
+                        path: ':discipline/alunos',
+                        name: "disciplines-students",
                         component: NotesRegister,
                         props: true,
                     }
