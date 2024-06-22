@@ -195,6 +195,7 @@
                               <th scope="col">Matrícula</th>
                               <th scope="col">Turma</th>
                               <th scope="col">Serviço</th>
+                              <th scope="col">Parcela</th>
                               <th scope="col">Valor</th>
                               <th scope="col">Vencimento</th>
                               <th scope="col">Data do Pagamento</th>
@@ -212,11 +213,12 @@
 
                               <template v-for="(registration) in student.registrations">
 
-                                <tr v-for="(financial, index) in registration.financials" :key="index">
+                                <tr v-for="financial in registration.financials" :key="financial.id">
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.id }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ String(financial.registration_id).padStart(6, '0') }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)"><span class="badge rounded-pill bg-secondary">{{ registration.team.name }}</span></td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.service_type.name }}</td>
+                                  <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.quota }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.value | currency }} </td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.due_date }}</td>
                                   <td :class="styleToHighlightPaymentStatus(financial)">{{ financial.pay_day }}</td>
@@ -261,7 +263,7 @@
                         <div class="col-md-12">
                           <form ref="formFinancial" @submit.prevent="handlerFinancial" class="row" @reset="reset">
 
-                            <div class="mb-3 col-md-3">
+                            <div class="mb-3 col-md-2">
                               <label for="registration" class="form-label">Nº de matrícula</label>
                               <select v-if="!!hasRegistration.length" name="registration_id"
                                 class="form-control form-control-sm">
@@ -270,6 +272,11 @@
                                   {{ String(registration.id).padStart(6, '0') }} - {{ registration.team.name | uppercase }}
                                 </option>
                               </select>
+                            </div>
+
+                            <div class="mb-3 col-md-1">
+                              <label for="value" class="form-label">Parcela</label>
+                              <input @keyup="filterNonNumeric" type="number" class="form-control form-control-sm" name="quota">
                             </div>
 
                             <div class="mb-3 col-md-1">
@@ -483,7 +490,12 @@
                   <input type="text" class="form-control form-control-sm" name="value" data-thousands="."
                     placeholder="0,00" data-decimal=",">
                 </div>
-                <!-- -- --  -->
+                 <!-- -- --  -->
+                 <label for="quota" class="col-sm-6 col-form-label">Parcela</label>
+                  <div class="col-sm-6">
+                    <input type="number" @keyup="filterNonNumeric" class="form-control form-control-sm" name="quota">
+                  </div>
+                <!-- -- -- --> 
                 <label for="due_date" class="col-sm-6 col-form-label">Vencimento</label>
                 <div class="col-sm-6">
                   <input type="date" class="form-control form-control-sm" name="due_date">
@@ -590,6 +602,7 @@ export default {
         payment_type: "",
         service_type_id: "",
         due_date: "",
+        quota: "",
         paid: "",
         value: "",
       },
@@ -753,6 +766,7 @@ export default {
 
         const form = this.$refs.formFinancial;
         const mes = form.querySelector('[name="due_date"]').value;
+        var quota = +form.querySelector('[name="quota"]').value;
 
         if(isNaN(this.numberOfTimesToEnter))
           return Toast.fire("Atenção", 'Por favor, preencha a quantidade de forma correta.', "warning");
@@ -763,6 +777,7 @@ export default {
 
           formData.set('value', this.decimal(formData.get('value')));
           formData.set('due_date', this.increaseMonthsInstallments(mes, i));
+          formData.set('quota', quota++);
 
           var { data } = await api.post(`/financials`, formData);
 
