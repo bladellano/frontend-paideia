@@ -187,7 +187,9 @@
                     aria-labelledby="headingTableFinancial" data-bs-parent="#accordionFinancial">
                     <div class="accordion-body">
                       <div class="row my-2 p-2">
-                        <small class="p-0">Situação financeira do aluno:</small>
+
+                        <small class="p-0">Situação financeira do aluno: <a href="#" class="text-primary" @click.prevent="generateStatement"><u>🧾 EXTRATO FINANCEIRO</u></a></small>
+
                         <table class="table table-bordered table-hover">
                           <thead>
                             <tr>
@@ -790,6 +792,37 @@ export default {
       } catch (error) {
         Toast.fire("Erro", error.response.data.message, "error");
       }
+    },
+    async generateStatement() { /** Gera extrato financeiro. */
+
+      try {
+
+          this.loading = !this.loading;
+
+          await api
+              .get(`/exports/student-financial-history/${this.$route.params.id}`, {
+                  responseType: "blob",
+              })
+              .then((response) => {
+
+                  const blob = new Blob(
+                      [response.data],
+                      { type: "application/pdf" }
+                  );
+
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = `Extrato Financeiro - ` + this.student.name.toUpperCase();
+                  a.click();
+
+              });
+
+      } catch (error) {
+          Toast.fire('Erro', error.message, "error");
+      }
+
+      this.loading = !this.loading;
+
     },
     async generateReceipt() {
 
