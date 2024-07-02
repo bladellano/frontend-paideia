@@ -18,16 +18,6 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="team" class="form-label">Ano</label>
-                        <select v-model="year" class="form-control form-control-sm">
-                            <option value="" selected disabled>-- Selecione --</option>
-                            <option v-for="(year, key) in years" :key="key" :value="year">
-                                {{ year }}
-                            </option>
-                        </select>
-                    </div>
-
                     <div v-if="!loading" class="form-group text-center my-2">
                         <button type="submit" class="btn btn-success btn-sm mx-2 text-uppercase">
                             Gerar
@@ -64,8 +54,7 @@ export default {
             team_id: "",
             year: "",
             teams: [],
-            loading: false,
-            years: [2020,2021,2022,2023,2024,2025,2026]
+            loading: false
         };
     },
     methods: {
@@ -76,7 +65,7 @@ export default {
         },
         async generateReportFinancialByTeam() {
 
-            if (!this.team_id || !this.year)
+            if (!this.team_id)
                 return Toast.fire('Erro', 'Por favor, selecione uma turma e um ano.', "error");
 
             try {
@@ -86,7 +75,7 @@ export default {
                 const teamName = this.teams.filter((e) => e.id == selectTeam.value);
 
                 await api
-                    .get(`/exports/report-financial-by-team/${this.team_id}/year/${this.year}`, {
+                    .get(`/exports/report-financial-by-team/${this.team_id}`, {
                         responseType: "blob",
                     })
                     .then((response) => {
