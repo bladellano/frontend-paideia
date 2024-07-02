@@ -25,8 +25,8 @@
                 <tr v-for="(discipline, name) in teamGridTemplate.list" :key="`${student.id}_${name}`">
 
                     <td> 
-                      <router-link :to="{ name: 'student-edit', params: { id: student.id } }" target="_blank">
-                        <u>{{ student.name | uppercase }}</u>
+                      <router-link :to="{ name: 'student-edit', params: { id: student.student.id } }" target="_blank">
+                        <u>{{ student.student.name | uppercase }}</u>
                       </router-link> 
                     </td>
 
@@ -143,6 +143,7 @@ export default {
     },
     async getTeamAndRegistrations() {
       await api.get(`teams/${this.$route.params.id}/students`).then((res) => {
+        // console.log('res', res);
         this.students = res.data.registrations
       });
     },
