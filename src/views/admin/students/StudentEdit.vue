@@ -141,13 +141,16 @@
                   <small>Turmas em que o aluno está matriculado:</small>
                   <ul class="list-group">
 
-                    <li v-for="(registration, key) in student.registrations" :key="key"
+                    <li v-for="(registration, key) in student.registrations" 
+                      :key="key"
                       class="list-group-item d-flex justify-content-between align-items-center">
 
-                      <button class="btn btn-sm btn-outline-success"
+                      <router-link 
+                        :to="{ name: 'team-edit', params: { id: registration.team.id } }"
+                        class="btn btn-sm btn-outline-success"
                         :title="`${registration.user.name} - ${registration.created_at}`">
                         {{ String(registration.id).padStart(6, '0') }} | {{ registration.team.name | uppercase }}
-                      </button>
+                      </router-link>
 
                       <ButtonDelete @delete="handlerDelete(registration.id, 'registrations')" />
 

@@ -77,13 +77,21 @@
           <button type="submit" class="btn btn-success btn-sm mx-2">
             SALVAR
           </button>
-          <button type="reset" class="btn btn-secondary btn-sm">LIMPAR</button>
+          <button type="reset" class="btn btn-secondary btn-sm">
+            LIMPAR
+          </button>
+          <router-link 
+            class="btn btn-outline-secondary btn-sm mx-1 text-uppercase" 
+            :to="{ name: 'team-disciplines', params: { id: this.$route.params.id }}" 
+            >Lançar Notas
+          </router-link>
         </div>
       </form>
 
       <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
         VOLTAR
       </button>
+      
     </div>
 
     <LoadingPage v-else />

@@ -36,8 +36,8 @@
                             style="width:60px; margin: 0 auto"
                             type="text"
                             class="form-control form-control-sm"
-                            :value="getGradeByInput(student.id, stage.stage_id, stage.discipline_id, $route.params.id)"
-                            :name="'grade[' + student.id + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + $route.params.id + ']'"
+                            :value="getGradeByInput(student.student.id, stage.stage_id, stage.discipline_id, $route.params.id)"
+                            :name="'grade[' + student.student.id + '][' + stage.stage_id + '][' + stage.discipline_id + '][' + $route.params.id + ']'"
                             :mask="['#.#', '##.#']"
                             :masked="true"
                             :placeholder="'0.0'"
@@ -92,6 +92,7 @@ export default {
     '$route' (to, from) {
         this.getTeamAndRegistrations();
         this.getGridTemplate();
+       
     }
   },
   methods: {
@@ -140,11 +141,19 @@ export default {
           this.teamGridTemplate = res.data;
           this.discipline_name = Object.keys(res.data.list)[0];
         });
+
+        Toast.fire({
+          position: "bottom-end",
+          icon: "info",
+          title: "Mensagem",
+          text: `Agora você está na disciplina: ${this.discipline_name}`,
+          footer: '<strong class="text-primary">Solicitamos especial atenção ao preencher as notas dos alunos na disciplina.</strong>'
+        });
     },
     async getTeamAndRegistrations() {
       await api.get(`teams/${this.$route.params.id}/students`).then((res) => {
-        // console.log('res', res);
-        this.students = res.data.registrations
+        const registrations = res.data.registrations.filter((register) => !!register.student);
+        this.students = registrations
       });
     },
   },
