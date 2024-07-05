@@ -2,19 +2,22 @@
   <section class="container-fluid my-4">
     <h4 class="my-4">Cadastro de <strong>Estudante</strong></h4>
 
-    <form @submit.prevent="handlerSubmit">
+    <form @submit.prevent="handlerSubmit" ref="formStudent">
       <div class="row">
+
+        <input type="file" name="image">
+
         <div class="form-group col-md-4">
           <label for="name">Nome</label>
           <input
             type="text"
             class="form-control"
-            v-model="item.name"
+            name="name"
           />
         </div>
         <div class="form-group col-md-2">
           <label for="gender">Gênero</label>
-          <select name="gender" v-model="item.gender" class="form-control">
+          <select name="gender" class="form-control">
             <option disabled selected value="">-- Selecione --</option>
             <option value="F">F</option>
             <option value="M">M</option>
@@ -26,7 +29,7 @@
           <input
             type="email"
             class="form-control"
-            v-model="item.email"
+            name="email"
           />
         </div>
       </div>
@@ -39,8 +42,8 @@
               type="text"
               class="form-control" 
               :mask="['(##)#####-#####']"
-              v-model="item.phone"
               :masked="true"
+              name="phone"
             />
         </div>
         <div class="form-group col-md-6">
@@ -49,7 +52,7 @@
               type="text"
               class="form-control" 
               :mask="['###.###.###-##']"
-              v-model="item.cpf"
+              name="cpf"
             />
         </div>
       </div>
@@ -57,14 +60,19 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label for="rg">RG</label>
-          <input type="text" class="form-control" id="rg" v-model="item.rg" />
+          <input 
+            type="text" 
+            class="form-control" 
+            id="rg" 
+            name="rg" 
+          />
         </div>
         <div class="form-group col-md-6">
           <label for="expedient_body">Orgão expedidor</label>
           <input
             type="text"
             class="form-control"
-            v-model="item.expedient_body"
+            name="expedient_body"
           />
         </div>
       </div>
@@ -75,7 +83,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="item.nationality"
+            name="nationality"
           />
         </div>
         <div class="form-group col-md-6">
@@ -83,7 +91,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="item.naturalness"
+            name="naturalness"
           />
         </div>
       </div>
@@ -94,7 +102,7 @@
           <input
             type="date"
             class="form-control"
-            v-model="item.birth_date"
+            name="birth_date"
           />
         </div>
         <div class="form-group col-md-6">
@@ -102,7 +110,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="item.name_mother"
+            name="name_mother"
           />
         </div>
       </div>
@@ -129,15 +137,17 @@ export default {
   name: "StudentRegister",
   data() {
     return {
-      item: {
-        gender:''
-      },
+      item:[]
     };
   }, 
   methods: {
     async handlerSubmit() {
+
+      const formData = new FormData(this.$refs.formStudent);
+      formData.set('cpf', formData.get('cpf').replace(/[.\-]/g, ''));
+
       try {
-        const { data } = await api.post(`/students`, this.item);
+        const { data } = await api.post(`/students`, formData);
         Toast.fire(data.message, "", "success");
         this.$router.push({ name: "students" });
       } catch (error) {
