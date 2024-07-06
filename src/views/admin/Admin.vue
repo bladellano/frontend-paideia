@@ -112,7 +112,8 @@ export default {
             { action: "Geral", path: { name: 'general-report-of-students' } },
             { action: "Diário de Classe", path: { name: 'diario-de-classe' } },
             { action: "Relatório Financeiro Por Turma", path: { name: 'relatorio-financeiro-por-turma' } },
-            { action: "Alunos Por Turma", path: { name: 'alunos-por-turma' } }
+            { action: "Alunos Por Turma", path: { name: 'alunos-por-turma' } },
+            { action: "Alunos Dados Completos Por Turma", path: { name: 'alunos-dados-completo-por-turma' } }
           ]
         }
       ]
