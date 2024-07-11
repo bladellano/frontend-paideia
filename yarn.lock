@@ -992,6 +992,11 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
+"@finpo/vue2-recaptcha-invisible@^1.2.0":
+  "integrity" "sha512-I6SBqYghcgAyA5BhOpvcE5JELfeaxgYWvDpB5dXG0lSOIQ0z8fjazNY6Oo9X2HrYE1CUis28ySQCtANPf22mFA=="
+  "resolved" "https://registry.npmjs.org/@finpo/vue2-recaptcha-invisible/-/vue2-recaptcha-invisible-1.2.0.tgz"
+  "version" "1.2.0"
+
 "@fortawesome/fontawesome-common-types@6.4.0":
   "integrity" "sha512-HNii132xfomg5QVZw0HwXXpN22s7VBHQBv9CeOu9tfJnhsWQNd2lmTNi8CSrnw5B+5YOmzu1UoPAyxaXsJ6RgQ=="
   "resolved" "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.4.0.tgz"

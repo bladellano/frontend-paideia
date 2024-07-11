@@ -6,10 +6,16 @@
           <h3>Digite o código completo</h3>
           <div class="wrap-input">
             <div class="border-input">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Digite o código do seu documento"
-                  v-model="historic.code" name="historic">
 
+              <div class="input-group">
+                
+                <input 
+                  type="text" 
+                  class="form-control mb-2" 
+                  placeholder="Digite o código do seu documento"
+                  v-model="historic.code" name="historic"
+                >
+                
                 <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" style="text-align: justify;">Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi emitido em nome de(a) <b>{{ (historic.content) ? historic.content.student.name : '' }}</b>.
                   <button 
                     @click="historic.content = null" 
@@ -20,13 +26,21 @@
                 </div>
 
                 <div class="input-group-append">
-                  <button class="btn btn-dark" type="button" @click.prevent="hasDocument">
+
+                  <button class="btn btn-dark" type="button" @click.prevent="hasDocument" :disabled="!recaptchaResponse">
                     <font-awesome-icon class="d-md-none" icon="search" />
                     <span class="d-none d-md-block">Procurar</span>
                   </button>
+
                 </div>
               </div>
+              <div class="input-group">
+                <recaptcha :site-key="siteKey" @verified="onVerified"></recaptcha>
+
+              </div>
+
             </div>
+
           </div>
         </div>
       </div>
@@ -87,14 +101,18 @@
 
 import api from "@/services";
 import LoadingPage from "@/components/LoadingPage.vue";
+import Recaptcha from "@/components/Recaptcha.vue";
 
 export default {
   components: {
-    LoadingPage
+    LoadingPage,
+    Recaptcha
   },
   name: "Home",
   data() {
     return {
+      siteKey: "6Le1mbcZAAAAAAnWnOCN7kS6xueKw82MQifMXw76", // Substitua pela sua chave do site
+      recaptchaResponse: null,
       loading: false,
       email: {
         nome: "",
@@ -109,6 +127,9 @@ export default {
     };
   },
   methods: {
+    onVerified(response) {
+      this.recaptchaResponse = response;
+    },
     async sendEmail() {
 
       if (!this.email.nome || !this.email.e_mail || !this.email.whatsapp || !this.email.doubt)
