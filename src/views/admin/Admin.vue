@@ -110,10 +110,12 @@ export default {
           text: "Relatórios",
           children: [
             { action: "Geral", path: { name: 'general-report-of-students' } },
-            { action: "Diário de Classe", path: { name: 'diario-de-classe' } },
-            { action: "Relatório Financeiro Por Turma", path: { name: 'relatorio-financeiro-por-turma' } },
-            { action: "Alunos Por Turma", path: { name: 'alunos-por-turma' } },
-            { action: "Alunos Dados Completos Por Turma", path: { name: 'alunos-dados-completo-por-turma' } }
+            { action: "Diário de classe", path: { name: 'diario-de-classe' } },
+            { action: "Relatório financeiro por turma", path: { name: 'relatorio-financeiro-por-turma' } },
+            { action: "Alunos por turma", path: { name: 'alunos-por-turma' } },
+            { action: "Dados completos dos alunos por turma", path: { name: 'alunos-dados-completo-por-turma' } },
+            { action: "Atestado de conclusão de curso", path: { name: 'atestado-de-conclusao-de-curso' } },
+            { action: "Declaração de matrícula", path: { name: 'declaracao-de-matricula' } },
           ]
         }
       ]

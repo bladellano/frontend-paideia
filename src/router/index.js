@@ -68,6 +68,9 @@ import DiarioDeClasse from '../views/admin/reports/DiarioDeClasse.vue'
 import AlunosPorTurma from '../views/admin/reports/AlunosPorTurma.vue'
 import AlunosDadosPorTurma from '../views/admin/reports/AlunosDadosPorTurma.vue'
 import ReportFinancialByTeam from '../views/admin/reports/ReportFinancialByTeam.vue'
+import CertificateOfCompletion from '../views/admin/reports/CertificateOfCompletion.vue'
+import RegistrationStatement from '../views/admin/reports/RegistrationStatement.vue'
+
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
@@ -330,6 +333,16 @@ const routes = [
                 name: "relatorio-financeiro-por-turma",
                 component: ReportFinancialByTeam,
             },
+            {
+                path: "reports/atestado-de-conclusao-de-curso",
+                name: "atestado-de-conclusao-de-curso",
+                component: CertificateOfCompletion,
+            },  
+            {
+                path: "reports/declaracao-de-matricula",
+                name: "declaracao-de-matricula",
+                component: RegistrationStatement,
+            },           
         ]
     }
 ]
