@@ -116,6 +116,8 @@ export default {
             { action: "Dados completos dos alunos por turma", path: { name: 'alunos-dados-completo-por-turma' } },
             { action: "Atestado de conclusão de curso", path: { name: 'atestado-de-conclusao-de-curso' } },
             { action: "Declaração de matrícula", path: { name: 'declaracao-de-matricula' } },
+            { action: "Boletim do aluno", path: { name: 'boletim-do-aluno' } },
+            { action: "Relatório de repasse", path: { name: 'relatorio-de-repasse' } },
           ]
         }
       ]

@@ -70,6 +70,8 @@ import AlunosDadosPorTurma from '../views/admin/reports/AlunosDadosPorTurma.vue'
 import ReportFinancialByTeam from '../views/admin/reports/ReportFinancialByTeam.vue'
 import CertificateOfCompletion from '../views/admin/reports/CertificateOfCompletion.vue'
 import RegistrationStatement from '../views/admin/reports/RegistrationStatement.vue'
+import StudentReportCard from '../views/admin/reports/StudentReportCard.vue'
+import TransferReport from '../views/admin/reports/TransferReport.vue'
 
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
@@ -342,7 +344,17 @@ const routes = [
                 path: "reports/declaracao-de-matricula",
                 name: "declaracao-de-matricula",
                 component: RegistrationStatement,
-            },           
+            }, 
+            {
+                path: "reports/boletim-do-aluno",
+                name: "boletim-do-aluno",
+                component: StudentReportCard,
+            },   
+            {
+                path: "reports/relatorio-de-repasse",
+                name: "relatorio-de-repasse",
+                component: TransferReport,
+            },              
         ]
     }
 ]
