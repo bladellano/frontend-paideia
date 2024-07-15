@@ -6,7 +6,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="mb-3">
                 <label for="team" class="form-label">Turma</label>
                 <select v-model="team_id" class="form-control form-control-sm" id="team">
@@ -17,7 +17,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <label for="team" class="form-label">Período:</label>
               <input
                 type="date"
@@ -26,8 +26,7 @@
               />
              
             </div>
-
-            <div class="col-md-3">
+            <div class="col-md-4">
               <label for="team" class="form-label"> &nbsp;</label>
              
               <input
@@ -84,11 +83,12 @@ export default {
   },
   methods: {
     async getTeams() {
-      await api.get(`/teams?page=0&perPage=99999`).then((res) => {
+      await api.get(`/teams?page=0&perPage=99999&sortBy=name`).then((res) => {
         this.teams = res.data.data;
       });
     },
     async generateFile() {
+
       if (!this.team_id || !this.start_date || !this.end_date)
         return Toast.fire(
           "Erro",
@@ -96,32 +96,43 @@ export default {
           "error"
         );
 
-      try {
-        this.loading = !this.loading;
+        const enpoint = `/exports/transfer-report/${this.team_id}/start_date/${this.start_date}/end_date/${this.end_date}`;
 
-        await api
+        try {
 
-          .get(
-            `/exports/transfer-report/${this.team_id}/start_date/${this.start_date}/end_date/${this.end_date}`,
-            { responseType: "blob" }
-          )
-          .then((response) => {
-            const blob = new Blob([response.data], {
-              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,",
-            });
+          const response = await api.get(enpoint);
 
-            const selectElement = document.querySelector("#team");
-            const selectedOptionText = selectElement.options[selectElement.selectedIndex].text;
+          if(response.data.error)
+            return Toast.fire("Atenção", response.data.message, "warning");
 
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = `Relatório de Repasse_` + selectElement.options[selectElement.selectedIndex].text.toUpperCase();
-            a.click();
-          });
-      } catch (error) {
-        Toast.fire("Erro", error.message, "error");
-      }
-      this.loading = !this.loading;
+            try {
+              this.loading = !this.loading;
+
+              await api
+                .get(enpoint,{ responseType: "blob" })
+                .then((response) => {
+                  const blob = new Blob([response.data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,",
+                  });
+
+                  const selectElement = document.querySelector("#team");
+                  const selectedOptionText = selectElement.options[selectElement.selectedIndex].text;
+
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = `Relatório de Repasse_` + selectElement.options[selectElement.selectedIndex].text.toUpperCase();
+                  a.click();
+                });
+            } catch (error) {
+              Toast.fire("Erro", error.message, "error");
+            }
+
+            this.loading = !this.loading;
+
+        } catch (error) {
+          Toast.fire("Erro", error.message, "error");
+        }
+
     },
   },
   mounted() {

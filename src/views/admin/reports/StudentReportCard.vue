@@ -98,7 +98,7 @@
         this.teamsOfstudent = studentFiltered[0].registrations ?? [];
       },
       async getStudents() {
-        await api.get(`/students?page=0&perPage=99999`).then((res) => {
+        await api.get(`/students?page=0&perPage=99999&sortBy=name`).then((res) => {
           this.students = res.data.data;
         });
       },
@@ -106,30 +106,42 @@
   
         if (!this.team_id || !this.student_id)
           return Toast.fire("Erro", "Por favor, selecione todos os campos.", "error");
-  
-        try {
-  
-          this.loading = !this.loading;
-  
-          await api
-  
-            .get(`/exports/student-report-card/${this.student_id}/team/${this.team_id}`,{ responseType: "blob"})
-            .then((response) => {
 
-                const blob = new Blob(
-                            [response.data],
-                            { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," }
-                        );
+          const enpoint = `/exports/student-report-card/${this.student_id}/team/${this.team_id}`;
+          try {
 
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `Boletim_` + this.teamsOfstudent[0].student.name.toUpperCase();
-                a.click();
+            const response = await api.get(enpoint);
+            
+            if(response.data.error)
+              return Toast.fire("Atenção", response.data.message, "warning");
+
+              try {
   
-            });
-        } catch (error) {
-          Toast.fire("Erro", error.message, "error");
-        }
+                this.loading = !this.loading;
+
+                await api
+                  .get(enpoint,{ responseType: "blob"})
+                  .then((response) => {
+
+                      const blob = new Blob(
+                                  [response.data],
+                                  { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," }
+                              );
+
+                      const a = document.createElement("a");
+                      a.href = URL.createObjectURL(blob);
+                      a.download = `Boletim_` + this.teamsOfstudent[0].student.name.toUpperCase();
+                      a.click();
+
+                  });
+              } catch (error) {
+                Toast.fire("Erro", error.message, "error");
+              }
+
+            } catch (error) {
+            Toast.fire("Erro", error.message, "error");
+          }
+        
         this.loading = !this.loading;
       },
     },
