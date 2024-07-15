@@ -98,7 +98,7 @@
         this.teamsOfstudent = studentFiltered[0].registrations ?? [];
       },
       async getStudents() {
-        await api.get(`/students?page=0&perPage=99999`).then((res) => {
+        await api.get(`/students?page=0&perPage=99999&sortBy=name`).then((res) => {
           this.students = res.data.data;
         });
       },

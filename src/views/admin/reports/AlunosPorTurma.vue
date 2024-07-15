@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         async getTeams() {
-            await api.get(`/teams?page=0&perPage=99999`).then((res) => {
+            await api.get(`/teams?page=0&perPage=99999&sortBy=name`).then((res) => {
                 this.teams = res.data.data;
             });
         },

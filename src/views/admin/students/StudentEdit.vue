@@ -1203,17 +1203,17 @@ export default {
         });
     },
     async getTeams() {
-      await api.get(`/teams?page=0&perPage=99999`).then((res) => {
+      await api.get(`/teams?page=0&perPage=99999&sortBy=name`).then((res) => {
         this.teams = res.data.data;
       });
     },
     async getServiceType() {
-      await api.get(`/service-types?page=0&perPage=99999`).then((res) => {
+      await api.get(`/service-types?page=0&perPage=99999&sortBy=name`).then((res) => {
         this.serviceTypes = res.data.data;
       });
     },
     async getPaymentService() {
-      await api.get(`/payment-types?page=0&perPage=99999`).then((res) => {
+      await api.get(`/payment-types?page=0&perPage=99999&sortBy=name`).then((res) => {
         this.paymentTypes = res.data.data;
       });
     },
