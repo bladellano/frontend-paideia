@@ -76,6 +76,7 @@
               type="text"
               class="form-control"
               id="rg"
+              name="rg"
               v-model="student.rg"
             />
           </div>
