@@ -1037,12 +1037,13 @@
               </div>
 
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <button type="submit" class="btn btn-success btn-sm">
                     ATUALIZAR
                   </button>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-8 text-end">
+
                   <a
                     v-if="showReceipt"
                     type="button"
@@ -1050,6 +1051,16 @@
                     class="link-secondary"
                     ><u>🧾 Emitir Recibo</u></a
                   >
+
+                  <a
+                    v-if="!showReceipt"
+                    type="button"
+                    :href="`https://api.paideiaeducacional.com/payment/create-order/${this.financial_id}`"
+                    target="_blank"
+                    class="link-success"
+                    ><u>💳 Pagar com Cartão de Crédito</u></a
+                  >
+
                 </div>
               </div>
             </form>
