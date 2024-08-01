@@ -123,6 +123,7 @@
               class="form-control"
               v-model="student.birth_date"
             />
+           <small class="text-secondary"> {{ student.age }}</small>
           </div>
           <div class="form-group col-md-6">
             <label for="name_mother">Nome da mãe</label>
