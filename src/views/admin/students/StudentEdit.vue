@@ -268,11 +268,7 @@
                         {{ registration.team.name | uppercase }}
                       </router-link>
 
-                      <ButtonDelete
-                        @delete="
-                          handlerDelete(registration.id, 'registrations')
-                        "
-                      />
+                      <ButtonDelete @delete=" handlerDelete(registration.id, 'registrations')" />
                     </li>
                   </ul>
                 </div>
@@ -461,7 +457,7 @@
                                   >
                                     <button
                                       class="btn btn-outline-secondary btn-sm"
-                                      @click="showModalFinancial(financial.id)"
+                                      @click="showModalFinancial(financial.id, financial.urlcc, financial.urlticket, financial.payment_type)"
                                     >
                                       <font-awesome-icon icon="edit" />
                                     </button>
@@ -904,14 +900,10 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form
-              ref="formFinancialUpdate"
-              @submit.prevent="handlerFinancialUpdate"
+            <form ref="formFinancialUpdate" @submit.prevent="handlerFinancialUpdate"
             >
               <div class="row mb-3 form-update">
-                <label for="registration_id" class="col-sm-6 col-form-label"
-                  >Matrícula</label
-                >
+                <label for="registration_id" class="col-sm-6 col-form-label">Matrícula</label>
                 <div class="col-sm-6">
                   <input
                     disabled
@@ -933,9 +925,7 @@
                   />
                 </div>
                 <!-- -- --  -->
-                <label for="quota" class="col-sm-6 col-form-label"
-                  >Parcela</label
-                >
+                <label for="quota" class="col-sm-6 col-form-label">Parcela</label>
                 <div class="col-sm-6">
                   <input
                     type="number"
@@ -945,9 +935,7 @@
                   />
                 </div>
                 <!-- -- -- -->
-                <label for="due_date" class="col-sm-6 col-form-label"
-                  >Vencimento</label
-                >
+                <label for="due_date" class="col-sm-6 col-form-label">Vencimento</label>
                 <div class="col-sm-6">
                   <input
                     type="date"
@@ -957,9 +945,7 @@
                 </div>
 
                 <!-- -- -- -->
-                <label for="paid" class="col-sm-6 col-form-label"
-                  >Quitado</label
-                >
+                <label for="paid" class="col-sm-6 col-form-label">Quitado</label>
                 <div class="col-sm-6">
                   <select
                     name="paid"
@@ -973,9 +959,7 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="service_type_id" class="col-sm-6 col-form-label"
-                  >Tipo de Serviço</label
-                >
+                <label for="service_type_id" class="col-sm-6 col-form-label">Tipo de Serviço</label>
                 <div class="col-sm-6">
                   <select
                     name="service_type_id"
@@ -993,9 +977,7 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="payment_type" class="col-sm-6 col-form-label"
-                  >Forma de Pagamento</label
-                >
+                <label for="payment_type" class="col-sm-6 col-form-label">Forma de Pagamento</label>
                 <div class="col-sm-6">
                   <select
                     name="payment_type"
@@ -1013,9 +995,7 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="pay_day" class="col-sm-6 col-form-label"
-                  >Dia do Pagamento</label
-                >
+                <label for="pay_day" class="col-sm-6 col-form-label">Dia do Pagamento</label>
                 <div class="col-sm-6">
                   <input
                     type="date"
@@ -1025,9 +1005,7 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="observations" class="col-sm-12 col-form-label"
-                  >Observação</label
-                >
+                <label for="observations" class="col-sm-12 col-form-label">Observação</label>
                 <div class="col-sm-12">
                   <input
                     type="text"
@@ -1054,13 +1032,22 @@
                   >
 
                   <a
-                    v-if="!showReceipt"
+                    v-if="!showReceipt && paymentTypeShowButton == 2"
                     type="button"
-                    :href="`https://api.paideiaeducacional.com/payment/create-order/${this.financial_id}`"
+                    :href="`${this.urlcc}`"
                     target="_blank"
                     class="link-success"
-                    ><u>💳 Pagar com Cartão de Crédito</u></a
-                  >
+                    ><u>💳 Pagar com Cartão de Crédito</u>
+                  </a>
+                </br>
+                  <a
+                    v-if="!showReceipt && paymentTypeShowButton == 4"
+                    type="button"
+                    :href="`${this.urlticket}`"
+                    target="_blank"
+                    class="link-success"
+                    ><u>🧾 Pagar com Boleto</u>
+                  </a>
 
                 </div>
               </div>
@@ -1112,7 +1099,10 @@ export default {
       paymentTypes: [],
       team_id: "",
       financial_id: "",
+      urlcc: "",
+      urlticket: "",
       teamRegistration: "",
+      paymentTypeShowButton: "",
       financial: {
         registration_id: "",
         payment_type: "",
@@ -1143,8 +1133,7 @@ export default {
   methods: {
     async getImage() {
       try {
-        const response = await api.get(
-          `/students/${this.$route.params.id}/get-image`,
+        const response = await api.get(`/students/${this.$route.params.id}/get-image`,
           {
             responseType: "blob",
           }
@@ -1164,10 +1153,7 @@ export default {
     },
     async changeStudentOfDocument(e) {
       try {
-        const { data } = await api.put(
-          `/documents/${e.target.dataset.documentId}`,
-          { student_id: e.target.value }
-        );
+        const { data } = await api.put(`/documents/${e.target.dataset.documentId}`,{ student_id: e.target.value });
         Toast.fire("Sucesso", data.message, "success");
       } catch (error) {
         Toast.fire("Erro", error.response.data.message, "error");
@@ -1370,7 +1356,8 @@ export default {
 
       this.loading = !this.loading;
     },
-    async showModalFinancial(id) {
+    async showModalFinancial(id, urlcc, urlticket, payment_type) {
+
       try {
         const { data } = await api.get(`/financials/${id}`);
 
@@ -1401,6 +1388,10 @@ export default {
         jQuery("#modalFinancial").modal("show");
 
         this.financial_id = id;
+        this.urlcc = urlcc;
+        this.urlticket = urlticket;
+        this.paymentTypeShowButton = payment_type.id;
+
       } catch (error) {
         Toast.fire("Erro", error.response.data.message, "error");
       }
