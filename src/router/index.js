@@ -72,6 +72,7 @@ import CertificateOfCompletion from '../views/admin/reports/CertificateOfComplet
 import RegistrationStatement from '../views/admin/reports/RegistrationStatement.vue'
 import StudentReportCard from '../views/admin/reports/StudentReportCard.vue'
 import TransferReport from '../views/admin/reports/TransferReport.vue'
+import AnnualPerformanceReport from '../views/admin/reports/AnnualPerformanceReport.vue'
 
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
@@ -354,7 +355,12 @@ const routes = [
                 path: "reports/relatorio-de-repasse",
                 name: "relatorio-de-repasse",
                 component: TransferReport,
-            },              
+            },     
+            {
+                path: "reports/relatorio-de-desempenho-anual",
+                name: "relatorio-de-desempenho-anual",
+                component: AnnualPerformanceReport,
+            },          
         ]
     }
 ]
