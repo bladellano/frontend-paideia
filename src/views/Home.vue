@@ -61,26 +61,25 @@
             <form class="text-left" @submit.prevent="sendEmail">
               <div class="mb-3">
                 <label for="name">Seu nome:</label>
-                <input type="text" class="form-control" v-model="email.nome">
+                <input data-test="name" type="text" class="form-control" v-model="email.nome">
               </div>
               <div class="mb-3">
                 <label for="email">E-mail:</label>
-                <input type="email" class="form-control" v-model="email.e_mail">
+                <input data-test="email" type="email" class="form-control" v-model="email.e_mail">
               </div>
               <div class="mb-3">
                 <label for="doubt">Dúvida:</label>
-                <input type="text" class="form-control" v-model="email.doubt">
+                <input data-test="doubt" type="text" class="form-control" v-model="email.doubt">
               </div>
               <div class="mb-3">
                 <label for="whatsapp">WhatsApp:</label>
-
-                <TheMask type="text" class="form-control" :mask="['(##) ####-####', '(##) #####-####']" :masked="true"
+                <TheMask data-test="whatsapp" type="text" class="form-control" :mask="['(##) ####-####', '(##) #####-####']" :masked="true"
                   v-model="email.whatsapp" />
 
               </div>
               <div class="mb-3 d-grid">
 
-                <button v-if="!loading" type="submit" class="btn btn-outline-light">Enviar</button>
+                <button data-test="submit" v-if="!loading" type="submit" class="btn btn-outline-light">Enviar</button>
 
                 <LoadingPage class="loading" v-else />
 
