@@ -119,6 +119,7 @@ export default {
             { action: "Boletim do aluno", path: { name: 'boletim-do-aluno' } },
             { action: "Relatório de repasse", path: { name: 'relatorio-de-repasse' } },
             { action: "Relatório de desempenho anual", path: { name: 'relatorio-de-desempenho-anual' } },
+            { action: "Relatório de inadimplentes", path: { name: 'inadimplentes' } },
           ]
         }
       ]

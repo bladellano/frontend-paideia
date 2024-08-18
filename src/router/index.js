@@ -73,6 +73,7 @@ import RegistrationStatement from '../views/admin/reports/RegistrationStatement.
 import StudentReportCard from '../views/admin/reports/StudentReportCard.vue'
 import TransferReport from '../views/admin/reports/TransferReport.vue'
 import AnnualPerformanceReport from '../views/admin/reports/AnnualPerformanceReport.vue'
+import DefaultersReport from '../views/admin/reports/DefaultersReport.vue'
 
 //History
 import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
@@ -360,7 +361,12 @@ const routes = [
                 path: "reports/relatorio-de-desempenho-anual",
                 name: "relatorio-de-desempenho-anual",
                 component: AnnualPerformanceReport,
-            },          
+            }, 
+            {
+                path: "reports/inadimplentes",
+                name: "inadimplentes",
+                component: DefaultersReport,
+            },         
         ]
     }
 ]
