@@ -366,7 +366,7 @@
                                   <td :class="highPayStatus(financial)">{{ financial.created_at }}</td>
                                   <td :class="highPayStatus(financial)">{{ financial.user.name }}</td>
                                   <td :class="highPayStatus(financial)" style="width: 100px">
-                                    <button class="btn btn-outline-secondary btn-sm" @click="showModalFinancial(financial.id, financial.urlcc, financial.urlticket, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
+                                    <button class="btn btn-outline-secondary btn-sm" @click="showModalFinancial(financial.id, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
                                     <ButtonDelete @delete="handlerDelete(financial.id, 'financials')" />
                                   </td>
                                 </tr>
@@ -980,8 +980,6 @@ export default {
       paymentTypes: [],
       team_id: "",
       financial_id: "",
-      urlcc: "",
-      urlticket: "",
       teamRegistration: "",
       paymentTypeShowButton: "",
       financial: {
@@ -1261,7 +1259,7 @@ export default {
 
       this.loading = !this.loading;
     },
-    async showModalFinancial(id, urlcc, urlticket, payment_type) {
+    async showModalFinancial(id, payment_type) {
 
       try {
         const { data } = await api.get(`/financials/${id}`);
@@ -1293,8 +1291,6 @@ export default {
         jQuery("#modalFinancial").modal("show");
 
         this.financial_id = id;
-        this.urlcc = urlcc;
-        this.urlticket = urlticket;
         this.paymentTypeShowButton = payment_type.id;
 
       } catch (error) {
