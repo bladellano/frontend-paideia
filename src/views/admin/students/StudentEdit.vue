@@ -330,13 +330,13 @@
                               <th scope="col">Matrícula</th>
                               <th scope="col">Turma</th>
                               <th scope="col">Serviço</th>
-                              <th scope="col">Parcela</th>
-                              <th scope="col">Valor</th>
-                              <th scope="col">Vencimento</th>
-                              <th scope="col">Data do Pagamento</th>
+                              <th scope="col">N.º</th>
+                              <th scope="col">R$</th>
+                              <th scope="col">Venc.</th>
+                              <th scope="col">Dt. Pagamento</th>
                               <th scope="col">Quitado</th>
                               <th scope="col">Forma de Pagamento</th>
-                              <th scope="col">Obs.</th>
+                              <th scope="col">Observação</th>
                               <th scope="col">Criado</th>
                               <th scope="col">Usuário</th>
                               <th scope="col"></th>
@@ -344,131 +344,30 @@
                           </thead>
                           <tbody>
                             <template v-if="!!hasRegistration.length">
-                              <template
-                                v-for="registration in student.registrations"
-                              >
-                                <tr
-                                  v-for="financial in registration.financials"
-                                  :key="financial.id"
-                                >
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.id }}
+                              <template v-for="registration in student.registrations">
+                                <tr v-for="financial in registration.financials" :key="financial.id">
+                                  <td :class="highPayStatus(financial)">{{ financial.id }}</td>
+                                  <td :class="highPayStatus(financial)">{{ String(financial.registration_id).padStart(6, '0') }}</td>
+                                  <td :class="highPayStatus(financial)">
+                                    
+                                    <router-link :to="{ name: 'team-edit', params: { id: registration.team.id } }" target="_blank">
+                                      <u>{{ registration.team.name | uppercase }}</u>
+                                    </router-link>
+                                  
                                   </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{
-                                      String(
-                                        financial.registration_id
-                                      ).padStart(6, "0")
-                                    }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    <span
-                                      class="badge rounded-pill bg-secondary"
-                                      >{{ registration.team.name }}</span
-                                    >
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.service_type.name }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.quota }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.value | currency }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.due_date }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.pay_day }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.paid ? "SIM" : "NÃO" }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.payment_type.name }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.observations }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.created_at }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                  >
-                                    {{ financial.user.name }}
-                                  </td>
-                                  <td
-                                    :class="
-                                      styleToHighlightPaymentStatus(financial)
-                                    "
-                                    style="width: 100px"
-                                  >
-                                    <button
-                                      class="btn btn-outline-secondary btn-sm"
-                                      @click="showModalFinancial(financial.id, financial.urlcc, financial.urlticket, financial.payment_type)"
-                                    >
-                                      <font-awesome-icon icon="edit" />
-                                    </button>
-                                    <ButtonDelete
-                                      @delete="
-                                        handlerDelete(
-                                          financial.id,
-                                          'financials'
-                                        )
-                                      "
-                                    />
+                                  <td :class="highPayStatus(financial)">{{ financial.service_type.name }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.quota }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.value | currency }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.due_date }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.pay_day }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.payment_type.name }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.observations }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.created_at }}</td>
+                                  <td :class="highPayStatus(financial)">{{ financial.user.name }}</td>
+                                  <td :class="highPayStatus(financial)" style="width: 100px">
+                                    <button class="btn btn-outline-secondary btn-sm" @click="showModalFinancial(financial.id, financial.urlcc, financial.urlticket, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
+                                    <ButtonDelete @delete="handlerDelete(financial.id, 'financials')" />
                                   </td>
                                 </tr>
                               </template>
@@ -882,12 +781,7 @@
 
     <!-- MODAL FINANCIAL -->
     <!--//! @TODO criar um componente para os campos do financeiro - nao precisa engloba os VERBOS (POST, PUT) -->
-    <div
-      class="modal fade"
-      id="modalFinancial"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="modalFinancial" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -1022,31 +916,18 @@
                   </button>
                 </div>
                 <div class="col-md-8 text-end">
-
-                  <a
-                    v-if="showReceipt"
-                    type="button"
-                    @click="generateReceipt"
-                    class="link-secondary"
-                    ><u>🧾 Emitir Recibo</u></a
-                  >
-
-                  <a
-                    v-if="!showReceipt && paymentTypeShowButton == 2"
-                    type="button"
-                    :href="`${this.urlcc}`"
-                    target="_blank"
-                    class="link-success"
-                    ><u>💳 Pagar com Cartão de Crédito</u>
+                  <a v-if="showReceipt" type="button" @click="generateReceipt" class="link-secondary">
+                    <u>🧾 Emitir Recibo</u>
                   </a>
-                </br>
-                  <a
-                    v-if="!showReceipt && paymentTypeShowButton == 4"
-                    type="button"
-                    :href="`${this.urlticket}`"
-                    target="_blank"
-                    class="link-success"
-                    ><u>🧾 Pagar com Boleto</u>
+
+                  <a 
+                    v-if="!showReceipt && (paymentTypeShowButton == 4 || paymentTypeShowButton == 2)" 
+                    type="button" 
+                    target="_blank" 
+                    class="btn btn-outline-info btn-sm" 
+                    @click="mp"
+                  >
+                    🏦 Mercado Pago
                   </a>
 
                 </div>
@@ -1159,7 +1040,7 @@ export default {
         Toast.fire("Erro", error.response.data.message, "error");
       }
     },
-    styleToHighlightPaymentStatus(financial) {
+    highPayStatus(financial) {
       const dueDate = new Date(this.convertDateToDB(financial.due_date));
       const dataAtual = new Date();
 
@@ -1326,6 +1207,30 @@ export default {
       }
 
       this.loading = !this.loading;
+    },
+    async mp(id) {
+
+      try {
+        this.loading = !this.loading;
+
+        await api
+          .post(`/mercadopago/preference/${this.financial_id}`, {
+            responseType: "json",
+          })
+          .then((response) => {
+            const initPointUrl = response.data.init_point;
+
+            if (initPointUrl) {
+              window.open(initPointUrl, '_blank');
+            } else {
+              Toast.fire("Erro", "URL não encontrada no response", "error");
+            }
+          });
+      } catch (error) {
+        Toast.fire("Erro", error.message, "error");
+      } finally {
+        this.loading = !this.loading;
+      }
     },
     async generateReceipt() {
       if (!this.financial_id)
