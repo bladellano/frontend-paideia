@@ -921,7 +921,7 @@
                   </a>
 
                   <a 
-                    v-if="!showReceipt && (paymentTypeShowButton == 4 || paymentTypeShowButton == 2)" 
+                    v-if="!showReceipt && (paymentTypeShowButton == 4 || paymentTypeShowButton == 2 || paymentTypeShowButton == 1)" 
                     type="button" 
                     target="_blank" 
                     class="link-primary" 
