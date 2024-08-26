@@ -924,11 +924,10 @@
                     v-if="!showReceipt && (paymentTypeShowButton == 4 || paymentTypeShowButton == 2)" 
                     type="button" 
                     target="_blank" 
-                    class="" 
+                    class="link-primary" 
                     @click="mp"
                   >
-                     Pagar com 
-                    <img src="@/assets/logo-mp.png" alt="MP" style="width: 120px;">
+                     <u>Pagar com Cartão de Crédito/Boleto.</u>
                   </a>
 
                 </div>
