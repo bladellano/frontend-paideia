@@ -907,6 +907,8 @@
                     name="observations"
                   />
                 </div>
+
+                <p class="text-secondary" v-html="msgAlertTickerStreet"></p>
               </div>
 
               <div class="row">
@@ -919,7 +921,6 @@
                   <a v-if="showReceipt" type="button" @click="generateReceipt" class="link-secondary">
                     <u>🧾 Emitir Recibo</u>
                   </a>
-                  <!-- FOCO -->
                   <a 
                     v-if="!showReceipt && (paymentTypeShowButton == 2 || paymentTypeShowButton == 1)" 
                     type="button" 
@@ -1008,6 +1009,7 @@ export default {
       hasBooks: [],
       numberOfTimesToEnter: 1,
       students: [],
+      msgAlertTickerStreet: ""
     };
   },
   watch: {
@@ -1301,6 +1303,21 @@ export default {
 
         this.showReceipt = data.paid;
         this.paidValue = data.paid;
+
+        this.msgAlertTickerStreet = '';
+
+        if(data.gateway_response && data.payment_type == 4 && data.paid == 0) {
+          const gatewayResponse = JSON.parse(data.gateway_response);
+          this.msgAlertTickerStreet = gatewayResponse.hasOwnProperty('payment_type_id') && gatewayResponse.payment_type_id == 'ticket'
+          ? `<p>
+              Já existe um boleto em aberto para pagamento. 
+              <a href="${gatewayResponse.transaction_details.external_resource_url}" target="_blank">
+                Clique aqui
+              </a> 
+              para acessá-lo, ou você pode gerar um novo, se necessário.
+            </p>` 
+          : '';
+        }
 
         for (let field in data) {
           const hasField = document.querySelector(
