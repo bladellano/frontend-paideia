@@ -782,7 +782,7 @@
     <!-- MODAL FINANCIAL -->
     <!--//! @TODO criar um componente para os campos do financeiro - nao precisa engloba os VERBOS (POST, PUT) -->
     <div class="modal fade" id="modalFinancial" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Editar Financeiro</h5>
@@ -919,17 +919,27 @@
                   <a v-if="showReceipt" type="button" @click="generateReceipt" class="link-secondary">
                     <u>🧾 Emitir Recibo</u>
                   </a>
-
+                  <!-- FOCO -->
                   <a 
-                    v-if="!showReceipt && (paymentTypeShowButton == 4 || paymentTypeShowButton == 2 || paymentTypeShowButton == 1)" 
+                    v-if="!showReceipt && (paymentTypeShowButton == 2 || paymentTypeShowButton == 1)" 
                     type="button" 
                     target="_blank" 
                     class="link-primary" 
-                    @click="mp"
+                    @click="mpStandard"
                   >
-                     <u>Pagar com Cartão de Crédito/Boleto.</u>
+                     <u>💳 Pagar com Cartão de Crédito/Boleto.</u>
                   </a>
-
+                  <br/>
+                  <a 
+                    v-if="!showReceipt && paymentTypeShowButton == 4" 
+                    type="button" 
+                    target="_blank" 
+                    class="link-default" 
+                    @click="mpTicket"
+                  >
+                     <u>🧾 Gerar Boleto Mercado Pago.</u>
+                  </a>
+                  
                 </div>
               </div>
             </form>
@@ -1124,7 +1134,6 @@ export default {
     async handlerFinancialUpdate() {
       try {
         const formData = new FormData(this.$refs.formFinancialUpdate);
-
         formData.set("value", this.decimal(formData.get("value")));
 
         const { data } = await api.put(
@@ -1135,6 +1144,8 @@ export default {
         Toast.fire("Sucesso", data.message, "success");
 
         this.getItens();
+
+        jQuery('#modalFinancial').modal('hide');
 
         this.financial_id = null;
       } catch (error) {
@@ -1206,7 +1217,31 @@ export default {
 
       this.loading = !this.loading;
     },
-    async mp(id) {
+    async mpTicket() {
+
+      try {
+        this.loading = !this.loading;
+
+        await api
+          .post(`/mercadopago/ticket/${this.financial_id}`, {
+            responseType: "json",
+          })
+          .then((response) => {
+            const initPointUrl = response.data.transaction_details.external_resource_url;
+
+            if (initPointUrl) {
+              window.open(initPointUrl, '_blank');
+            } else {
+              Toast.fire("Erro", "URL não encontrada no response", "error");
+            }
+          });
+      } catch (error) {
+        Toast.fire("Erro", error.message, "error");
+      } finally {
+        this.loading = !this.loading;
+      }
+    },
+    async mpStandard() {
 
       try {
         this.loading = !this.loading;
