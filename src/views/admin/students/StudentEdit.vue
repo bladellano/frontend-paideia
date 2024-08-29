@@ -797,6 +797,18 @@
             <form ref="formFinancialUpdate" @submit.prevent="handlerFinancialUpdate"
             >
               <div class="row mb-3 form-update">
+
+                <label for="id" class="col-sm-6 col-form-label">#</label>
+                <div class="col-sm-6">
+                  <input
+                    disabled
+                    type="text"
+                    class="form-control form-control-sm"
+                    name="id"
+                  />
+                </div>
+
+                <!-- -- --  -->
                 <label for="registration_id" class="col-sm-6 col-form-label">Matrícula</label>
                 <div class="col-sm-6">
                   <input
@@ -994,6 +1006,7 @@ export default {
       teamRegistration: "",
       paymentTypeShowButton: "",
       financial: {
+        id: "",
         registration_id: "",
         payment_type: "",
         service_type_id: "",
@@ -1238,7 +1251,7 @@ export default {
             }
           });
       } catch (error) {
-        Toast.fire("Erro", error.message, "error");
+        Toast.fire("Erro", error.response.data.error , "error");
       } finally {
         this.loading = !this.loading;
       }
