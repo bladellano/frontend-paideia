@@ -798,8 +798,8 @@
             >
               <div class="row mb-3 form-update">
 
-                <label for="id" class="col-sm-6 col-form-label">#</label>
-                <div class="col-sm-6">
+                <label for="id" class="col-sm-4 col-form-label">#</label>
+                <div class="col-sm-8">
                   <input
                     disabled
                     type="text"
@@ -809,8 +809,8 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="registration_id" class="col-sm-6 col-form-label">Matrícula</label>
-                <div class="col-sm-6">
+                <label for="registration_id" class="col-sm-4 col-form-label">Matrícula</label>
+                <div class="col-sm-8">
                   <input
                     disabled
                     type="text"
@@ -819,8 +819,8 @@
                   />
                 </div>
                 <!-- -- --  -->
-                <label for="value" class="col-sm-6 col-form-label">Valor</label>
-                <div class="col-sm-6">
+                <label for="value" class="col-sm-4 col-form-label">Valor</label>
+                <div class="col-sm-8">
                   <input
                     type="text"
                     class="form-control form-control-sm"
@@ -831,8 +831,8 @@
                   />
                 </div>
                 <!-- -- --  -->
-                <label for="quota" class="col-sm-6 col-form-label">Parcela</label>
-                <div class="col-sm-6">
+                <label for="quota" class="col-sm-4 col-form-label">Parcela</label>
+                <div class="col-sm-8">
                   <input
                     type="number"
                     @keyup="filterNonNumeric"
@@ -841,18 +841,22 @@
                   />
                 </div>
                 <!-- -- -- -->
-                <label for="due_date" class="col-sm-6 col-form-label">Vencimento</label>
-                <div class="col-sm-6">
+                <label for="due_date" class="col-sm-4 col-form-label">Vencimento</label>
+                <div class="col-sm-8">
                   <input
                     type="date"
                     class="form-control form-control-sm"
                     name="due_date"
                   />
+
+                  <input class="form-check-input" type="checkbox" v-model="isChecked" id="applyDueDateToBill">
+                    <small> Aplicar este vencimento se o pagamento for boleto.</small>
+
                 </div>
 
                 <!-- -- -- -->
-                <label for="paid" class="col-sm-6 col-form-label">Quitado</label>
-                <div class="col-sm-6">
+                <label for="paid" class="col-sm-4 col-form-label">Quitado</label>
+                <div class="col-sm-8">
                   <select
                     name="paid"
                     class="form-control form-control-sm"
@@ -865,8 +869,8 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="service_type_id" class="col-sm-6 col-form-label">Tipo de Serviço</label>
-                <div class="col-sm-6">
+                <label for="service_type_id" class="col-sm-4 col-form-label">Tipo de Serviço</label>
+                <div class="col-sm-8">
                   <select
                     name="service_type_id"
                     class="form-control form-control-sm"
@@ -883,8 +887,8 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="payment_type" class="col-sm-6 col-form-label">Forma de Pagamento</label>
-                <div class="col-sm-6">
+                <label for="payment_type" class="col-sm-4 col-form-label">Forma de Pagamento</label>
+                <div class="col-sm-8">
                   <select
                     name="payment_type"
                     class="form-control form-control-sm"
@@ -901,8 +905,8 @@
                 </div>
 
                 <!-- -- --  -->
-                <label for="pay_day" class="col-sm-6 col-form-label">Dia do Pagamento</label>
-                <div class="col-sm-6">
+                <label for="pay_day" class="col-sm-4 col-form-label">Dia do Pagamento</label>
+                <div class="col-sm-8">
                   <input
                     type="date"
                     class="form-control form-control-sm"
@@ -997,6 +1001,7 @@ export default {
       decimal,
       handlerDelete,
       filterNonNumeric,
+      isChecked:false,
       student: [],
       teams: [],
       serviceTypes: [],
@@ -1234,13 +1239,21 @@ export default {
     },
     async mpTicket() {
 
+      console.log('this.isChecked', this.isChecked); ;
+
+      let postData = {};
+
+      const formData = new FormData(this.$refs.formFinancialUpdate);
+      const extractedData = Object.fromEntries(formData.entries());
+
+      if(this.isChecked && !!extractedData.due_date && extractedData.payment_type == 4) 
+        postData.date_of_expiration = extractedData.due_date;
+      
       try {
         this.loading = !this.loading;
 
         await api
-          .post(`/mercadopago/ticket/${this.financial_id}`, {
-            responseType: "json",
-          })
+          .post(`/mercadopago/ticket/${this.financial_id}`, postData, {responseType: "json",})
           .then((response) => {
             const initPointUrl = response.data.transaction_details.external_resource_url;
 
@@ -1318,6 +1331,7 @@ export default {
         this.paidValue = data.paid;
 
         this.msgAlertTickerStreet = '';
+        this.isChecked = false;
 
         if(data.gateway_response && data.payment_type == 4 && data.paid == 0) {
           const gatewayResponse = JSON.parse(data.gateway_response);
@@ -1330,6 +1344,10 @@ export default {
               para acessá-lo, ou você pode gerar um novo, se necessário.
             </p>` 
           : '';
+
+          if(!!gatewayResponse.external_reference) /** Se esta chave possuir valor, significa que o vencimento manual do boleto foi adicionado. */
+            this.isChecked = true;
+
         }
 
         for (let field in data) {
