@@ -39,27 +39,17 @@
 
           <p class="text-secondary">
           <div>
-            <router-link class="nav-link text-danger" to="/">Home</router-link>
+            <router-link class="nav-link text-white" to="/">Home</router-link>
           </div>
           <div v-if="!isLogged" class="pb-4">
-            <router-link class="nav-link text-danger" :to="{ name: 'login' }">Login Administrativo</router-link>
+            <router-link class="btn btn-sm btn-outline-light text-white" :to="{ name: 'login' }"><v-icon class="text-white">mdi-account</v-icon> Login Administrativo</router-link>
           </div>
 
           <div v-else class="pb-4 dropdown">
 
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <font-awesome-icon icon="user" />
-              {{ userName }}
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-              <li>
-                <router-link class="dropdown-item" to="/admin">Gestão</router-link>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" @click.prevent="logout">Sair</a>
-              </li>
-            </ul>
+            <router-link class="btn btn-outline-light text-white btn-sm mt-4" to="/admin"><v-icon class="text-white">mdi-cog</v-icon> Gestão</router-link>
+            <br/>
+            <a class="btn btn-outline-light text-white btn-sm mt-4" @click.prevent="logout"><v-icon class="text-white">mdi-exit-run</v-icon> Sair</a>
 
           </div>
 

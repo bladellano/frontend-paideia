@@ -40,41 +40,12 @@
 </template>
 
 <script>
-import {
-  VContainer,
-  VRow,
-  VCol,
-  VCardSubtitle,
-  VIcon,
-  VCard,
-  VCardTitle,
-  VCardText,
-  VCardActions,
-  VForm,
-  VTextField,
-  VBtn,
-  VSpacer,
-} from "vuetify/lib";
+
 import api from "@/services";
 import axios from "axios";
 import { EventBus } from "../main";
 
 export default {
-  components: {
-    VContainer,
-    VRow,
-    VCol,
-    VCardSubtitle,
-    VIcon,
-    VCard,
-    VCardTitle,
-    VCardText,
-    VCardActions,
-    VForm,
-    VTextField,
-    VBtn,
-    VSpacer,
-  },
   name: "LoginVuetify",
   data() {
     return {

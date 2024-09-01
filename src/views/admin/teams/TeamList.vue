@@ -50,16 +50,12 @@ import api from "@/services";
 import ButtonEdit from "@/components/ButtonEdit.vue";
 import ButtonDelete from "@/components/ButtonDelete.vue";
 import { serialize, handlerDelete } from "@/helpers";
-import { VDataTable, VTextField, VChip } from "vuetify/lib";
 
 export default {
   name: "TeamList",
   components: {
     ButtonEdit,
-    ButtonDelete,
-    VDataTable,
-    VTextField,
-    VChip,
+    ButtonDelete
   },
   data() {
     return {

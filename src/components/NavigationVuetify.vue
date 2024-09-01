@@ -44,36 +44,25 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <!-- Item for logout -->
+        <v-list-item @click="logout">
+          <v-list-item-content>
+            <v-list-item-title><v-icon>mdi-exit-run</v-icon> Sair</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-menu>
   </div>
 </template>
 <script>
-import {
-  VMenu,
-  VIcon,
-  VSwitch,
-  VTooltip,
-  VBtn,
-  VList,
-  VListItem,
-  VListItemTitle,
-  VListGroup,
-  VListItemContent,
-} from "vuetify/lib";
-
 export default {
-  components: {
-    VTooltip,
-    VIcon,
-    VSwitch,
-    VMenu,
-    VBtn,
-    VList,
-    VListItem,
-    VListItemTitle,
-    VListGroup,
-    VListItemContent,
+  methods: {
+    logout() {
+      window.localStorage.removeItem("token");
+      this.isLogged = false;
+      window.location.reload();
+    },
   },
   props: {
     items: {

@@ -32,13 +32,6 @@ export default {
 
 <style scoped>
 
-@media screen and (max-width: 500px) {
-  .content {
-    grid-template-columns: 1fr;
-    margin: 00px auto;
-  }
-}
-
 .v-enter,
 .v-leave-to {
   opacity: 0;
