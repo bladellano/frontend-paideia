@@ -27,9 +27,9 @@
 
         <div class="form-group text-center my-2">
           <button type="submit" class="btn btn-success btn-sm mx-2">
-            Salvar Grade
+            SALVAR GRADE
           </button>
-          <button type="reset" class="btn btn-secondary btn-sm">Limpar</button>
+          <button type="reset" class="btn btn-secondary btn-sm">LIMPAR</button>
         </div>
       </form>
 
@@ -142,15 +142,15 @@
 
         <div class="form-group text-center my-2">
           <button type="submit" class="btn btn-success btn-sm mx-2">
-            Salvar Template
+            SALVAR TEMPLATE
           </button>
-          <button type="reset" class="btn btn-secondary btn-sm">Resetar</button>
+          <button type="reset" class="btn btn-secondary btn-sm">RESETAR</button>
         </div>
       
       </form>
 
       <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">
-        Voltar
+        VOLTAR
       </button>
     </div>
 

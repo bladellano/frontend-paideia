@@ -186,7 +186,7 @@
               <button type="submit" class="btn btn-success btn-sm" id="btnSaveGrades">SALVAR NOTAS NO HISTÓRICO</button>
             </div>
             <button class="btn btn-sm text-uppercase btn-secondary" @click="$router.go(-1)" id="btnBack">
-                Voltar
+                VOLTAR
               </button>
           </form>
 

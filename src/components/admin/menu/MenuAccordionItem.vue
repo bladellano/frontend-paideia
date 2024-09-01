@@ -19,7 +19,7 @@
             data-bs-parent="#accordion"
         >
             <div class="accordion-body p-1">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <ul class="btn-toggle-nav p-0 list-unstyled fw-normal pb-1 small">
                     <slot></slot>
                 </ul>
             </div>

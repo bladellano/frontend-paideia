@@ -1,7 +1,7 @@
 <template>
     <li class="d-grid gap-2">
         <router-link 
-            class="btn btn-secondary text-start btn-sm mt-1" 
+            class="btn btn-secondary text-white text-start btn-sm mt-1" 
             :to="path"
         >
             {{ action }}

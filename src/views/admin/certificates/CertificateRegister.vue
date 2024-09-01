@@ -189,7 +189,7 @@
       class="btn btn-sm text-uppercase btn-secondary text-uppercase"
       @click="$router.go(-1)"
     >
-      Voltar
+      VOLTAR
     </button>
   </section>
 </template>

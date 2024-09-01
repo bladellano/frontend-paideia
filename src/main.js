@@ -5,6 +5,7 @@ import VueAlertify from 'vue-alertify'
 import VueSweetalert2 from 'vue-sweetalert2'
 import Swal from "sweetalert2/dist/sweetalert2.js"
 import VueTheMask from 'vue-the-mask'
+import vuetify from './plugins/vuetify';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -57,5 +58,6 @@ window.Toast = Toast;
 
 new Vue({
   router,
+  vuetify,
   render: h => h(App),
 }).$mount('#app')

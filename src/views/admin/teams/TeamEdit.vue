@@ -81,7 +81,7 @@
             LIMPAR
           </button>
           <router-link 
-            class="btn btn-outline-secondary btn-sm mx-1 text-uppercase" 
+            class="btn btn-outline-primary btn-sm mx-1 text-uppercase" 
             :to="{ name: 'team-disciplines', params: { id: this.$route.params.id }}" 
             >Lançar Notas
           </router-link>
