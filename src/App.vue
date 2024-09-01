@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-
+  <v-app>
+    
     <keep-alive>
       <TheHeader />
     </keep-alive>
@@ -8,23 +8,24 @@
     <main id="main">
       <router-view />
     </main>
-    
+
     <TheFooter />
-  </div>
+  </v-app>
 </template>
 
 <script>
-
-import TheHeader from '@/components/TheHeader.vue';
-import TheFooter from '@/components/TheFooter.vue';
+import { VApp } from "vuetify/lib";
+import TheHeader from "@/components/TheHeader.vue";
+import TheFooter from "@/components/TheFooter.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
+    VApp,
     TheHeader,
-    TheFooter,
-  }
-}
+    TheFooter
+  },
+};
 </script>
 
 <style></style>

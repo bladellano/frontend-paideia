@@ -4,7 +4,7 @@
     <h4 class="my-4">Lançamento de <b>Notas</b></h4>
 
     <a 
-      class="btn btn-sm btn-secondary mb-2"
+      class="btn btn-sm btn-outline-primary mb-2"
       @click="$router.push({ name: 'teams' })"
     >
       VOLTAR

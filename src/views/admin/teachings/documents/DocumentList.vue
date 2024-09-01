@@ -4,9 +4,9 @@
       <h4 class="my-4">Relação de todos os <strong>Textos para Documentos</strong></h4>
 
       <router-link 
-        class="text-decoration-none btn btn-success btn-sm mb-4"
+        class="btn btn-sm btn-outline-primary mb-2"
         to="/admin/ensinos/documentos/registrar">
-        NOVO DOCUMENTO
+        ADICIONAR UM NOVO
       </router-link>
 
       <div class="well mb-4">

@@ -261,7 +261,7 @@
                           name: 'team-edit',
                           params: { id: registration.team.id },
                         }"
-                        class="btn btn-sm btn-outline-success"
+                        class="btn btn-sm btn-outline-primary"
                         :title="`${registration.user.name} - ${registration.created_at}`"
                       >
                         {{ String(registration.id).padStart(6, "0") }} |
@@ -366,7 +366,7 @@
                                   <td :class="highPayStatus(financial)">{{ financial.created_at }}</td>
                                   <td :class="highPayStatus(financial)">{{ financial.user.name }}</td>
                                   <td :class="highPayStatus(financial)" style="width: 100px">
-                                    <button class="btn btn-outline-secondary btn-sm" @click="showModalFinancial(financial.id, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
+                                    <button class="btn btn-outline-primary btn-sm" @click="showModalFinancial(financial.id, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
                                     <ButtonDelete @delete="handlerDelete(financial.id, 'financials')" />
                                   </td>
                                 </tr>
@@ -731,7 +731,7 @@
                       type="submit"
                       class="btn btn-success btn-sm text-uppercase"
                     >
-                      Salvar
+                      SALVAR
                     </button>
                   </form>
                 </div>
@@ -773,7 +773,7 @@
         class="btn btn-sm btn-secondary text-uppercase"
         @click="$router.go(-1)"
       >
-        Voltar
+        VOLTAR
       </button>
     </div>
 
