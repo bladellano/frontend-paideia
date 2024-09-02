@@ -47,7 +47,7 @@
 
           <div v-else class="pb-4 dropdown">
 
-            <router-link class="btn btn-outline-light text-white btn-sm mt-4" to="/admin"><v-icon class="text-white">mdi-cog</v-icon> Gestão</router-link>
+            <router-link class="btn btn-outline-light text-white btn-sm mt-4" to="/admin/dashboard"><v-icon class="text-white">mdi-cog</v-icon> Gestão</router-link>
             <br/>
             <a class="btn btn-outline-light text-white btn-sm mt-4" @click.prevent="logout"><v-icon class="text-white">mdi-exit-run</v-icon> Sair</a>
 
