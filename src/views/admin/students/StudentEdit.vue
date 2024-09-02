@@ -8,11 +8,24 @@
           src="@/assets/loading.gif"
           :alt="`Imagem do aluno: ${student.name}`"
           id="student-photo"
-        />
+          class="zoom-on-hover"
+          max-width="300px"
+      />
 
       <form @submit.prevent="handlerSubmit" @reset="reset" ref="formStudent">
      
-        <input type="file" name="image" />
+        <div class="row">
+          <div class="col-md-6">
+
+            <v-file-input
+            v-bind:name="'image'"
+            prepend-icon="mdi-camera"
+            accept="image/*"
+            label="Imagem do aluno"          
+            ></v-file-input>
+
+          </div>
+        </div>
 
         <div class="row">
           <div class="form-group col-md-4">
@@ -148,626 +161,565 @@
 
       <div class="row">
         <div class="col-md-12">
-          <ul class="nav nav-tabs" id="studentTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="registration-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#registration-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="registration-tab-pane"
-                aria-selected="true"
-              >
-                👨‍🎓MATRÍCULA(S)
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="financial-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#financial-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="financial-tab-pane"
-                aria-selected="false"
-              >
-                💰FINANCEIRO
-              </button>
-            </li>
-
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="documents-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#documents-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="documents-tab-pane"
-                aria-selected="false"
-              >
-                🖇️DOCUMENTO(S)
-              </button>
-            </li>
-
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="documents-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#books-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="books-tab-pane"
-                aria-selected="false"
-              >
-                📓LIVRO(S)
-              </button>
-            </li>
-          </ul>
-          <div class="tab-content" id="studentTabContent">
-            <div
-              class="tab-pane fade show active"
-              id="registration-tab-pane"
-              role="tabpanel"
-              aria-labelledby="registration-tab"
-              tabindex="0"
+          <v-card>
+            <v-tabs
+              color="deep-blue accent-4"
             >
-              <div class="row my-2">
-                <div class="col-md-6">
-                  <!-- //? Matricular -->
-                  <form @submit.prevent="handlerRegistration">
-                    <div class="mb-3">
-                      <label for="team" class="form-label">Turma</label>
-                      <select
-                        name="team"
-                        v-model="teamRegistration"
-                        class="form-control form-control-sm"
-                      >
-                        <option value="" selected disabled>
-                          -- Selecione --
-                        </option>
-                        <option
-                          v-for="(team, key) in teams"
-                          :key="key"
-                          :value="team.id"
+              <v-tab>MATRÍCULAS</v-tab>
+              <v-tab>FINANCEIRO</v-tab>
+              <v-tab>DOCUMENTOS</v-tab>
+              <v-tab>LIVROS</v-tab>
+
+              <v-tab-item>
+                <div class="p-2">
+
+                  <div class="row my-2">
+                    <div class="col-md-6">
+                      <!-- //? Matricular -->
+                      <form @submit.prevent="handlerRegistration">
+                        <div class="mb-3">
+                          <label for="team" class="form-label">Turma</label>
+                          <select
+                            name="team"
+                            v-model="teamRegistration"
+                            class="form-control form-control-sm"
+                          >
+                            <option value="" selected disabled>
+                              -- Selecione --
+                            </option>
+                            <option
+                              v-for="(team, key) in teams"
+                              :key="key"
+                              :value="team.id"
+                            >
+                              {{ team.name | uppercase }}
+                            </option>
+                          </select>
+                        </div>
+                        <button
+                          type="submit"
+                          class="btn btn-success btn-sm text-uppercase"
                         >
-                          {{ team.name | uppercase }}
-                        </option>
-                      </select>
+                          Matricular
+                        </button>
+                      </form>
                     </div>
-                    <button
-                      type="submit"
-                      class="btn btn-success btn-sm text-uppercase"
-                    >
-                      Matricular
-                    </button>
-                  </form>
-                </div>
 
-                <div v-if="!!hasRegistration.length" class="col-md-6">
-                  <small>Turmas em que o aluno está matriculado:</small>
-                  <ul class="list-group">
-                    <li
-                      v-for="(registration, key) in student.registrations"
-                      :key="key"
-                      class="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                      <router-link
-                        :to="{
-                          name: 'team-edit',
-                          params: { id: registration.team.id },
-                        }"
-                        class="btn btn-sm btn-outline-primary"
-                        :title="`${registration.user.name} - ${registration.created_at}`"
-                      >
-                        {{ String(registration.id).padStart(6, "0") }} |
-                        {{ registration.team.name | uppercase }}
-                      </router-link>
-
-                      <ButtonDelete @delete=" handlerDelete(registration.id, 'registrations')" />
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="col-md-6" v-else>
-                  <div class="alert alert-warning" role="alert">
-                    Não há matrícula registrada para este aluno.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="tab-pane fade"
-              id="financial-tab-pane"
-              role="tabpanel"
-              aria-labelledby="financial-tab"
-              tabindex="0"
-            >
-              <!-- //? Financeiro -->
-              <br />
-
-              <div class="accordion" id="accordionFinancial">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingTableFinancial">
-                    <button
-                      class="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseTableFinancial"
-                      aria-expanded="true"
-                      aria-controls="collapseTableFinancial"
-                    >
-                      Pendências Financeira
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseTableFinancial"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingTableFinancial"
-                    data-bs-parent="#accordionFinancial"
-                  >
-                    <div class="accordion-body">
-                      <div class="row my-2 p-2">
-                        <small class="p-0"
-                          >Situação financeira do aluno:
-                          <a
-                            href="#"
-                            class="text-primary"
-                            @click.prevent="generateStatement"
-                            ><u>🧾 EXTRATO FINANCEIRO</u></a
-                          ></small
+                    <div v-if="!!hasRegistration.length" class="col-md-6">
+                      <small>Turmas em que o aluno está matriculado:</small>
+                      <ul class="list-group">
+                        <li
+                          v-for="(registration, key) in student.registrations"
+                          :key="key"
+                          class="list-group-item d-flex justify-content-between align-items-center"
                         >
+                          <router-link
+                            :to="{
+                              name: 'team-edit',
+                              params: { id: registration.team.id },
+                            }"
+                            class="btn btn-sm btn-outline-primary"
+                            :title="`${registration.user.name} - ${registration.created_at}`"
+                          >
+                            {{ String(registration.id).padStart(6, "0") }} |
+                            {{ registration.team.name | uppercase }}
+                          </router-link>
 
-                        <table class="table table-bordered table-hover">
-                          <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Matrícula</th>
-                              <th scope="col">Turma</th>
-                              <th scope="col">Serviço</th>
-                              <th scope="col">N.º</th>
-                              <th scope="col">R$</th>
-                              <th scope="col">Venc.</th>
-                              <th scope="col">Dt. Pagamento</th>
-                              <th scope="col">Quitado</th>
-                              <th scope="col">Forma de Pagamento</th>
-                              <th scope="col">Observação</th>
-                              <th scope="col">Criado</th>
-                              <th scope="col">Usuário</th>
-                              <th scope="col"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <template v-if="!!hasRegistration.length">
-                              <template v-for="registration in student.registrations">
-                                <tr v-for="financial in registration.financials" :key="financial.id">
-                                  <td :class="highPayStatus(financial)">{{ financial.id }}</td>
-                                  <td :class="highPayStatus(financial)">{{ String(financial.registration_id).padStart(6, '0') }}</td>
-                                  <td :class="highPayStatus(financial)">
-                                    
-                                    <router-link :to="{ name: 'team-edit', params: { id: registration.team.id } }" target="_blank">
-                                      <u>{{ registration.team.name | uppercase }}</u>
-                                    </router-link>
-                                  
-                                  </td>
-                                  <td :class="highPayStatus(financial)">{{ financial.service_type.name }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.quota }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.value | currency }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.due_date }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.pay_day }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.payment_type.name }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.observations }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.created_at }}</td>
-                                  <td :class="highPayStatus(financial)">{{ financial.user.name }}</td>
-                                  <td :class="highPayStatus(financial)" style="width: 100px">
-                                    <button class="btn btn-outline-primary btn-sm" @click="showModalFinancial(financial.id, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
-                                    <ButtonDelete @delete="handlerDelete(financial.id, 'financials')" />
-                                  </td>
-                                </tr>
-                              </template>
-                            </template>
-                          </tbody>
-                        </table>
+                          <ButtonDelete @delete=" handlerDelete(registration.id, 'registrations')" />
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="col-md-6" v-else>
+                      <div class="alert alert-warning" role="alert">
+                        Não há matrícula registrada para este aluno.
                       </div>
                     </div>
                   </div>
+
                 </div>
+              </v-tab-item>
+              <v-tab-item>
+                <div class="p-2">
+                  
+                  <br />
 
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingAddFinancial">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseAddFinancial"
-                      aria-expanded="false"
-                      aria-controls="collapseAddFinancial"
-                    >
-                      Adicionar Financeiro
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseAddFinancial"
-                    class="accordion-collapse collapse show"
-                    aria-labelledby="headingAddFinancial"
-                    data-bs-parent="#accordionFinancial"
-                  >
-                    <div class="accordion-body">
-                      <div class="row my-2">
-                        <div class="col-md-12">
-                          <form
-                            ref="formFinancial"
-                            @submit.prevent="handlerFinancial"
-                            class="row"
-                            @reset="reset"
-                          >
-                            <div class="mb-3 col-md-2">
-                              <label for="registration" class="form-label"
-                                >Nº de matrícula</label
-                              >
-                              <select
-                                v-if="!!hasRegistration.length"
-                                name="registration_id"
-                                class="form-control form-control-sm"
-                              >
-                                <option value="" selected disabled>
-                                  -- Selecione --
-                                </option>
-                                <option
-                                  v-for="(
-                                    registration, key
-                                  ) in student.registrations"
-                                  :key="key"
-                                  :value="registration.id"
-                                >
-                                  {{
-                                    String(registration.id).padStart(6, "0")
-                                  }}
-                                  - {{ registration.team.name | uppercase }}
-                                </option>
-                              </select>
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                              <label for="value" class="form-label"
-                                >Parcela</label
-                              >
-                              <input
-                                @keyup="filterNonNumeric"
-                                type="number"
-                                class="form-control form-control-sm"
-                                name="quota"
-                              />
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                              <label for="value" class="form-label"
-                                >Valor</label
-                              >
-                              <input
-                                type="text"
-                                class="form-control form-control-sm"
-                                name="value"
-                                placeholder="0,00"
-                                data-thousands="."
-                                data-decimal=","
-                              />
-                            </div>
-
-                            <div class="mb-3 col-md-2">
-                              <label for="due_date" class="form-label"
-                                >Vencimento</label
-                              >
-                              <input
-                                type="date"
-                                class="form-control form-control-sm"
-                                name="due_date"
-                              />
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                              <label for="paid" class="form-label"
-                                >Quitado</label
-                              >
-                              <select
-                                name="paid"
-                                class="form-control form-control-sm"
-                              >
-                                <option value="" selected disabled>--</option>
-                                <option value="0">NÃO</option>
-                                <option value="1">SIM</option>
-                              </select>
-                            </div>
-
-                            <div class="mb-3 col-md-2">
-                              <label for="service_type_id" class="form-label"
-                                >Tipo de Serviço</label
-                              >
-                              <select
-                                name="service_type_id"
-                                class="form-control form-control-sm"
-                              >
-                                <option value="" selected disabled>
-                                  -- Selecione --
-                                </option>
-                                <option
-                                  v-for="(service, key) in serviceTypes"
-                                  :key="key"
-                                  :value="service.id"
-                                >
-                                  {{ service.name | uppercase }}
-                                </option>
-                              </select>
-                            </div>
-                            <div class="mb-3 col-md-2">
-                              <label for="payment_type" class="form-label"
-                                >Forma de Pagamento</label
-                              >
-                              <select
-                                name="payment_type"
-                                class="form-control form-control-sm"
-                              >
-                                <option value="" selected disabled>
-                                  -- Selecione --
-                                </option>
-                                <option
-                                  v-for="(payment, key) in paymentTypes"
-                                  :key="key"
-                                  :value="payment.id"
-                                >
-                                  {{ payment.name | uppercase }}
-                                </option>
-                              </select>
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                              <label for="observations" class="form-label"
-                                >Observação</label
-                              >
-                              <input
-                                type="text"
-                                class="form-control form-control-sm"
-                                name="observations"
-                              />
-                            </div>
-
-                            <div
-                              class="col-md-12 d-flex justify-content-between"
+                  <div class="accordion" id="accordionFinancial">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTableFinancial">
+                        <button
+                          class="accordion-button"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseTableFinancial"
+                          aria-expanded="true"
+                          aria-controls="collapseTableFinancial"
+                        >
+                          Pendências Financeira
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseTableFinancial"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingTableFinancial"
+                        data-bs-parent="#accordionFinancial"
+                      >
+                        <div class="accordion-body">
+                          <div class="row my-2 p-2">
+                            <small class="p-0"
+                              >Situação financeira do aluno:
+                              <a
+                                href="#"
+                                class="text-primary"
+                                @click.prevent="generateStatement"
+                                ><u>🧾 EXTRATO FINANCEIRO</u></a
+                              ></small
                             >
-                              <div class="d-flex">
-                                <button
-                                  type="submit"
-                                  title="Informe no campo à direita a quantidade de repetições desta ação."
-                                  class="btn btn-success btn-sm text-uppercase"
-                                >
-                                  Criar <font-awesome-icon icon="question" />
-                                </button>
-                                <input
-                                  @keyup="filterNonNumeric"
-                                  type="text"
-                                  name="numberOfTimesToEnter"
-                                  v-model="numberOfTimesToEnter"
-                                  class="form-control form-control-sm ms-2 w-25"
-                                />
-                              </div>
-                              <button
-                                type="reset"
-                                class="btn btn-secondary btn-sm text-uppercase"
+
+                            <table class="table table-bordered table-hover">
+                              <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Matrícula</th>
+                                  <th scope="col">Turma</th>
+                                  <th scope="col">Serviço</th>
+                                  <th scope="col">N.º</th>
+                                  <th scope="col">R$</th>
+                                  <th scope="col">Venc.</th>
+                                  <th scope="col">Dt. Pagamento</th>
+                                  <th scope="col">Quitado</th>
+                                  <th scope="col">Forma de Pagamento</th>
+                                  <th scope="col">Observação</th>
+                                  <th scope="col">Criado</th>
+                                  <th scope="col">Usuário</th>
+                                  <th scope="col"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <template v-if="!!hasRegistration.length">
+                                  <template v-for="registration in student.registrations">
+                                    <tr v-for="financial in registration.financials" :key="financial.id">
+                                      <td :class="highPayStatus(financial)">{{ financial.id }}</td>
+                                      <td :class="highPayStatus(financial)">{{ String(financial.registration_id).padStart(6, '0') }}</td>
+                                      <td :class="highPayStatus(financial)">
+                                        
+                                        <router-link :to="{ name: 'team-edit', params: { id: registration.team.id } }" target="_blank">
+                                          <u>{{ registration.team.name | uppercase }}</u>
+                                        </router-link>
+                                      
+                                      </td>
+                                      <td :class="highPayStatus(financial)">{{ financial.service_type.name }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.quota }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.value | currency }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.due_date }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.pay_day }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.paid ? 'SIM' : 'NÃO' }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.payment_type.name }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.observations }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.created_at }}</td>
+                                      <td :class="highPayStatus(financial)">{{ financial.user.name }}</td>
+                                      <td :class="highPayStatus(financial)" style="width: 100px">
+                                        <button class="btn btn-outline-primary btn-sm" @click="showModalFinancial(financial.id, financial.payment_type)"><font-awesome-icon icon="edit" /></button>
+                                        <ButtonDelete @delete="handlerDelete(financial.id, 'financials')" />
+                                      </td>
+                                    </tr>
+                                  </template>
+                                </template>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingAddFinancial">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseAddFinancial"
+                          aria-expanded="false"
+                          aria-controls="collapseAddFinancial"
+                        >
+                          Adicionar Financeiro
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseAddFinancial"
+                        class="accordion-collapse collapse show"
+                        aria-labelledby="headingAddFinancial"
+                        data-bs-parent="#accordionFinancial"
+                      >
+                        <div class="accordion-body">
+                          <div class="row my-2">
+                            <div class="col-md-12">
+                              <form
+                                ref="formFinancial"
+                                @submit.prevent="handlerFinancial"
+                                class="row"
+                                @reset="reset"
                               >
-                                Limpar
-                              </button>
+                                <div class="mb-3 col-md-2">
+                                  <label for="registration" class="form-label"
+                                    >Nº de matrícula</label
+                                  >
+                                  <select
+                                    v-if="!!hasRegistration.length"
+                                    name="registration_id"
+                                    class="form-control form-control-sm"
+                                  >
+                                    <option value="" selected disabled>
+                                      -- Selecione --
+                                    </option>
+                                    <option
+                                      v-for="(
+                                        registration, key
+                                      ) in student.registrations"
+                                      :key="key"
+                                      :value="registration.id"
+                                    >
+                                      {{
+                                        String(registration.id).padStart(6, "0")
+                                      }}
+                                      - {{ registration.team.name | uppercase }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div class="mb-3 col-md-1">
+                                  <label for="value" class="form-label"
+                                    >Parcela</label
+                                  >
+                                  <input
+                                    @keyup="filterNonNumeric"
+                                    type="number"
+                                    class="form-control form-control-sm"
+                                    name="quota"
+                                  />
+                                </div>
+
+                                <div class="mb-3 col-md-1">
+                                  <label for="value" class="form-label"
+                                    >Valor</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    name="value"
+                                    placeholder="0,00"
+                                    data-thousands="."
+                                    data-decimal=","
+                                  />
+                                </div>
+
+                                <div class="mb-3 col-md-2">
+                                  <label for="due_date" class="form-label"
+                                    >Vencimento</label
+                                  >
+                                  <input
+                                    type="date"
+                                    class="form-control form-control-sm"
+                                    name="due_date"
+                                  />
+                                </div>
+
+                                <div class="mb-3 col-md-1">
+                                  <label for="paid" class="form-label"
+                                    >Quitado</label
+                                  >
+                                  <select
+                                    name="paid"
+                                    class="form-control form-control-sm"
+                                  >
+                                    <option value="" selected disabled>--</option>
+                                    <option value="0">NÃO</option>
+                                    <option value="1">SIM</option>
+                                  </select>
+                                </div>
+
+                                <div class="mb-3 col-md-2">
+                                  <label for="service_type_id" class="form-label"
+                                    >Tipo de Serviço</label
+                                  >
+                                  <select
+                                    name="service_type_id"
+                                    class="form-control form-control-sm"
+                                  >
+                                    <option value="" selected disabled>
+                                      -- Selecione --
+                                    </option>
+                                    <option
+                                      v-for="(service, key) in serviceTypes"
+                                      :key="key"
+                                      :value="service.id"
+                                    >
+                                      {{ service.name | uppercase }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <div class="mb-3 col-md-2">
+                                  <label for="payment_type" class="form-label"
+                                    >Forma de Pagamento</label
+                                  >
+                                  <select
+                                    name="payment_type"
+                                    class="form-control form-control-sm"
+                                  >
+                                    <option value="" selected disabled>
+                                      -- Selecione --
+                                    </option>
+                                    <option
+                                      v-for="(payment, key) in paymentTypes"
+                                      :key="key"
+                                      :value="payment.id"
+                                    >
+                                      {{ payment.name | uppercase }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div class="mb-3 col-md-1">
+                                  <label for="observations" class="form-label"
+                                    >Observação</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    name="observations"
+                                  />
+                                </div>
+
+                                <div
+                                  class="col-md-12 d-flex justify-content-between"
+                                >
+                                  <div class="d-flex">
+                                    <button
+                                      type="submit"
+                                      title="Informe no campo à direita a quantidade de repetições desta ação."
+                                      class="btn btn-success btn-sm text-uppercase"
+                                    >
+                                      Criar <font-awesome-icon icon="question" />
+                                    </button>
+                                    <input
+                                      @keyup="filterNonNumeric"
+                                      type="text"
+                                      name="numberOfTimesToEnter"
+                                      v-model="numberOfTimesToEnter"
+                                      class="form-control form-control-sm ms-2 w-25"
+                                    />
+                                  </div>
+                                  <button
+                                    type="reset"
+                                    class="btn btn-secondary btn-sm text-uppercase"
+                                  >
+                                    Limpar
+                                  </button>
+                                </div>
+                              </form>
                             </div>
-                          </form>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
-              </div>
-            </div>
-
-            <div
-              class="tab-pane fade"
-              id="documents-tab-pane"
-              role="tabpanel"
-              aria-labelledby="documents-tab"
-              tabindex="0"
-            >
-              <div class="row my-2">
-                <div class="col-md-3">
-                  <div class="d-grid gap-2 col-12 mx-auto">
-                    <router-link
-                      :to="{
-                        name: 'history-register',
-                        params: { student: student.id },
-                      }"
-                      class="btn btn-success btn-sm"
-                      type="button"
-                      >GERAR HISTÓRICO</router-link
-                    >
-                    <router-link
-                      :to="{
-                        name: 'certificate-register',
-                        params: { student: student.id },
-                      }"
-                      class="btn btn-info btn-sm"
-                      type="button"
-                      >GERAR CERTIFICADO</router-link
-                    >
-                  </div>
-                </div>
-                <div class="col-md-9">
-                  <!-- //? Documentos -->
-                  <small class="p-0"
-                    >Documentos emitidos para o aluno até o momento:</small
-                  >
-                  <ul class="list-group" v-if="!!hasDocuments.length">
-                    <li
-                      v-for="(document, key) in student.documents"
-                      :key="key"
-                      class="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                      <button
-                        @click.prevent="getBlob(document)"
-                        class="btn btn-sm btn-outline-danger"
-                        :title="`${document.file_name} - ${document.created_at}`"
-                      >
-                        {{ document.file_name }} - {{ document.created_at }}
-                      </button>
-                      <!--//! @TODO tem que remover, é apenas provisório -->
-                      <div>
-                        <small class="p-0">ID DO ALUNO:</small>
-                        <input
-                          title="Aqui, você pode alterar o ID do aluno, que aparece na URL do navegador na parte superior da tela."
-                          :data-document-id="document.id"
-                          style="width: 86px; background: #fafec2"
-                          @change="changeStudentOfDocument"
-                          type="text"
-                          :value="student.id"
-                          class="form-control form-control-sm"
-                        />
-                      </div>
-
-                      <!--//! @TODO ate aqui -->
-
-                      <a
-                        href="#"
-                        class="btn btn-sm btn-outline-secondary"
-                        @click.prevent="destroyPDF(document)"
-                      >
-                        <font-awesome-icon icon="trash"
-                      /></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="tab-pane fade"
-              id="books-tab-pane"
-              role="tabpanel"
-              aria-labelledby="books-tab"
-              tabindex="0"
-            >
-              <div class="row my-2">
-                <div class="col-md-4">
-                  <form ref="formBook" @submit.prevent="handlerCreateBook">
-                    <div class="mb-3">
-                      <label for="team" class="form-label">Turma</label>
-                      <select
-                        name="team_id"
-                        class="form-control form-control-sm"
-                      >
-                        <option value="" selected disabled>
-                          -- Selecione --
-                        </option>
-                        <option
-                          v-for="(team, key) in teams"
-                          :key="key"
-                          :value="team.id"
+              </v-tab-item>
+              <v-tab-item>
+                <div class="p-2">
+                  
+                  <div class="row my-2">
+                    <div class="col-md-3">
+                      <div class="d-grid gap-2 col-12 mx-auto">
+                        <router-link
+                          :to="{
+                            name: 'history-register',
+                            params: { student: student.id },
+                          }"
+                          class="btn btn-outline-primary btn-sm"
+                          type="button"
+                          >GERAR HISTÓRICO</router-link
                         >
-                          {{ team.name | uppercase }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="row mb-3">
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="N.º de Registro"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="registration_number"
-                        />
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="N.º do Livro"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="book_number"
-                        />
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="N.º da Folha"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="page_number"
-                        />
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="Data de Emissão"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="issue_date"
-                        />
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="N.º do Selo do Certificado"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="certificate_seal_number"
-                        />
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <input
-                          placeholder="N.º do Selo do Histórico"
-                          type="text"
-                          class="form-control form-control-sm"
-                          name="history_seal_number"
-                        />
+                        <router-link
+                          :to="{
+                            name: 'certificate-register',
+                            params: { student: student.id },
+                          }"
+                          class="btn btn-outline-primary btn-sm"
+                          type="button"
+                          >GERAR CERTIFICADO</router-link
+                        >
                       </div>
                     </div>
-                    <button
-                      type="submit"
-                      class="btn btn-success btn-sm text-uppercase"
-                    >
-                      SALVAR
-                    </button>
-                  </form>
-                </div>
-
-                <div class="col-md-8">
-                  <!-- //? Livros -->
-                  <small class="p-0"
-                    >Livros emitidos para o aluno até o momento:</small
-                  >
-                  <ul class="list-group" v-if="!!hasBooks.length">
-                    <li
-                      v-for="(book, key) in student.books"
-                      :key="key"
-                      class="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                      <button
-                        class="btn btn-sm btn-outline-dark"
-                        :title="`${key} - ${book.created_at}`"
+                    <div class="col-md-9">
+                      <!-- //? Documentos -->
+                      <small class="p-0"
+                        >Documentos emitidos para o aluno até o momento:</small
                       >
-                        N.º de Registro: {{ book.registration_number }} / N.º do
-                        Livro: {{ book.book_number }} / N.º da Folha:
-                        {{ book.page_number }} / Data de Emissão:
-                        {{ book.issue_date }} / N.º do Selo do Certificado:
-                        {{ book.certificate_seal_number }} / N.º do Selo do
-                        Histórico: {{ book.history_seal_number }} /
-                      </button>
+                      <ul class="list-group" v-if="!!hasDocuments.length">
+                        <li
+                          v-for="(document, key) in student.documents"
+                          :key="key"
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          <button
+                            @click.prevent="getBlob(document)"
+                            class="btn btn-sm btn-outline-danger"
+                            :title="`${document.file_name} - ${document.created_at}`"
+                          >
+                            {{ document.file_name }} - {{ document.created_at }}
+                          </button>
+                          <!--//! @TODO tem que remover, é apenas provisório -->
+                          <div>
+                            <small class="p-0">ID DO ALUNO:</small>
+                            <input
+                              title="Aqui, você pode alterar o ID do aluno, que aparece na URL do navegador na parte superior da tela."
+                              :data-document-id="document.id"
+                              style="width: 86px; background: #fafec2"
+                              @change="changeStudentOfDocument"
+                              type="text"
+                              :value="student.id"
+                              class="form-control form-control-sm"
+                            />
+                          </div>
 
-                      <ButtonDelete @delete="handlerDelete(book.id, 'books')" />
-                    </li>
-                  </ul>
+                          <!--//! @TODO ate aqui -->
+
+                          <a
+                            href="#"
+                            class="btn btn-sm btn-outline-secondary"
+                            @click.prevent="destroyPDF(document)"
+                          >
+                            <font-awesome-icon icon="trash"
+                          /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-            </div>
-          </div>
+              </v-tab-item>
+              <v-tab-item>
+                <div class="p-2">
+                  
+                  <div class="row my-2">
+                    <div class="col-md-4">
+                      <form ref="formBook" @submit.prevent="handlerCreateBook">
+                        <div class="mb-3">
+                          <label for="team" class="form-label">Turma</label>
+                          <select
+                            name="team_id"
+                            class="form-control form-control-sm"
+                          >
+                            <option value="" selected disabled>
+                              -- Selecione --
+                            </option>
+                            <option
+                              v-for="(team, key) in teams"
+                              :key="key"
+                              :value="team.id"
+                            >
+                              {{ team.name | uppercase }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="row mb-3">
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="N.º de Registro"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="registration_number"
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="N.º do Livro"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="book_number"
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="N.º da Folha"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="page_number"
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="Data de Emissão"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="issue_date"
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="N.º do Selo do Certificado"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="certificate_seal_number"
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <input
+                              placeholder="N.º do Selo do Histórico"
+                              type="text"
+                              class="form-control form-control-sm"
+                              name="history_seal_number"
+                            />
+                          </div>
+                        </div>
+                        <button
+                          type="submit"
+                          class="btn btn-success btn-sm text-uppercase"
+                        >
+                          SALVAR
+                        </button>
+                      </form>
+                    </div>
+
+                    <div class="col-md-8">
+                      <!-- //? Livros -->
+                      <small class="p-0"
+                        >Livros emitidos para o aluno até o momento:</small
+                      >
+                      <ul class="list-group" v-if="!!hasBooks.length">
+                        <li
+                          v-for="(book, key) in student.books"
+                          :key="key"
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          <button
+                            class="btn btn-sm btn-outline-dark"
+                            :title="`${key} - ${book.created_at}`"
+                          >
+                            N.º de Registro: {{ book.registration_number }} / N.º do
+                            Livro: {{ book.book_number }} / N.º da Folha:
+                            {{ book.page_number }} / Data de Emissão:
+                            {{ book.issue_date }} / N.º do Selo do Certificado:
+                            {{ book.certificate_seal_number }} / N.º do Selo do
+                            Histórico: {{ book.history_seal_number }} /
+                          </button>
+
+                          <ButtonDelete @delete="handlerDelete(book.id, 'books')" />
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                </div>
+              </v-tab-item>
+
+            </v-tabs>
+          </v-card>
         </div>
-      </div>
+       </div>
+
       <hr />
       <button
         class="btn btn-sm btn-secondary text-uppercase"
@@ -997,6 +949,7 @@ export default {
   props: ["id"],
   data() {
     return {
+      tab: null,
       convertDateToDB,
       decimal,
       handlerDelete,
@@ -1452,4 +1405,13 @@ export default {
   margin-bottom: 4px;
   border-radius: 5px;
 }
+
+.zoom-on-hover {
+  transition: transform 0.3s ease;
+}
+
+.zoom-on-hover:hover {
+  transform: scale(1.67);
+}
+
 </style>
