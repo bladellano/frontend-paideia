@@ -86,7 +86,7 @@ export default {
 
           EventBus.$emit("update-logged-in-status", true, name);
 
-          window.location.href = "./";
+          window.location.href = "./admin/dashboard";
         } catch (error) {
           console.warning(error);
           Toast.fire(

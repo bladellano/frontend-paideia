@@ -80,6 +80,9 @@ import HistoryRegister from '../views/admin/historys/HistoryRegister.vue'
 //Certificate
 import CertificateRegister from '../views/admin/certificates/CertificateRegister.vue'
 
+//Dashboard
+import Dashboard from '@/views/admin/Dashboard.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -105,6 +108,11 @@ const routes = [
             login: true
         },
         children: [
+            {
+                path: 'dashboard',
+                name: "dashboard",
+                component: Dashboard,
+            },
             {
                 path: 'login',
                 name: "login",
