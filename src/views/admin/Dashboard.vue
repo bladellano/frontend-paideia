@@ -24,7 +24,7 @@
               class="d-flex flex-column align-center justify-center"
               height="150"
             >
-              <v-card-title class="d-flex flex-column align-center">
+              <v-card-title class="d-flex flex-column align-center text-center">
                 <v-icon large class="mb-2">{{ getIcon(link.action) }}</v-icon>
                 <span>{{ link.action }}</span>
               </v-card-title>
