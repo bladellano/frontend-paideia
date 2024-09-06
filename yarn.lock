@@ -1141,6 +1141,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@kurkle/color@^0.3.0":
+  "integrity" "sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw=="
+  "resolved" "https://registry.npmjs.org/@kurkle/color/-/color-0.3.2.tgz"
+  "version" "0.3.2"
+
 "@leichtgewicht/ip-codec@^2.0.1":
   "integrity" "sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A=="
   "resolved" "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
@@ -3135,6 +3140,13 @@
   dependencies:
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
+
+"chart.js@^4.1.1", "chart.js@^4.4.4":
+  "integrity" "sha512-emICKGBABnxhMjUjlYRR12PmOXhJ2eJjEHL2/dZlWjxRAZT1D8xplLFq5M0tMQK8ja+wBS/tuVEJB5C6r7VxJA=="
+  "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-4.4.4.tgz"
+  "version" "4.4.4"
+  dependencies:
+    "@kurkle/color" "^0.3.0"
 
 "check-more-types@^2.24.0":
   "integrity" "sha512-Pj779qHxV2tuapviy1bSZNEL1maXr13bPYpsvSDB68HlYcYuhlDrmGd63i0JHMCLKzc7rUSNIrpdJlhVlNwrxA=="
@@ -8584,6 +8596,11 @@
     "cross-env" "^5.1.1"
     "vue" "^2.5.2"
 
+"vue-chartjs@^5.3.1":
+  "integrity" "sha512-rZjqcHBxKiHrBl0CIvcOlVEBwRhpWAVf6rDU3vUfa7HuSRmGtCslc0Oc8m16oAVuk0erzc1FCtH1VCriHsrz+A=="
+  "resolved" "https://registry.npmjs.org/vue-chartjs/-/vue-chartjs-5.3.1.tgz"
+  "version" "5.3.1"
+
 "vue-eslint-parser@^8.0.1":
   "integrity" "sha512-dzHGG3+sYwSf6zFBa0Gi9ZDshD7+ad14DGOdTLjruRVgZXe2J+DcZ9iUhyR48z5g1PqRa20yt3Njna/veLJL/g=="
   "resolved" "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-8.3.0.tgz"
@@ -8649,7 +8666,7 @@
   "resolved" "https://registry.npmjs.org/vue-the-mask/-/vue-the-mask-0.11.1.tgz"
   "version" "0.11.1"
 
-"vue@*", "vue@^2 || ^3.2.13", "vue@^2.5.2", "vue@^2.6.14", "vue@^2.6.4", "vue@^2.7.2", "vue@~2":
+"vue@*", "vue@^2 || ^3.2.13", "vue@^2.5.2", "vue@^2.6.14", "vue@^2.6.4", "vue@^2.7.2", "vue@^3.0.0-0 || ^2.7.0", "vue@~2":
   "integrity" "sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.7.14.tgz"
   "version" "2.7.14"
