@@ -12,29 +12,24 @@
         />
       </div>
 
-      <table class="table table-bordered table-striped table-hover">
-        <thead>
-          <tr>
-            <th><a href="#" @click="sort($event, 'id')">#</a></th>
-            <th><a href="#" @click="sort($event, 'name')">Nome</a></th>
-            <th>Nome da mãe</th>
-            <th>Criado</th>
-            <th width="98px"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="student in items" :key="student.id">
-            <td>{{ student.id }}</td>
-            <td>{{ student.name | uppercase }} <span v-html="student.teams"></span> </td>
-            <td>{{ student.name_mother | uppercase}}</td>
-            <td>{{ student.created_at }}</td>
-            <td>
-              <ButtonEdit :to="{ name: 'student-edit', params: { id: student.id } }"/>
-              <ButtonDelete @delete="handlerDelete(student.id, 'students')"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <v-data-table :headers="headers" :items="items" class="elevation-1" >
+        <template v-slot:item.edit="{ item }">
+          <ButtonEdit :to="{ name: 'student-edit', params: { id: item.id } }" />
+        </template>
+
+        <template v-slot:item.delete="{ item }">
+          <ButtonDelete @delete="() => handlerDelete(item.id, 'students')" />
+        </template>
+
+        <template v-slot:item.teams="{ item }">
+            <span v-html="item.teams"></span> 
+        </template>
+
+        <template v-slot:item.has_financial="{ item }">
+            <span v-html="item.has_financial"></span> 
+        </template>
+
+      </v-data-table>
 
       <Pagination :source="pagination" @navigate="navigate" />
     </section>
@@ -42,7 +37,6 @@
 </template>
 
 <script>
-
 import api from "@/services";
 import Pagination from "@/components/Pagination.vue";
 import ButtonHistory from "@/components/ButtonHistory.vue";
@@ -67,7 +61,20 @@ export default {
       search: "",
       pagination: {},
       items: [],
-      handlerDelete
+      headers: [
+        { text: "#", value: "id" },
+        { text: "Nome", value: "name" },
+        { text: "E-mail", value: "email" },
+        { text: "CPF", value: "cpf" },
+        { text: "Contato", value: "phone" },
+        { text: "Matriculado na(s) turma(s)", value: "teams", sortable: false },
+        { text: "Possui financeiro?", value: "has_financial" },
+        { text: "Nome da mãe", value: "name_mother" },
+        { text: "Criado", value: "created_at" },
+        { text: "Editar", value: "edit", sortable: false },
+        { text: "Remover", value: "delete", sortable: false },
+      ],
+      handlerDelete,
     };
   },
   methods: {
@@ -92,9 +99,35 @@ export default {
       let uri = `/students?page=${page}` + query;
 
       await api.get(uri).then((res) => {
-
         const students = res.data.data.map(function (student) {
-          student.teams = student.registrations.map(item => `<span class="badge bg-success text-uppercase mx-1">${item.team.name}</span>`).join("");
+
+          student.name = student.name.toUpperCase();
+          student.name_mother = student.name_mother.toUpperCase();
+
+          /** Verifica se o aluno ja possui vida financeira */
+          student.has_financial = Object.keys(student.registrations).length > 0 && student.registrations.every(registration => {
+          const financials = registration.financials;
+              
+              if (financials === null || financials === undefined) 
+                return false;
+
+              if (Array.isArray(financials) && financials.length === 0) 
+                return false;
+
+              if (typeof financials === 'object' && !Array.isArray(financials) && Object.keys(financials).length === 0) 
+                return false;
+
+              return true;
+          }) ? '<span class="text-success">SIM</span>' : '<span class="text-danger">NÃO</span>';
+          /** Fim da verificação */
+
+          student.teams = student.registrations
+            .map(
+              (item) =>
+                `<a href="turmas/${item.team.id}/editar" target="_blank" class="text-uppercase text-decoration-underline">${item.team.name}</a><br/>`
+            )
+            .join("");
+
           return student;
         });
 
@@ -113,6 +146,6 @@ export default {
   },
 };
 </script>
-  
+
   <style scoped>
 </style>
