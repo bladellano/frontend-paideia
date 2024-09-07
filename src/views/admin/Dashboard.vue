@@ -17,22 +17,39 @@
     <h4>Indicadores</h4>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
+        <h5 class="my-2 text-decoration-underline">
+          Alunos cadastrados por mês
+        </h5>
+        <div class="app--chart" ref="chart">
+          <Bar :data="chartDataStudents" :options="chartOptions" />
+        </div>
+      </div>
+
+      <div class="col-md-6">
         <h5 class="my-2 text-decoration-underline">
           Matrículas efetivadas por mês
         </h5>
-        <!-- Chart experimental -->
         <div class="app--chart" ref="chart">
-          <Bar :data="chartData" :options="chartOptions" />
+          <Bar :data="chartDataRegistrations" :options="chartOptions" />
         </div>
       </div>
     </div>
 
-    <!-- Linhas e Colunas para os Cards -->
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="my-2 text-decoration-underline">
+          Quantidade de alunos por turma
+        </h5>
+        <div class="app--chart" ref="chart">
+          <Bar :data="chartDataStudentsPerTeams" :options="chartOptions" />
+        </div>
+      </div>
+    </div>
+
     <h5 class="my-2 text-decoration-underline">Relatórios</h5>
     <v-row>
       <v-col v-for="(link, index) in links" :key="index" cols="12" md="3">
-        <!-- Router-link é usado para navegação -->
         <router-link :to="link.path" class="no-decoration">
           <v-card
             :color="getRandomColor()"
@@ -80,15 +97,17 @@ export default {
   },
   data() {
     return {
-      chartData: {
+      chartDataStudentsPerTeams: {
         labels: [],
-        datasets: [
-          {
-            label: "Registros por Mês",
-            backgroundColor: "#42A5F5",
-            data: [],
-          },
-        ],
+        datasets: [],
+      },
+      chartDataStudents: {
+        labels: [],
+        datasets: [],
+      },
+      chartDataRegistrations: {
+        labels: [],
+        datasets: [],
       },
       chartOptions: {
         responsive: true,
@@ -131,21 +150,68 @@ export default {
     };
   },
   methods: {
-    async fetchRegistrationData() {
+    async fetchStudentsPerTeams() {
+      try {
+        const response = await api.get("/indicators/number-students-per-teams");
+
+        const data = response.data;
+
+        this.chartDataStudentsPerTeams = {
+          labels: data.map((item) => item.name.toUpperCase()),
+          datasets: [
+            {
+              label: "Registros",
+              backgroundColor: [
+                "#42A5F5",
+                "#66BB6A",
+                "#FFA726",
+                "#84A5F5",
+                "#66CC6A",
+                "#CC6626",
+              ],
+              data: data.map((item) => item.total_students),
+            },
+          ],
+        };
+      } catch (error) {
+        console.error("Erro ao buscar dados de times:", error);
+      }
+    },
+    async fetchRegistrationsData() {
       try {
         const response = await api.get(
           "/indicators/number-registrations-per-month"
         );
 
-        const registrations = response.data;
+        const data = response.data;
 
-        this.chartData = {
-          labels: registrations.map((item) => item.month),
+        this.chartDataRegistrations = {
+          labels: data.map((item) => item.month),
           datasets: [
             {
               label: "Registros por Mês",
               backgroundColor: "#42A5F5",
-              data: registrations.map((item) => item.total_registrations),
+              data: data.map((item) => item.total_registrations),
+            },
+          ],
+        };
+      } catch (error) {
+        console.error("Erro ao buscar dados de registros:", error);
+      }
+    },
+    async fetchStudentsData() {
+      try {
+        const response = await api.get("/indicators/number-students-per-month");
+
+        const data = response.data;
+
+        this.chartDataStudents = {
+          labels: data.map((item) => item.month),
+          datasets: [
+            {
+              label: "Registros por Mês",
+              backgroundColor: "#F39C12",
+              data: data.map((item) => item.total_students),
             },
           ],
         };
@@ -184,7 +250,9 @@ export default {
     },
   },
   mounted() {
-    this.fetchRegistrationData();
+    this.fetchRegistrationsData();
+    this.fetchStudentsData();
+    this.fetchStudentsPerTeams();
   },
 };
 </script>
