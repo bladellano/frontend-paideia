@@ -2,7 +2,10 @@
   <v-container fill-height>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <v-card>
+
+        <div v-if="!process">
+
+          <v-card>
           <v-card-title class="headline text-center"> Login </v-card-title>
           <v-card-subtitle class="text-center">
             Acesse sua conta
@@ -34,6 +37,10 @@
             <v-btn color="primary" @click="logar">Entrar</v-btn>
           </v-card-actions>
         </v-card>
+        </div>
+
+        <LoadingPage v-else/>
+
       </v-col>
     </v-row>
   </v-container>
@@ -44,12 +51,15 @@
 import api from "@/services";
 import axios from "axios";
 import { EventBus } from "../main";
+import LoadingPage from "@/components/LoadingPage.vue";
 
 export default {
+  components:{ LoadingPage },
   name: "LoginVuetify",
   data() {
     return {
       valid: false,
+      process: false,
       login: {
         email: "",
         password: "",
@@ -69,9 +79,13 @@ export default {
         const request = this.login;
 
         try {
+
+          this.process = true;
+
           const { data } = await api.post("/auth/login", request);
 
           window.localStorage.token = `Bearer ${data.access_token}`;
+          window.localStorage.menu = JSON.stringify(data.menu);
 
           /** Pega o nome do usuário */
           const axiosInstance = axios.create({
@@ -89,6 +103,8 @@ export default {
           window.location.href = "./admin/dashboard";
         } catch (error) {
           console.warning(error);
+          this.process = false;
+
           Toast.fire(
             "Atenção!",
             "E-mail ou senha não correspondem.",
