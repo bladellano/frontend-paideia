@@ -41,20 +41,10 @@
         <div class="col-md-4">
           <h4 class="text-md-start">Contato:</h4>
           <ul class="text-md-start">
-            <li>(91) 3722-9891</li>
-            <li>
-              (91) 9 8176-9979
-              <font-awesome-icon icon="fa-brands fa-whatsapp" />
+            <li v-for="(phone, index) in phones">
+              {{applyMaskPhone(phone)}} <font-awesome-icon icon="fa-brands fa-whatsapp" />
             </li>
-            <li>
-              (91) 9 8208-4651
-              <font-awesome-icon icon="fa-brands fa-whatsapp" />
-            </li>
-            <li>
-              <font-awesome-icon icon="envelope" />
-              contato@paideiaeducacional.com
-            </li>
-          </ul>
+         </ul>
         </div>
         <div class="col-md-4 my-auto">
           <v-menu offset-y>
@@ -82,8 +72,8 @@
               <v-list-item v-if="isLogged" link>
                 <v-list-item-title>
                   <router-link class="text-dark" to="/admin/dashboard"
-                    >Gestão</router-link
-                  >
+                    >Gestão
+                  </router-link>
                 </v-list-item-title>
               </v-list-item>
 
@@ -96,7 +86,7 @@
           </v-menu>
 
           <p class="text-secondary small">
-            © Copyright Paideia Educacional. Todos os direitos reservados.
+            © Copyright {{ schoolName }}. Todos os direitos reservados.
           </p>
           <p class="text-secondary small">
             Desenvolvido por
@@ -107,9 +97,9 @@
         </div>
         <div class="col-md-4 my-auto text-md-end">
           <img
-            src="@/assets/logo.png"
+            :src="logoSrc"
             class="img-fluid logo-paideia"
-            alt="LOGO"
+            alt="Logo Rodapé"
           />
         </div>
       </div>
@@ -128,9 +118,28 @@ export default {
     return {
       isLogged: false,
       userName: null,
+      logoSrc: '',
+      email: '',
+      schoolName: 'CDNS Systems Ltda',
+      phones: [],
     };
   },
   methods: {
+    applyMaskPhone(phone) {
+      phone = phone.replace(/\D/g, '');
+
+      if (phone.length === 11) {
+        phone = phone.replace(/^(\d{2})(\d)/g, '($1) $2');
+        phone = phone.replace(/(\d{5})(\d{4})$/, '$1-$2');
+      } else if (phone.length === 10) {
+        phone = phone.replace(/^(\d{2})(\d)/g, '($1) $2');
+        phone = phone.replace(/(\d{4})(\d{4})$/, '$1-$2');
+      } else if (phone.length === 8) {
+        telefone = telefone.replace(/(\d{4})(\d{4})$/, '$1-$2');
+      }
+
+      return phone;
+    },
     logout() {
       window.localStorage.removeItem("token");
       this.isLogged = false;
@@ -157,11 +166,23 @@ export default {
     },
   },
   mounted() {
+
     this.me();
+
     EventBus.$on("update-logged-in-status", (bool, name) => {
       this.isLogged = bool;
       this.userName = name;
     });
+
+    const dataClient = JSON.parse(localStorage.getItem('data_client') || '{}');
+
+    const { colored_logo, email, school_name, phones } = dataClient;
+
+    this.logoSrc = colored_logo || this.colored_logo;
+    this.email = email || this.email;
+    this.schoolName = school_name || this.school_name;
+    this.phones = phones || this.phones;
+
   },
   deactivated() {
     console.log("> Header deactivated");

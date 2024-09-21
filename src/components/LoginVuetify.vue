@@ -86,6 +86,7 @@ export default {
 
           window.localStorage.token = `Bearer ${data.access_token}`;
           window.localStorage.menu = JSON.stringify(data.menu);
+          window.localStorage.data_client = JSON.stringify(data.data_client);
 
           /** Pega o nome do usuário */
           const axiosInstance = axios.create({
@@ -102,13 +103,13 @@ export default {
 
           window.location.href = "./admin/dashboard";
         } catch (error) {
-          console.warning(error);
+          console.warn(`> User/Password ${error.response.data.error}`);
           this.process = false;
 
           Toast.fire(
             "Atenção!",
             "E-mail ou senha não correspondem.",
-            "warning"
+            "error"
           );
         }
       }

@@ -45,12 +45,33 @@
           </v-list-item>
         </v-list-group>
 
+        <!-- Item for gestão -->
+        <v-list-item>
+          <v-list-item-content>
+
+            <v-btn
+              to="/admin/dashboard"
+              depressed
+              color="warning"
+            >
+            Gestão
+            </v-btn>
+          
+          </v-list-item-content>
+        </v-list-item>
+
         <!-- Item for logout -->
         <v-list-item @click="logout">
           <v-list-item-content>
-            <v-list-item-title><v-icon>mdi-exit-run</v-icon> Sair</v-list-item-title>
+            <v-btn
+              depressed
+              color="error"
+            >
+              Sair
+            </v-btn>
           </v-list-item-content>
         </v-list-item>
+        
       </v-list>
     </v-menu>
   </div>
