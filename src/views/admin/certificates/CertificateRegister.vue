@@ -217,7 +217,7 @@ export default {
       cpfWithMask,
       slug,
       item: null,
-      author: "Paideia Educacional",
+      author: "",
       code: "",
       typeDocument: "CERTIFICATE",
       attachments: [],
@@ -458,6 +458,12 @@ export default {
     this.code = this.generateHash("CERT_");
     this.createdAtText = this.createdAt;
     this.getTextDocuments();
+
+    const dataClient = JSON.parse(localStorage.getItem('data_client') || '{}');
+    const { school_name } = dataClient;
+
+    this.author = school_name || this.author
+
   },
 };
 </script>

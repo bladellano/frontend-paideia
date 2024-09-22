@@ -254,20 +254,20 @@ export default {
       item: null,
       attachments: [],
       typeDocument:'HISTORIC',
-      city: process.env.VUE_APP_CITY,
+      city: '',
       day: new Date().getDate(),
       month: "",
       year: new Date().getFullYear(),
-      media: process.env.VUE_APP_MEDIA_HISTORICO,
+      media: 0,
       uf: "PA",
       teams: [],
       registrations: [],
       gridTemplate: {},
-      courseName: "",
+      courseName: '',
       totalStage: 0,
       totalWorkload: 0,
       stagesNumbers: 0,
-      author: process.env.VUE_APP_AUTHOR,
+      author: '',
       code: '',
       registration: '',
     };
@@ -482,6 +482,13 @@ export default {
     this.getItem();
     this.code = this.generateHash('HIST_');
     this.getGradeByStudent();
+    
+    const dataClient = JSON.parse(localStorage.getItem('data_client') || '{}');
+    const { school_name, average_grade, city } = dataClient;
+
+    this.author = school_name || this.author
+    this.media = average_grade || this.media
+    this.city = city || this.city
   },
 };
 </script>

@@ -98,7 +98,7 @@
         <div class="col-md-4 my-auto text-md-end">
           <img
             :src="logoSrc"
-            class="img-fluid logo-paideia"
+            class="img-fluid logo"
             alt="Logo Rodapé"
           />
         </div>
@@ -194,12 +194,12 @@ export default {
 </script>
 
 <style scoped>
-.logo-paideia {
+.logo {
   filter: brightness(0) invert(1);
   max-width: 250px;
 }
 
-img:not(.logo-paideia) {
+img:not(.logo) {
   height: 100px;
   object-fit: contain;
   width: 98%;

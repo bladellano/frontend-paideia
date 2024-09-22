@@ -1,5 +1,5 @@
 <template>
-  <header id="hero" :style="`background-image: url(${cover})`" class="position-relative overflow-hidden pt-5 text-center bg-dark text-white">
+  <header id="hero" :style="`background-image: url(${cover})`" class="overflow-hidden pt-5 text-center bg-dark text-white">
 
     <div class="container">
 
@@ -41,10 +41,23 @@ export default {
 
 <style scoped>
 #hero {
+  position: relative;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 0;
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: -1;
 }
 
 .text-code {
@@ -54,7 +67,7 @@ export default {
 }
 
 img {
-  filter: brightness(2);
+  height: 250px;
 }
 
 @media (max-width: 768px) {
