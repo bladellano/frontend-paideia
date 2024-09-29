@@ -86,14 +86,12 @@
             </v-list>
           </v-menu>
 
-          <p class="text-secondary small">
+          <p class="text-white small">
             © Copyright {{ schoolName }}. Todos os direitos reservados.
           </p>
-          <p class="text-secondary small">
+          <p class="text-white small">
             Desenvolvido por
-            <a href="https://cdnssystems.com.br/" target="_blank"
-              >CDNS Systems Ltda</a
-            >
+            <a href="https://cdnssystems.com.br/" target="_blank" class="link-primary">CDNS Systems Ltda</a>
           </p>
         </div>
         <div class="col-md-4 my-auto text-md-end">
