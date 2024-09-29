@@ -85,8 +85,8 @@ export default {
           const { data } = await api.post("/auth/login", request);
 
           window.localStorage.token = `Bearer ${data.access_token}`;
+          
           window.localStorage.menu = JSON.stringify(data.menu);
-          window.localStorage.data_client = JSON.stringify(data.data_client);
 
           /** Pega o nome do usuário */
           const axiosInstance = axios.create({

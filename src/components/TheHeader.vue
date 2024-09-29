@@ -68,6 +68,7 @@ export default {
 
 img {
   height: 250px;
+  filter: brightness(0) invert(1);
 }
 
 @media (max-width: 768px) {

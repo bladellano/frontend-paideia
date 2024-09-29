@@ -54,16 +54,17 @@ export default {
 </script>
 
 <style scoped>
+
 .accordion-button {
-  background-color: var(--color-primary) !important;
+  background-color: #212529 !important;
   border: none;
-  color: #fff !important;
+  color: #ffffff !important;
   width: 100%;
 }
 
 .accordion-button:hover {
-  background-color: var(--color-background-hover-nav) !important;
-  color: var(--color-background-nav) !important;
+  background-color: #000000 !important;
+  color: #000000 !important;
 }
 
 .accordion-button::after {

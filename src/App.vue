@@ -17,6 +17,7 @@
 import { VApp } from "vuetify/lib";
 import TheHeader from "@/components/TheHeader.vue";
 import TheFooter from "@/components/TheFooter.vue";
+import api from "@/services";
 
 export default {
   name: "App",
@@ -25,6 +26,15 @@ export default {
     TheHeader,
     TheFooter
   },
+  methods: {
+    async getConfigClient() {
+      const { data } = await api.get("/data-of-client");
+      window.localStorage.data_client = JSON.stringify(data);
+    }
+  },
+  mounted(){
+    this.getConfigClient();
+  }
 };
 </script>
 

@@ -1,22 +1,25 @@
 <template>
   <main>
+    <!-- Primeira seção com formulário de busca -->
     <section class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">
       <div class="container">
         <div class="search-board">
           <h3>Digite o código completo</h3>
           <div class="wrap-input">
             <div class="border-input">
-
+            
               <div class="input-group">
-                
+              
                 <input 
                   type="text" 
                   class="form-control mb-2" 
                   placeholder="Digite o código do seu documento"
-                  v-model="historic.code" name="historic"
+                  v-model="historic.code" 
+                  name="historic"
                 >
-                
-                <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" style="text-align: justify;">Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi emitido em nome de(a) <b>{{ (historic.content) ? historic.content.student.name : '' }}</b>.
+                <div v-if="historic.content" class="alert alert-success alert-dismissible fade show mt-3" style="text-align: justify;">
+                  Este documento de referência, identificado sob o código <b>{{ historic.code }}</b>, é válido e foi emitido em nome de(a) 
+                  <b>{{ historic.content ? historic.content.student.name : '' }}</b>.
                   <button 
                     @click="historic.content = null" 
                     type="button" 
@@ -24,40 +27,35 @@
                     data-bs-dismiss="alert"
                     aria-label="Close"></button>
                 </div>
-
                 <div class="input-group-append">
-
-                  <button class="btn btn-dark" type="button" @click.prevent="hasDocument" :disabled="!recaptchaResponse">
+                  <button class="btn btn-dark" type="button" @click.prevent="hasDocument" :disabled="!historicRecaptchaResponse">
                     <font-awesome-icon class="d-md-none" icon="search" />
                     <span class="d-none d-md-block">Procurar</span>
                   </button>
-
                 </div>
               </div>
               <div class="input-group">
-                <recaptcha :site-key="siteKey" @verified="onVerified"></recaptcha>
-
+                <recaptcha :site-key="siteKey" @verified="onHistoricVerified"></recaptcha>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
     </section>
 
-    <section class="text-white" style="background-color: #7f9c97;">
+    <!-- Segunda seção com formulário de contato -->
+    <section class="text-white" :style="`background-color: ${mainColor};`">
       <div class="container">
-
+      
         <div class="row">
           <div class="col-md-6">
             <img class="handshack" src="@/assets/handshack.png" alt="Handshack">
           </div>
           <div class="col-md-6 contact">
-
+          
             <h2>Ficou alguma dúvida?</h2>
             <p>Entre em contato CONOSCO!</p>
-
+            
             <form class="text-left" @submit.prevent="sendEmail">
               <div class="mb-3">
                 <label for="name">Seu nome:</label>
@@ -73,29 +71,24 @@
               </div>
               <div class="mb-3">
                 <label for="whatsapp">WhatsApp:</label>
-                <TheMask data-test="whatsapp" type="text" class="form-control" :mask="['(##) ####-####', '(##) #####-####']" :masked="true"
-                  v-model="email.whatsapp" />
-
+                <TheMask data-test="whatsapp" type="text" class="form-control" :mask="['(##) ####-####', '(##) #####-####']" :masked="true" 
+                         v-model="email.whatsapp" />
+              </div>
+              <div class="input-group">
+                <recaptcha :site-key="siteKey" @verified="onEmailVerified"></recaptcha>
               </div>
               <div class="mb-3 d-grid">
-
-                <button data-test="submit" v-if="!loading" type="submit" class="btn btn-outline-light">Enviar</button>
-
+                <button data-test="submit" v-if="!loading" type="submit" class="btn btn-outline-light" :disabled="!emailRecaptchaResponse">Enviar</button>
                 <LoadingPage class="loading" v-else />
-
               </div>
             </form>
-
           </div>
         </div>
-
       </div>
-
     </section>
-
   </main>
 </template>
-  
+
 <script>
 
 import api from "@/services";
@@ -107,11 +100,12 @@ export default {
     LoadingPage,
     Recaptcha
   },
-  name: "Home",
+  
   data() {
     return {
       siteKey: "6Le1mbcZAAAAAAnWnOCN7kS6xueKw82MQifMXw76", // Substitua pela sua chave do site
-      recaptchaResponse: null,
+      historicRecaptchaResponse: null,  // Resposta reCAPTCHA do primeiro formulário
+      emailRecaptchaResponse: null,     // Resposta reCAPTCHA do segundo formulário
       loading: false,
       email: {
         nome: "",
@@ -119,6 +113,7 @@ export default {
         doubt: "",
         whatsapp: "",
       },
+      mainColor: "#C4C4C4",
       historic: {
         code: "",
         content: null,
@@ -126,34 +121,38 @@ export default {
     };
   },
   methods: {
-    onVerified(response) {
-      this.recaptchaResponse = response;
+    // Verificação do reCAPTCHA para o formulário de busca
+    onHistoricVerified(response) {
+      this.historicRecaptchaResponse = response;
+    },
+    // Verificação do reCAPTCHA para o formulário de contato
+    onEmailVerified(response) {
+      this.emailRecaptchaResponse = response;
     },
     async sendEmail() {
-
       if (!this.email.nome || !this.email.e_mail || !this.email.whatsapp || !this.email.doubt)
-        return Toast.fire('Por favor, preencha todos os campos do formulário de contato.', "", "error");
+        return Toast.fire('Atenção!', 'Por favor, preencha todos os campos do formulário de contato.', "warning");
 
       this.loading = true;
 
       const qr = new URLSearchParams(this.email).toString();
 
       try {
-
+      
         const { data } = await api.get(`/send-mail?${qr}`);
-        Toast.fire(data.message, "", "success");
+        Toast.fire("Sucesso!", data.message, "success");
         this.email.nome = this.email.e_mail = this.email.whatsapp = this.email.doubt = null;
         
       } catch (error) {
-        Toast.fire(error.response.data.message, "", "error");
+        Toast.fire("Erro", error.response.data.message, "error");
       }
 
       this.loading = false;
     },
     async hasDocument() {
-
+    
       if (!this.historic.code.length)
-        return Toast.fire('Preencha corretamente o campo', "", "error");
+        return Toast.fire('Atenção!', 'Preencha corretamente o campo', "error");
 
       await api
         .get(`/documents/has-document/${this.historic.code}`)
@@ -161,11 +160,17 @@ export default {
           this.historic.content = res.data[0];
         })
         .catch((error) => {
-          Toast.fire(error.response.data.message, "", "error");
+          Toast.fire("Atenção!", error.response.data.message, "warning");
           this.historic.content = null;
         });
     },
   },
+  mounted() {
+    const { main_color } = JSON.parse(localStorage.getItem('data_client') || '{}');
+    
+    this.mainColor = main_color || this.main_color;
+    
+  }
 };
 </script>
   
@@ -183,14 +188,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #7f9c97;
+  border: 1px solid #697783;
   box-shadow: 2px 2px 10px #8885;
 }
 
 .text-code {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #0bff43;
+  color: #333333;
 }
 
 .search-board h3 {
@@ -201,11 +206,11 @@ export default {
 .search-board h2 {
   font-size: 3rem;
   font-weight: 700;
-  color: #7f9c97;
+  color: #697783;
 }
 
 .wrap-input {
-  border: 1px solid #7f9c97;
+  border: 1px solid #697783;
   padding: 60px 120px;
   border-radius: 10px;
   width: 80%;

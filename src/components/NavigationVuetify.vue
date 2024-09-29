@@ -45,6 +45,21 @@
           </v-list-item>
         </v-list-group>
 
+        <!-- Item for home -->
+        <v-list-item>
+          <v-list-item-content>
+
+            <v-btn
+              to="/"
+              depressed
+              color="secondary"
+            >
+            Home
+            </v-btn>
+          
+          </v-list-item-content>
+        </v-list-item>
+
         <!-- Item for gestão -->
         <v-list-item>
           <v-list-item-content>

@@ -15,6 +15,6 @@
         display: block;
         text-align: center;
         margin: 100px 0px;
-        color: var(--color-text-dark);
+        color: #3d3d3d;
     }
 </style>

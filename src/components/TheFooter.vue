@@ -1,6 +1,7 @@
 <template>
   <footer
-    class="position-relative overflow-hidden p-md-5 text-center bg-dark text-white"
+    class="position-relative overflow-hidden p-md-5 text-center text-white"
+    v-bind:style="{backgroundColor: secondaryColor}"
   >
     <div class="container">
       <div class="row">
@@ -122,6 +123,7 @@ export default {
       email: '',
       schoolName: 'CDNS Systems Ltda',
       phones: [],
+      secondaryColor: '#666666',
     };
   },
   methods: {
@@ -176,12 +178,13 @@ export default {
 
     const dataClient = JSON.parse(localStorage.getItem('data_client') || '{}');
 
-    const { colored_logo, email, school_name, phones } = dataClient;
+    const { colored_logo, email, school_name, phones, secondary_color } = dataClient;
 
     this.logoSrc = colored_logo || this.colored_logo;
     this.email = email || this.email;
     this.schoolName = school_name || this.school_name;
     this.phones = phones || this.phones;
+    this.secondaryColor = secondary_color || this.secondaryColor;
 
   },
   deactivated() {
